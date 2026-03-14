@@ -16,11 +16,48 @@ body {font-family:Arial;margin:25px;background:#f5f7fb;}
 .sidebar {width:260px;background:white;padding:15px;border-radius:8px;height:620px;overflow:auto;}
 .main {flex:1;background:white;padding:20px;border-radius:8px;}
 #map {height:640px;margin-top:10px;border-radius:8px;}
-.locationBtn{display:block;width:100%;margin-bottom:8px;padding:8px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;}
+
+.locationBtn{
+display:block;
+width:100%;
+margin-bottom:8px;
+padding:8px;
+background:#1976d2;
+color:white;
+border:none;
+border-radius:4px;
+cursor:pointer;
+font-size:13px;
+}
+
 .locationBtn:hover{background:#0f5aa6;}
-table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13px;}
-th,td{border:1px solid #ccc;padding:6px;text-align:left;}
-th{background:#f0f0f0;}
+
+.toolbar button{
+margin-right:10px;
+padding:8px 12px;
+cursor:pointer;
+}
+
+.filters{
+margin-bottom:15px;
+}
+
+table{
+border-collapse:collapse;
+width:100%;
+margin-top:20px;
+font-size:13px;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:6px;
+text-align:left;
+}
+
+th{
+background:#f0f0f0;
+}
 </style>
 </head>
 
@@ -28,6 +65,28 @@ th{background:#f0f0f0;}
 
 <h2>Data Center Water Leaks</h2>
 <p>Units: gallons</p>
+
+<div class="filters">
+
+<label>Company:</label>
+<select id="companyFilter" onchange="applyFilters()">
+<option value="All">All</option>
+<option value="Amazon">Amazon</option>
+</select>
+
+<label style="margin-left:20px;">Utility:</label>
+<select id="utilityFilter" onchange="applyFilters()">
+<option value="All">All</option>
+<option value="Fairfax Water">Fairfax Water</option>
+<option value="Prince William Water">Prince William Water</option>
+</select>
+
+</div>
+
+<div class="toolbar">
+<button onclick="downloadCSV()">Download Data</button>
+<button onclick="downloadGraph()">Download Graph</button>
+</div>
 
 <div class="container">
 
@@ -46,7 +105,11 @@ th{background:#f0f0f0;}
 <h3>Annual Water Use by Utility</h3>
 <table id="utilityTable">
 <thead>
-<tr><th>Utility</th><th>Year</th><th>Total Gallons</th></tr>
+<tr>
+<th>Utility</th>
+<th>Year</th>
+<th>Total Gallons</th>
+</tr>
 </thead>
 <tbody></tbody>
 </table>
@@ -62,6 +125,8 @@ let records=[]
 
 let map=L.map('map').setView([38.84,-77.15],11)
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+
+let siteChart
 
 async function loadExcel(){
 
@@ -99,28 +164,17 @@ gallons:Number(r.Gallons)
 records=[...allRecords]
 
 buildMap()
-buildUtilityTable()
 loadLocations()
+buildUtilityTable()
 
 }
 
-async function geocode(address){
-
-const url=`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + " Virginia")}`
-const res=await fetch(url)
-const data=await res.json()
-
-if(data.length){
-return [parseFloat(data[0].lat),parseFloat(data[0].lon)]
-}
-
-return null
-}
-
-async function buildMap(){
+function buildMap(){
 
 map.eachLayer(layer=>{
-if(layer instanceof L.Marker) map.removeLayer(layer)
+if(layer instanceof L.Marker){
+map.removeLayer(layer)
+}
 })
 
 const grouped={}
@@ -131,17 +185,9 @@ if(!grouped[r.location][r.year]) grouped[r.location][r.year]=0
 grouped[r.location][r.year]+=r.gallons
 })
 
-for(const r of records){
+records.forEach(r=>{
 
-let coord=null
-
-if(r.lat && r.lon){
-coord=[Number(r.lat),Number(r.lon)]
-}else{
-coord=await geocode(r.location)
-}
-
-if(!coord) continue
+if(!r.lat || !r.lon) return
 
 let popup="<b>"+r.location+"</b><br><br>"
 popup+="<b>Annual Water Use (gallons)</b><br>"
@@ -150,9 +196,9 @@ for(const year in grouped[r.location]){
 popup+=year+": "+grouped[r.location][year].toLocaleString()+"<br>"
 }
 
-L.marker(coord).addTo(map).bindPopup(popup)
+L.marker([Number(r.lat),Number(r.lon)]).addTo(map).bindPopup(popup)
 
-}
+})
 
 }
 
@@ -198,6 +244,24 @@ tbody.appendChild(tr)
 
 }
 
+function applyFilters(){
+
+const company=document.getElementById("companyFilter").value
+const utility=document.getElementById("utilityFilter").value
+
+records=allRecords.filter(r=>
+(company==="All"||r.company===company)&&
+(utility==="All"||r.utility===utility)
+)
+
+document.getElementById("locations").innerHTML=""
+
+loadLocations()
+buildUtilityTable()
+buildMap()
+
+}
+
 function uniqueLocations(){
 return [...new Set(records.map(r=>r.location))]
 }
@@ -219,8 +283,6 @@ sidebar.appendChild(btn)
 
 }
 
-let siteChart
-
 function drawChart(location){
 
 let data=records.filter(r=>r.location===location)
@@ -240,6 +302,35 @@ fill:false
 }]
 }
 })
+
+}
+
+function downloadCSV(){
+
+let rows=["Company,Utility,Location,Date,Gallons"]
+
+records.forEach(r=>{
+rows.push(r.company+","+r.utility+","+r.location+","+r.date+","+r.gallons)
+})
+
+let blob=new Blob([rows.join("\n")],{type:"text/csv"})
+let url=URL.createObjectURL(blob)
+
+let a=document.createElement("a")
+a.href=url
+a.download="water_use_data.csv"
+a.click()
+
+}
+
+function downloadGraph(){
+
+if(!siteChart) return
+
+let link=document.createElement("a")
+link.href=siteChart.toBase64Image()
+link.download="water_use_graph.png"
+link.click()
 
 }
 
