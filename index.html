@@ -21,6 +21,7 @@ body{font-family:Arial;margin:25px;background:#f5f7fb;}
 table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13px;}
 th,td{border:1px solid #ccc;padding:6px;}
 th{background:#f0f0f0;}
+.filters{margin-bottom:15px;}
 </style>
 </head>
 
@@ -28,6 +29,18 @@ th{background:#f0f0f0;}
 
 <h2>Water Use Dashboard</h2>
 <p>Units: gallons</p>
+
+<div class="filters">
+<label>Company:</label>
+<select id="companyFilter" onchange="applyFilters()">
+<option value="All">All</option>
+</select>
+
+<label style="margin-left:20px;">Utility:</label>
+<select id="utilityFilter" onchange="applyFilters()">
+<option value="All">All</option>
+</select>
+</div>
 
 <div class="container">
 
@@ -71,7 +84,7 @@ let siteChart
 
 async function loadExcel(){
 
-const response = await fetch("wateruse_new.xlsx")
+const response = await fetch("wateruse.xlsx")
 const data = await response.arrayBuffer()
 
 const workbook = XLSX.read(data)
@@ -104,8 +117,50 @@ y:r.Y
 
 records=[...allRecords]
 
+buildFilters()
 loadLocations()
 buildMap()
+buildUtilityTable()
+
+}
+
+function buildFilters(){
+
+const companySet=[...new Set(allRecords.map(r=>r.company))]
+const utilitySet=[...new Set(allRecords.map(r=>r.utility))]
+
+const companySel=document.getElementById("companyFilter")
+const utilitySel=document.getElementById("utilityFilter")
+
+companySet.forEach(c=>{
+let opt=document.createElement("option")
+opt.value=c
+opt.text=c
+companySel.appendChild(opt)
+})
+
+utilitySet.forEach(u=>{
+let opt=document.createElement("option")
+opt.value=u
+opt.text=u
+utilitySel.appendChild(opt)
+})
+
+}
+
+function applyFilters(){
+
+const c=document.getElementById("companyFilter").value
+const u=document.getElementById("utilityFilter").value
+
+records=allRecords.filter(r=>
+(c==="All"||r.company===c)&&
+(u==="All"||r.utility===u)
+)
+
+document.getElementById("locations").innerHTML=""
+
+loadLocations()
 buildUtilityTable()
 
 }
@@ -114,9 +169,7 @@ async function geocode(location){
 
 let cached=localStorage.getItem("geo_"+location)
 
-if(cached){
-return JSON.parse(cached)
-}
+if(cached) return JSON.parse(cached)
 
 const url="https://nominatim.openstreetmap.org/search?format=json&q="+encodeURIComponent(location+" Virginia")
 
