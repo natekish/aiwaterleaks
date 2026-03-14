@@ -7,7 +7,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
 body{font-family:Arial;margin:25px;background:#f5f7fb;}
@@ -43,7 +42,7 @@ th{background:#f0f0f0;}
 </div>
 
 <div class="toolbar">
-<button onclick="downloadExcel()">Download Excel</button>
+<button onclick="downloadCSV()">Download CSV</button>
 </div>
 
 <div class="container">
@@ -85,35 +84,27 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
 
 let siteChart
 
-async function loadExcel(){
+async function loadCSV(){
 
-const response = await fetch("wateruse.xlsx")
-const data = await response.arrayBuffer()
+const response = await fetch("wateruse.csv")
+const text = await response.text()
 
-const workbook = XLSX.read(data)
-const sheet = workbook.Sheets[workbook.SheetNames[0]]
-const json = XLSX.utils.sheet_to_json(sheet)
+const rows = text.trim().split("\n")
+const headers = rows[0].split(",")
 
-allRecords = json.map(r=>{
+allRecords = rows.slice(1).map(r=>{
 
-let dateVal=r.Date
-
-if(typeof dateVal==="number"){
-const p=XLSX.SSF.parse_date_code(dateVal)
-dateVal=new Date(p.y,p.m-1,p.d)
-}else{
-dateVal=new Date(dateVal)
-}
+const c = r.split(",")
 
 return{
-company:r.Company,
-utility:r.Utility,
-location:String(r.Location).trim(),
-date:dateVal.toISOString().split("T")[0],
-year:dateVal.getFullYear(),
-gallons:Number(r.Gallons),
-x:r.X,
-y:r.Y
+company:c[0],
+utility:c[1],
+location:c[2],
+date:c[3],
+year:new Date(c[3]).getFullYear(),
+gallons:parseFloat(c[4]),
+x:parseFloat(c[5]),
+y:parseFloat(c[6])
 }
 
 })
@@ -183,14 +174,14 @@ locations.forEach(loc=>{
 
 let rec = allRecords.find(r =>
 r.location === loc &&
-!isNaN(parseFloat(r.y)) &&
-!isNaN(parseFloat(r.x))
+!isNaN(r.y) &&
+!isNaN(r.x)
 )
 
 if(!rec) return
 
-let lat=parseFloat(rec.y)
-let lon=parseFloat(rec.x)
+let lat=rec.y
+let lon=rec.x
 
 let popup="<b>"+loc+"</b><br><br>"
 
@@ -272,11 +263,11 @@ fill:false
 
 }
 
-function downloadExcel(){
-window.location="wateruse.xlsx"
+function downloadCSV(){
+window.location="wateruse.csv"
 }
 
-loadExcel()
+loadCSV()
 
 </script>
 
