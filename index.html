@@ -44,7 +44,7 @@ th{background:#f0f0f0;}
 </div>
 
 <div class="toolbar">
-<button onclick="downloadCSV()">Download CSV</button>
+
 <button onclick="downloadExcel()">Download Excel</button>
 </div>
 
@@ -169,27 +169,7 @@ buildUtilityTable()
 
 }
 
-async function geocode(location){
-
-let cached=localStorage.getItem("geo_"+location)
-if(cached) return JSON.parse(cached)
-
-// improved search query
-const query = location + ", Fairfax County, Virginia USA"
-const url="https://nominatim.openstreetmap.org/search?format=json&q="+encodeURIComponent(query)
-
-const res=await fetch(url,{headers:{'User-Agent':'water-dashboard'}})
-const data=await res.json()
-
-if(!data.length) return null
-
-const coords={lat:parseFloat(data[0].lat),lon:parseFloat(data[0].lon)}
-localStorage.setItem("geo_"+location,JSON.stringify(coords))
-
-return coords
-}
-
-async function buildMap(){
+function buildMap(){
 
 const grouped={}
 
@@ -201,19 +181,14 @@ grouped[r.location][r.year]+=r.gallons
 
 const locations=Object.keys(grouped)
 
-for(const loc of locations){
+locations.forEach(loc=>{
 
 let rec=allRecords.find(r=>r.location===loc)
 
-let lat=rec.y
-let lon=rec.x
+let lat=parseFloat(rec.y)
+let lon=parseFloat(rec.x)
 
-if(!lat||!lon){
-let geo=await geocode(loc)
-if(!geo) continue
-lat=geo.lat
-lon=geo.lon
-}
+if(isNaN(lat)||isNaN(lon)) return
 
 let popup="<b>"+loc+"</b><br><br>"
 
@@ -223,7 +198,7 @@ popup+=yr+": "+grouped[loc][yr].toLocaleString()+" gallons<br>"
 
 L.marker([lat,lon]).addTo(map).bindPopup(popup)
 
-}
+})
 
 }
 
@@ -314,9 +289,7 @@ a.click()
 }
 
 function downloadExcel(){
-
 window.location="wateruse.xlsx"
-
 }
 
 loadExcel()
