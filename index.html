@@ -3,266 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <title>Data Center Water Leaks</title>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
-body{font-family:Arial;margin:25px;background:#f5f7fb;}
-.section{background:white;padding:20px;border-radius:8px;margin-bottom:20px;}
-.container{display:flex;gap:20px;}
-.sidebar{width:260px;background:white;padding:15px;border-radius:8px;height:620px;overflow:auto;}
-/* Added max-width and overflow control to keep the chart from expanding too far */
-.main{flex:1;background:white;padding:20px;border-radius:8px;max-width: calc(100% - 320px); overflow: hidden;}
-.locationBtn{display:block;width:100%;margin-bottom:8px;padding:8px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;}
-.locationBtn:hover{background:#0f5aa6;}
-table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px;}
-th,td{border:1px solid #ccc;padding:6px;}
-th{background:#f0f0f0;}
-.filters{margin-bottom:15px;}
-.toolbar button{margin-right:10px;padding:8px 12px;cursor:pointer;}
-/* Fixed height container for the chart */
-.chart-container { position: relative; height: 400px; width: 100%; }
+    body{font-family:Arial, sans-serif;margin:25px;background:#f5f7fb;line-height:1.5;}
+    .section{background:white;padding:20px;border-radius:8px;margin-bottom:20px;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+    .container{display:flex;gap:20px;}
+    .sidebar{width:280px;background:white;padding:15px;border-radius:8px;height:650px;overflow:auto;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+    .main{flex:1;background:white;padding:20px;border-radius:8px;max-width: calc(100% - 320px); overflow: hidden;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+    .locationBtn{display:block;width:100%;margin-bottom:8px;padding:10px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;text-align:left;}
+    .locationBtn:hover{background:#0f5aa6;}
+    table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px;}
+    th,td{border:1px solid #eee;padding:10px;text-align:left;}
+    th{background:#f8f9fa;font-weight:600;}
+    .filters{margin-bottom:20px; display:flex; gap:20px; align-items:center; background:#fff; padding:15px; border-radius:8px;}
+    .filters select { padding:8px; border-radius:4px; border:1px solid #ddd; }
+    .toolbar{margin-bottom:20px;}
+    .toolbar button{margin-right:10px;padding:10px 16px;cursor:pointer; background:#fff; border:1px solid #ddd; border-radius:4px; font-weight:bold;}
+    .toolbar button:hover{background:#f0f0f0;}
+    .chart-container { position: relative; height: 450px; width: 100%; }
+    .disclaimer { font-size: 13px; color: #444; margin-top:40px; border-top: 1px solid #ddd; padding-top:20px;}
+    h2, h3 { color: #333; }
 </style>
 </head>
-
 <body>
 
-<h2>Data Center Water Leaks</h2>
-<p>Units: gallons</p>
+<header>
+    <h2>Data Center Water Leaks</h2>
+    <p>Units: gallons</p>
+</header>
 
 <div class="filters">
-<label>Company:</label>
-<select id="companyFilter" onchange="applyFilters()">
-<option value="All">All</option>
-</select>
-
-<label style="margin-left:20px;">Utility:</label>
-<select id="utilityFilter" onchange="applyFilters()">
-<option value="All">All</option>
-</select>
+    <div>
+        <label><b>Company:</b></label>
+        <select id="companyFilter" onchange="applyFilters()">
+            <option value="All">All Companies</option>
+        </select>
+    </div>
+    <div>
+        <label><b>Utility:</b></label>
+        <select id="utilityFilter" onchange="applyFilters()">
+            <option value="All">All Utilities</option>
+        </select>
+    </div>
 </div>
 
 <div class="toolbar">
-<button onclick="downloadCSV()">Download CSV</button>
-<button onclick="viewMap()">View Map</button>
+    <button onclick="downloadCSV()">Download Raw Data (CSV)</button>
+    <button onclick="viewMap()" style="background:#2e7d32; color:white; border:none;">Explore Map</button>
 </div>
 
 <div class="section">
-<h3>Annual Water Use by Utility</h3>
-<table id="utilityTable">
-<thead>
-<tr>
-<th>Utility</th>
-<th>Year</th>
-<th>Total Gallons</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
+    <h3>Annual Water Use by Utility</h3>
+    <table id="utilityTable">
+        <thead>
+            <tr><th>Utility</th><th>Year</th><th>Total Gallons</th></tr>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
 
 <div class="container">
-
-<div class="sidebar">
-<b>Sites</b>
-<div id="locations"></div>
+    <div class="sidebar">
+        <h4 style="margin-top:0;">Facilities</h4>
+        <div id="locations"></div>
+    </div>
+    <div class="main">
+        <h3 id="chartTitle">Select a facility to view usage trends</h3>
+        <div class="chart-container">
+            <canvas id="siteChart"></canvas>
+        </div>
+    </div>
 </div>
 
-<div class="main">
-<h3>Site Water Use</h3>
-<h4>(Click point to see water use)</h4>
-<div class="chart-container">
-    <canvas id="siteChart"></canvas>
-</div>
-</div>
-</div>
-
-<script>
-
-let allRecords=[]
-let records=[]
-let siteChart
-
-async function loadCSV(){
-
-const response = await fetch("wateruse.csv")
-const text = await response.text()
-
-const rows = text.trim().split("\n")
-
-allRecords = rows.slice(1).map(r=>{
-
-const c = r.split(",")
-// Format date to YYYY-MM-DD for cleaner chart labels
-const formattedDate = c[3] ? c[3].substring(0, 10) : "";
-
-return{
-company:c[0],
-utility:c[1],
-location:c[2],
-date:formattedDate,
-year:new Date(c[3]).getFullYear(),
-gallons:parseFloat(c[4]),
-x:parseFloat(c[5]),
-y:parseFloat(c[6])
-}
-
-})
-
-records=[...allRecords]
-
-buildFilters()
-loadLocations()
-buildUtilityTable()
-
-}
-
-function buildFilters(){
-
-const companySet=[...new Set(allRecords.map(r=>r.company))]
-const utilitySet=[...new Set(allRecords.map(r=>r.utility))]
-
-const companySel=document.getElementById("companyFilter")
-const utilitySel=document.getElementById("utilityFilter")
-
-companySet.forEach(c=>{
-let opt=document.createElement("option")
-opt.value=c
-opt.text=c
-companySel.appendChild(opt)
-})
-
-utilitySet.forEach(u=>{
-let opt=document.createElement("option")
-opt.value=u
-opt.text=u
-utilitySel.appendChild(opt)
-})
-
-}
-
-function applyFilters(){
-
-const c=document.getElementById("companyFilter").value
-const u=document.getElementById("utilityFilter").value
-
-records=allRecords.filter(r=>
-(c==="All"||r.company===c)&&
-(u==="All"||r.utility===u)
-)
-
-document.getElementById("locations").innerHTML=""
-loadLocations()
-buildUtilityTable()
-
-}
-
-function buildUtilityTable(){
-
-const totals={}
-
-records.forEach(r=>{
-if(!totals[r.utility]) totals[r.utility]={}
-if(!totals[r.utility][r.year]) totals[r.utility][r.year]=0
-totals[r.utility][r.year]+=r.gallons
-})
-
-const tbody=document.querySelector("#utilityTable tbody")
-tbody.innerHTML=""
-
-for(const util in totals){
-for(const yr in totals[util]){
-
-let tr=document.createElement("tr")
-tr.innerHTML="<td>"+util+"</td><td>"+yr+"</td><td>"+totals[util][yr].toLocaleString()+"</td>"
-tbody.appendChild(tr)
-
-}
-}
-
-}
-
-function uniqueLocations(){
-return [...new Set(records.map(r=>r.location))]
-}
-
-function loadLocations(){
-
-const sidebar=document.getElementById("locations")
-
-uniqueLocations().forEach(loc=>{
-
-let btn=document.createElement("button")
-btn.className="locationBtn"
-btn.innerText=loc
-btn.onclick=()=>drawChart(loc)
-
-sidebar.appendChild(btn)
-
-})
-
-}
-
-function drawChart(location){
-
-let data=records.filter(r=>r.location===location)
-let labels=data.map(d=>d.date)
-let values=data.map(d=>d.gallons)
-
-if(siteChart) siteChart.destroy()
-
-siteChart=new Chart(document.getElementById("siteChart"),{
-type:"line",
-data:{
-labels:labels,
-datasets:[{
-label:location+" gallons",
-data:values,
-fill:false,
-borderColor: '#1976d2',
-tension: 0.1
-}]
-},
-options: {
-    responsive: true,
-    maintainAspectRatio: false, // Allows the chart to fill the container height
-    scales: {
-        y: {
-            beginAtZero: true
-        }
-    }
-}
-})
-
-}
-
-function downloadCSV(){
-window.location="wateruse.csv"
-}
-
-function viewMap(){
-window.open("map.html","_blank")
-}
-
-loadCSV()
-
-</script>
-
-<div class="section" style="font-size: 12px; color: #555;">
+<footer class="section disclaimer">
     <h3>Data Disclaimer & Contributions</h3>
     <p>
-        <b>Disclaimer:</b>The data presented in this application was obtained through formal Freedom of Information Act (FOIA) requests submitted to the respective public utilities. 
-        While every effort has been made to ensure accuracy, this data is provided "as is." The authors do not guarantee that the data is free from errors or processing delays by the original sources.
+        The data presented in this application was obtained through formal Freedom of Information Act (FOIA) requests submitted to the respective public utilities. 
+        While every effort has been made to ensure the accuracy and completeness of the information as provided by the responding agencies, this data is provided "as is" for informational purposes only. 
     </p>
     <p>
-        <b>Contribute Data:</b> Please submit any verified water usage records to 
+        <b>Contribute Data:</b> Please submit verified water usage records to 
         <a href="mailto:datacenterwaterleaks@gmail.com">datacenterwaterleaks@gmail.com</a>.
     </p>
     <p>
         <b>File Your Own Request:</b> Download our 
-        <a href="foia_template.docx" download>FOIA Request Template (.docx)</a> to get started.
+        <a href="foia_template.docx" download>FOIA Template (Word Document)</a>.
     </p>
-</div>
+</footer>
 
+<script>
+let allRecords=[];
+let records=[];
+let siteChart;
+
+async function loadCSV(){
+    try {
+        const response = await fetch("wateruse.csv");
+        const text = await response.text();
+        const rows = text.trim().split("\n");
+        
+        allRecords = rows.slice(1).map(r => {
+            // Regex to handle commas inside quotes for location addresses
+            const c = r.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+            if(!c || c.length < 7) return null;
+            
+            const locClean = c[2].replace(/^"|"$/g, '').trim();
+            const rawDate = c[3];
+            const dateObj = new Date(rawDate);
+            const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : rawDate;
+            const yr = !isNaN(dateObj) ? dateObj.getFullYear() : null;
+
+            return {
+                company: c[0].replace(/^"|"$/g, '').trim(),
+                utility: c[1].replace(/^"|"$/g, '').trim(),
+                location: locClean,
+                date: isoDate,
+                year: yr,
+                gallons: parseFloat(c[4]) || 0
+            };
+        }).filter(item => item !== null);
+
+        records = [...allRecords];
+        buildFilters();
+        loadLocations();
+        buildUtilityTable();
+    } catch (e) {
+        console.error("Error loading CSV:", e);
+    }
+}
+
+function buildFilters(){
+    const companies = [...new Set(allRecords.map(r=>r.company))].sort();
+    const utilities = [...new Set(allRecords.map(r=>r.utility))].sort();
+    
+    const companySel = document.getElementById("companyFilter");
+    const utilitySel = document.getElementById("utilityFilter");
+
+    companies.forEach(c => {
+        let opt=document.createElement("option"); opt.value=c; opt.text=c;
+        companySel.appendChild(opt);
+    });
+    utilities.forEach(u => {
+        let opt=document.createElement("option"); opt.value=u; opt.text=u;
+        utilitySel.appendChild(opt);
+    });
+}
+
+function applyFilters(){
+    const cVal = document.getElementById("companyFilter").value;
+    const uVal = document.getElementById("utilityFilter").value;
+
+    records = allRecords.filter(r => 
+        (cVal === "All" || r.company === cVal) && (uVal === "All" || r.utility === uVal)
+    );
+
+    document.getElementById("locations").innerHTML="";
+    loadLocations();
+    buildUtilityTable();
+    if(siteChart) siteChart.destroy();
+    document.getElementById("chartTitle").innerText = "Select a facility to view usage trends";
+}
+
+function buildUtilityTable(){
+    const totals={};
+    records.forEach(r=>{
+        if(!r.year) return;
+        if(!totals[r.utility]) totals[r.utility]={};
+        if(!totals[r.utility][r.year]) totals[r.utility][r.year]=0;
+        totals[r.utility][r.year] += r.gallons;
+    });
+
+    const tbody = document.querySelector("#utilityTable tbody");
+    tbody.innerHTML="";
+    
+    const sortedUtilities = Object.keys(totals).sort();
+    sortedUtilities.forEach(util => {
+        const years = Object.keys(totals[util]).sort();
+        years.forEach(yr => {
+            let tr = document.createElement("tr");
+            tr.innerHTML=`<td>${util}</td><td>${yr}</td><td>${totals[util][yr].toLocaleString()}</td>`;
+            tbody.appendChild(tr);
+        });
+    });
+}
+
+function loadLocations(){
+    const sidebar = document.getElementById("locations");
+    const uniqueLocs = [...new Set(records.map(r=>r.location))].sort();
+    uniqueLocs.forEach(loc=>{
+        let btn = document.createElement("button");
+        btn.className = "locationBtn";
+        btn.innerText = loc;
+        btn.onclick = () => drawChart(loc);
+        sidebar.appendChild(btn);
+    });
+}
+
+function drawChart(locationName){
+    document.getElementById("chartTitle").innerText = "Usage: " + locationName;
+    let data = allRecords.filter(r => r.location === locationName).sort((a,b) => new Date(a.date) - new Date(b.date));
+    let labels = data.map(d => d.date);
+    let values = data.map(d => d.gallons);
+
+    if(siteChart) siteChart.destroy();
+    const ctx = document.getElementById("siteChart").getContext('2d');
+    siteChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Gallons Used",
+                data: values,
+                borderColor: '#1976d2',
+                backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                fill: true,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+}
+
+function downloadCSV(){ window.location="wateruse.csv"; }
+function viewMap(){ window.open("map.html","_blank"); }
+
+loadCSV();
+</script>
 </body>
 </html>
