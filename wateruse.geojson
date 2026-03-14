@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.3575,
+          38.8151
+        ]
+      },
+      "properties": {
+        "location": "Example Data Center",
+        "years": {
+          "2023": 1200000,
+          "2024": 950000
+        }
+      }
+    }
+  ]
+}
