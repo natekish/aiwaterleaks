@@ -8,12 +8,13 @@
 
 <style>
 body{font-family:Arial;margin:25px;background:#f5f7fb;}
+.section{background:white;padding:20px;border-radius:8px;margin-bottom:20px;}
 .container{display:flex;gap:20px;}
 .sidebar{width:260px;background:white;padding:15px;border-radius:8px;height:620px;overflow:auto;}
 .main{flex:1;background:white;padding:20px;border-radius:8px;}
 .locationBtn{display:block;width:100%;margin-bottom:8px;padding:8px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;}
 .locationBtn:hover{background:#0f5aa6;}
-table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13px;}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px;}
 th,td{border:1px solid #ccc;padding:6px;}
 th{background:#f0f0f0;}
 .filters{margin-bottom:15px;}
@@ -43,17 +44,8 @@ th{background:#f0f0f0;}
 <button onclick="viewMap()">View Map</button>
 </div>
 
-<div class="container">
-
-<div class="sidebar">
-<b>Sites</b>
-<div id="locations"></div>
-</div>
-
-<div class="main">
-
-<canvas id="siteChart"></canvas>
-
+<!-- Annual Water Use Section -->
+<div class="section">
 <h3>Annual Water Use by Utility</h3>
 <table id="utilityTable">
 <thead>
@@ -65,6 +57,19 @@ th{background:#f0f0f0;}
 </thead>
 <tbody></tbody>
 </table>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+<b>Sites</b>
+<div id="locations"></div>
+</div>
+
+<div class="main">
+
+<h3>Site Water Use</h3>
+<canvas id="siteChart"></canvas>
 
 </div>
 </div>
