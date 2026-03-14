@@ -31,10 +31,8 @@ font-size:13px;
 }
 
 .locationBtn:hover{background:#0f5aa6;}
-
 .toolbar button {margin-right:10px;padding:8px 12px;cursor:pointer;}
 .filters {margin-bottom:15px;}
-
 .disclaimer {margin-top:30px;font-size:12px;color:#555;line-height:1.5}
 </style>
 </head>
@@ -72,12 +70,9 @@ font-size:13px;
 </div>
 
 <div class="main">
-
 <canvas id="siteChart"></canvas>
-
 <h3>Click Map to see Annual Water Use</h3>
 <div id="map"></div>
-
 </div>
 
 </div>
@@ -94,18 +89,7 @@ Facility address locations displayed in the dashboard are compiled from publicly
 let allRecords=[]
 let records=[]
 
-let coords = {
-"7951 Loisdale Rd":[38.7735,-77.1821],
-"7961 Loisdale Rd":[38.7737,-77.1819],
-"4100 Westfax Dr":[38.8625,-77.1482],
-"4101A Westfax Dr":[38.8626,-77.1479],
-"3980 Virginia Mallory Dr":[38.8584,-77.1498],
-"4030 Lafayette Center Dr":[38.8671,-77.1536],
-"13600 Eds Dr":[38.8819,-77.2114]
-}
-
 let map=L.map('map').setView([38.84,-77.15],11)
-
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
 
 let siteChart
@@ -119,14 +103,27 @@ const workbook = XLSX.read(data)
 const sheet = workbook.Sheets[workbook.SheetNames[0]]
 const json = XLSX.utils.sheet_to_json(sheet)
 
-allRecords = json.map(r => ({
+allRecords = json.map(r => {
+
+let dateValue = r.Date
+
+if (typeof dateValue === "number") {
+const parsed = XLSX.SSF.parse_date_code(dateValue)
+dateValue = new Date(parsed.y, parsed.m - 1, parsed.d)
+} else {
+dateValue = new Date(dateValue)
+}
+
+return {
 company:r.Company,
 utility:r.Utility,
 location:r.Location,
-date:r.Date,
-year:new Date(r.Date).getFullYear(),
+date:dateValue.toISOString().split("T")[0],
+year:dateValue.getFullYear(),
 gallons:Number(r.Gallons)
-}))
+}
+
+})
 
 records=[...allRecords]
 
@@ -135,7 +132,20 @@ loadLocations()
 
 }
 
-function buildMap(){
+async function geocode(address){
+
+const url=`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + " Virginia")}`
+const res=await fetch(url)
+const data=await res.json()
+
+if(data.length){
+return [parseFloat(data[0].lat),parseFloat(data[0].lon)]
+}
+
+return null
+}
+
+async function buildMap(){
 
 const grouped={}
 
@@ -145,20 +155,21 @@ if(!grouped[r.location][r.year]) grouped[r.location][r.year]=0
 grouped[r.location][r.year]+=r.gallons
 })
 
-Object.keys(coords).forEach(addr=>{
+for(const addr of Object.keys(grouped)){
 
-let popup="<b>"+addr+"</b><br>Amazon<br><br>"
+const coord=await geocode(addr)
+if(!coord) continue
+
+let popup="<b>"+addr+"</b><br><br>"
 popup+="<b>Annual Water Use (gallons)</b><br>"
 
-if(grouped[addr]){
 for(const year in grouped[addr]){
 popup+=year+": "+grouped[addr][year].toLocaleString()+"<br>"
 }
+
+L.marker(coord).addTo(map).bindPopup(popup)
+
 }
-
-L.marker(coords[addr]).addTo(map).bindPopup(popup)
-
-})
 
 }
 
@@ -173,7 +184,6 @@ records=allRecords.filter(r=>
 )
 
 document.getElementById("locations").innerHTML=""
-
 loadLocations()
 
 }
@@ -230,7 +240,6 @@ rows.push(r.company+","+r.utility+","+r.location+","+r.date+","+r.gallons)
 })
 
 let blob=new Blob([rows.join("\n")],{type:"text/csv"})
-
 let url=URL.createObjectURL(blob)
 
 let a=document.createElement("a")
@@ -245,7 +254,6 @@ function downloadGraph(){
 if(!siteChart) return
 
 let link=document.createElement("a")
-
 link.href=siteChart.toBase64Image()
 link.download="water_use_graph.png"
 link.click()
