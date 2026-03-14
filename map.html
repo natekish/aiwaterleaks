@@ -8,8 +8,31 @@
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
         #map { height: 100vh; width: 100%; }
+
+        /* Styling for the toolbar you requested */
+    .toolbar {
+        position: absolute;
+        top: 15px;
+        left: 50px; /* Shifted slightly to the right to clear Leaflet zoom buttons */
+        z-index: 1000;
+        background: white;
+        padding: 10px;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    
+    .toolbar button {
+        padding: 8px 12px;
+        background: #1976d2;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: default; /* Changed to default since it's an instructional label */
+        font-weight: bold;
+    }
         .leaflet-popup-content { font-size: 14px; line-height: 1.5; }
         .total-row { border-top: 1px solid #ccc; margin-top: 5px; padding-top: 5px; font-weight: bold; }
+    
     </style>
 </head>
 <body>
@@ -17,7 +40,7 @@
 <div class="toolbar">
     <button>To view annual water use click pins</button>
 </div>
-    
+
 <div id="map"></div>
 
 <script>
