@@ -123,7 +123,7 @@ background:#f0f0f0;
 let allRecords=[]
 let records=[]
 
-let map=L.map('map').setView([38.84,-77.15],11)
+let map=L.map('map').setView([38.84,-77.15],10)
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
 
 let siteChart
@@ -151,9 +151,7 @@ dateValue = new Date(dateValue)
 return {
 company:r.Company,
 utility:r.Utility,
-location:r.Location.trim(),
-lat:r.Lat,
-lon:r.Lon,
+location:String(r.Location).trim(),
 date:dateValue.toISOString().split("T")[0],
 year:dateValue.getFullYear(),
 gallons:Number(r.Gallons)
@@ -171,32 +169,33 @@ buildUtilityTable()
 
 function buildMap(){
 
-map.eachLayer(layer=>{
-if(layer instanceof L.Marker){
-map.removeLayer(layer)
-}
-})
-
 const grouped={}
 
-records.forEach(r=>{
+allRecords.forEach(r=>{
+
 if(!grouped[r.location]) grouped[r.location]={}
+
 if(!grouped[r.location][r.year]) grouped[r.location][r.year]=0
+
 grouped[r.location][r.year]+=r.gallons
+
 })
 
-records.forEach(r=>{
+const locations = Object.keys(grouped)
 
-if(!r.lat || !r.lon) return
+locations.forEach((loc,i)=>{
 
-let popup="<b>"+r.location+"</b><br><br>"
+const lat = 38.84 + (i * 0.03)
+const lon = -77.15 + (i * 0.03)
+
+let popup="<b>"+loc+"</b><br><br>"
 popup+="<b>Annual Water Use (gallons)</b><br>"
 
-for(const year in grouped[r.location]){
-popup+=year+": "+grouped[r.location][year].toLocaleString()+"<br>"
+for(const year in grouped[loc]){
+popup+=year+": "+grouped[loc][year].toLocaleString()+"<br>"
 }
 
-L.marker([Number(r.lat),Number(r.lon)]).addTo(map).bindPopup(popup)
+L.marker([lat,lon]).addTo(map).bindPopup(popup)
 
 })
 
@@ -258,7 +257,6 @@ document.getElementById("locations").innerHTML=""
 
 loadLocations()
 buildUtilityTable()
-buildMap()
 
 }
 
