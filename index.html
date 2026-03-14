@@ -5,27 +5,9 @@
 <title>Data Center Water Leaks</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-    body{font-family:Arial, sans-serif;margin:25px;background:#f5f7fb;line-height:1.5;}
-    .section{background:white;padding:20px;border-radius:8px;margin-bottom:20px;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-    .container{display:flex;gap:20px;}
-    .sidebar{width:280px;background:white;padding:15px;border-radius:8px;height:650px;overflow:auto;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-    .main{flex:1;background:white;padding:20px;border-radius:8px;max-width: calc(100% - 320px); overflow: hidden;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
-    .locationBtn{display:block;width:100%;margin-bottom:8px;padding:10px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;text-align:left;}
-    .locationBtn:hover{background:#0f5aa6;}
-    table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px;}
-    th,td{border:1px solid #eee;padding:10px;text-align:left;}
-    th{background:#f8f9fa;font-weight:600;}
-    .filters{margin-bottom:20px; display:flex; gap:20px; align-items:center; background:#fff; padding:15px; border-radius:8px;}
-    .filters select { padding:8px; border-radius:4px; border:1px solid #ddd; }
-    .toolbar{margin-bottom:20px;}
-    .toolbar button{margin-right:10px;padding:10px 16px;cursor:pointer; background:#fff; border:1px solid #ddd; border-radius:4px; font-weight:bold;}
-    .toolbar button:hover{background:#f0f0f0;}
-    .chart-container { position: relative; height: 450px; width: 100%; }
-    .disclaimer { font-size: 13px; color: #444; margin-top:40px; border-top: 1px solid #ddd; padding-top:20px;}
-    .support-box { background: white; padding: 20px; border-radius: 8px; border: 1px solid #ddd; width: 1175x; font-size: 13px; }
-    h2, h3 { color: #333; }
-
+    body { font-family: Arial, sans-serif; margin: 25px; background: #f5f7fb; line-height: 1.5; position: relative; }
     
+    /* Header & Logo Styles */
     header {
         display: flex;
         justify-content: flex-start;
@@ -33,31 +15,85 @@
         margin-bottom: 30px;
     }
     .logo-container {
-        width: 175px;
-        height: 175px;
+        width: 150px;
+        height: 150px;
         background: white;
-        border-radius: 50%; /* This creates the circle */
+        border-radius: 50%;
         border: 2px solid #ddd;
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden; /* Ensures the image doesn't bleed out of the circle */
+        overflow: hidden;
     }
     .logo-container img {
-        width: 95%;
+        width: 85%;
         height: auto;
         display: block;
     }
 
-    .logo-container img {
-        width: 95%;
-        height: auto;
+    /* Top-Right Counter Styles */
+    .counter-container {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        background: white;
+        padding: 15px 25px;
+        border-radius: 12px;
+        text-align: right;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #e0e6ed;
+        z-index: 10;
+    }
+    .counter-label {
+        font-size: 11px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+    .counter-value {
+        font-size: 32px;
+        font-weight: 800;
+        color: #1e293b;
+        font-family: 'Courier New', monospace;
+        line-height: 1;
+        margin: 5px 0;
+    }
+    .counter-unit {
+        font-size: 14px;
+        color: #1976d2;
+        font-weight: 700;
     }
 
+    /* Dashboard Layout Styles */
+    .section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .container { display: flex; gap: 20px; }
+    .sidebar { width: 280px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 320px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .locationBtn { display: block; width: 100%; margin-bottom: 8px; padding: 10px; background: #1976d2; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; }
+    .locationBtn:hover { background: #0f5aa6; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; }
+    th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+    th { background: #f8f9fa; font-weight: 600; }
+    .filters { margin-bottom: 20px; display: flex; gap: 20px; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
+    .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; }
+    .toolbar { margin-bottom: 20px; }
+    .toolbar button { margin-right: 10px; padding: 10px 16px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; }
+    .toolbar button:hover { background: #f0f0f0; }
+    .chart-container { position: relative; height: 450px; width: 100%; }
+    .disclaimer { font-size: 13px; color: #444; margin-top: 40px; border-top: 1px solid #ddd; padding-top: 20px; }
+    .support-box { background: #e8f5e9; padding: 20px; border-radius: 8px; border: 1px solid #c8e6c9; width: 300px; margin-top: 20px; }
+    h2, h3 { color: #333; }
 </style>
 </head>
 <body>
+
+<div class="counter-container">
+    <div class="counter-label">Total Usage Recorded</div>
+    <div class="counter-value" id="totalCounter">0</div>
+    <div class="counter-unit">Gallons</div>
+</div>
 
 <header>
     <div class="logo-container">
@@ -110,32 +146,17 @@
 
 <footer class="section disclaimer">
     <h3>Data Disclaimer & Contributions</h3>
-    <p>
-        The data presented in this application was obtained through formal Freedom of Information Act (FOIA) requests submitted to the respective public utilities. 
-        While every effort has been made to ensure accuracy, this data is provided "as is." 
-    </p>
-    <p>
-        <b>Contribute Data:</b> We encourage the submission of verified water usage records by the public, community groups and especially by data center operators to 
-        <a href="mailto:datacenterwaterleaks@gmail.com">datacenterwaterleaks@gmail.com</a>.
-    </p>
-    <p>
-        <b>File Your Own Request:</b> Download our 
-        <a href="foia_template.docx" download>FOIA Template (Word Document)</a>.
-    </p>
+    <p>The data presented was obtained through formal FOIA requests. While effort is made for accuracy, data is provided "as is."</p>
+    <p><b>Contribute:</b> <a href="mailto:datacenterwaterleaks@gmail.com">datacenterwaterleaks@gmail.com</a></p>
+    <p><b>Template:</b> <a href="foia_template.docx" download>FOIA Template (Word Doc)</a></p>
 
-
-</footer>
     <div class="support-box">
         <h3>Support This Project</h3>
-        <p>Please donate to support our ongoing efforts to track and analyze data center water usage. Your contribution helps us pay for FOIA fees, technology costs, and outreach efforts.</p>
-        <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small?sharesheet=undefined&attribution_id=sl:c84198b3-5e3f-4aa8-a973-fe04f0dcd864"></div>
-       
-       
-       
-       
-       
+        <p>Your contribution helps us pay for FOIA fees and technology costs.</p>
+        <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
         <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
     </div>
+</footer>
 
 <script>
 let allRecords=[];
@@ -149,22 +170,16 @@ async function loadCSV(){
         const lines = text.trim().split(/\r?\n/);
         
         allRecords = lines.slice(1).map(line => {
-            // Updated regex to correctly handle fields whether they are quoted or not
-            // This version handles the commas in unquoted addresses like "123 Main St, City"
-            // based on the fixed column count (7) and standard CSV delimiters
             const row = [];
             let current = '';
             let inQuotes = false;
             for (let i = 0; i < line.length; i++) {
                 const char = line[i];
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === ',' && !inQuotes) {
                     row.push(current.trim());
                     current = '';
-                } else {
-                    current += char;
-                }
+                } else current += char;
             }
             row.push(current.trim());
 
@@ -178,9 +193,7 @@ async function loadCSV(){
 
             const dateObj = new Date(dateStr);
             return {
-                company,
-                utility,
-                location,
+                company, utility, location,
                 date: !isNaN(dateObj) ? dateObj.toLocaleDateString() : dateStr,
                 year: !isNaN(dateObj) ? dateObj.getFullYear() : null,
                 gallons
@@ -188,6 +201,11 @@ async function loadCSV(){
         }).filter(item => item !== null);
 
         records = [...allRecords];
+
+        // Animate total counter based on CSV data
+        const totalSum = records.reduce((sum, r) => sum + r.gallons, 0);
+        animateCounter('totalCounter', totalSum);
+
         buildFilters();
         loadLocations();
         buildUtilityTable();
@@ -196,13 +214,28 @@ async function loadCSV(){
     }
 }
 
+function animateCounter(id, target) {
+    const element = document.getElementById(id);
+    let start = 0;
+    const duration = 1500;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const current = Math.floor(progress * target);
+        element.innerText = current.toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+        else element.innerText = Math.floor(target).toLocaleString();
+    }
+    requestAnimationFrame(update);
+}
+
 function buildFilters(){
     const companies = [...new Set(allRecords.map(r=>r.company))].sort();
     const utilities = [...new Set(allRecords.map(r=>r.utility))].sort();
-    
     const companySel = document.getElementById("companyFilter");
     const utilitySel = document.getElementById("utilityFilter");
-
     companies.forEach(c => {
         let opt=document.createElement("option"); opt.value=c; opt.text=c;
         companySel.appendChild(opt);
@@ -216,11 +249,7 @@ function buildFilters(){
 function applyFilters(){
     const cVal = document.getElementById("companyFilter").value;
     const uVal = document.getElementById("utilityFilter").value;
-
-    records = allRecords.filter(r => 
-        (cVal === "All" || r.company === cVal) && (uVal === "All" || r.utility === uVal)
-    );
-
+    records = allRecords.filter(r => (cVal === "All" || r.company === cVal) && (uVal === "All" || r.utility === uVal));
     document.getElementById("locations").innerHTML="";
     loadLocations();
     buildUtilityTable();
@@ -236,14 +265,10 @@ function buildUtilityTable(){
         if(!totals[r.utility][r.year]) totals[r.utility][r.year]=0;
         totals[r.utility][r.year] += r.gallons;
     });
-
     const tbody = document.querySelector("#utilityTable tbody");
     tbody.innerHTML="";
-    
-    const sortedUtilities = Object.keys(totals).sort();
-    sortedUtilities.forEach(util => {
-        const years = Object.keys(totals[util]).sort();
-        years.forEach(yr => {
+    Object.keys(totals).sort().forEach(util => {
+        Object.keys(totals[util]).sort().forEach(yr => {
             let tr = document.createElement("tr");
             tr.innerHTML=`<td>${util}</td><td>${yr}</td><td>${totals[util][yr].toLocaleString()}</td>`;
             tbody.appendChild(tr);
@@ -253,8 +278,7 @@ function buildUtilityTable(){
 
 function loadLocations(){
     const sidebar = document.getElementById("locations");
-    const uniqueLocs = [...new Set(records.map(r=>r.location))].sort();
-    uniqueLocs.forEach(loc=>{
+    [...new Set(records.map(r=>r.location))].sort().forEach(loc=>{
         let btn = document.createElement("button");
         btn.className = "locationBtn";
         btn.innerText = loc;
@@ -268,7 +292,6 @@ function drawChart(locationName){
     let data = allRecords.filter(r => r.location === locationName).sort((a,b) => new Date(a.date) - new Date(b.date));
     let labels = data.map(d => d.date);
     let values = data.map(d => d.gallons);
-
     if(siteChart) siteChart.destroy();
     const ctx = document.getElementById("siteChart").getContext('2d');
     siteChart = new Chart(ctx, {
@@ -284,11 +307,7 @@ function drawChart(locationName){
                 tension: 0.3
             }]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: { y: { beginAtZero: true } }
-        }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
     });
 }
 
