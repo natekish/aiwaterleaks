@@ -119,7 +119,9 @@
 
 <div class="toolbar">
     <button onclick="downloadCSV()">Download Raw Data (CSV)</button>
-    <button onclick="viewMap()" style="background:#2e7d32; color:white; border:none;">Explore Map</button>
+    <button onclick="viewMap()" style="background:#2e7d32; color:white; border:none;">Explore Data Center Locations</button>
+    <button onclick="openwindow()" style="background:#1976d2; color:white; border:none;">View Data Water Legislation Trends</button>
+    
 </div>
 
 <div class="section">
@@ -333,6 +335,8 @@ function drawChart(locationName){
 
 function downloadCSV(){ window.location="wateruse.csv"; }
 function viewMap(){ window.open("map.html","_blank"); }
+function openwindow(){ window.open("https://public.flourish.studio/visualisation/27352160/", "_blank"); }
+
 
 loadCSV();
 </script>
