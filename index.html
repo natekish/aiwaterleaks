@@ -1,47 +1,53 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Data Center Water Dashboard</title>
+<title>Data Center Water Leaks</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/dashboard.js" defer></script>
 
 <style>
 body{font-family:Arial;margin:25px;background:#f5f7fb;}
 .section{background:white;padding:20px;border-radius:8px;margin-bottom:20px;}
 .container{display:flex;gap:20px;}
-.sidebar{width:260px;background:white;padding:15px;border-radius:8px;height:640px;overflow:auto;}
+.sidebar{width:260px;background:white;padding:15px;border-radius:8px;height:620px;overflow:auto;}
 .main{flex:1;background:white;padding:20px;border-radius:8px;}
+.locationBtn{display:block;width:100%;margin-bottom:8px;padding:8px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;}
+.locationBtn:hover{background:#0f5aa6;}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:13px;}
+th,td{border:1px solid #ccc;padding:6px;}
+th{background:#f0f0f0;}
+.filters{margin-bottom:15px;}
+.toolbar button{margin-right:10px;padding:8px 12px;cursor:pointer;}
 .chartContainer{height:640px;}
 canvas{height:640px !important;}
-.locationBtn{display:block;width:100%;margin-bottom:8px;padding:8px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;}
-.toolbar button{margin-right:10px;padding:8px 12px;}
-.filters{margin-bottom:15px;}
 </style>
 </head>
 
 <body>
 
-<h2>Data Center Water Dashboard</h2>
-
-<div class="toolbar">
-<button onclick="downloadCSV()">Download CSV</button>
-<button onclick="openMap()">View Map</button>
-</div>
+<h2>Data Center Water Leaks</h2>
+<p>Units: gallons</p>
 
 <div class="filters">
 <label>Company:</label>
-<select id="companyFilter"></select>
+<select id="companyFilter" onchange="applyFilters()">
+<option value="All">All</option>
+</select>
 
 <label style="margin-left:20px;">Utility:</label>
-<select id="utilityFilter"></select>
+<select id="utilityFilter" onchange="applyFilters()">
+<option value="All">All</option>
+</select>
+</div>
+
+<div class="toolbar">
+<button onclick="downloadCSV()">Download CSV</button>
+<button onclick="viewMap()">View Map</button>
 </div>
 
 <div class="section">
 <h3>Annual Water Use by Utility</h3>
-
 <table id="utilityTable">
 <thead>
 <tr>
@@ -62,12 +68,184 @@ canvas{height:640px !important;}
 </div>
 
 <div class="main">
+
+<h3>Site Water Use</h3>
 <div class="chartContainer">
 <canvas id="siteChart"></canvas>
 </div>
-</div>
 
 </div>
+</div>
+
+<script>
+
+let allRecords=[]
+let records=[]
+let siteChart
+
+function formatDate(d){
+const dt = new Date(d)
+const y = dt.getFullYear()
+const m = String(dt.getMonth()+1).padStart(2,"0")
+const day = String(dt.getDate()).padStart(2,"0")
+return `${y}-${m}-${day}`
+}
+
+async function loadCSV(){
+
+const response = await fetch("wateruse.csv")
+const text = await response.text()
+
+const rows = text.trim().split("\n")
+
+allRecords = rows.slice(1).map(r=>{
+
+const c = r.split(",")
+const formattedDate = formatDate(c[3])
+
+return{
+company:c[0],
+utility:c[1],
+location:c[2],
+date:formattedDate,
+year:new Date(c[3]).getFullYear(),
+gallons:parseFloat(c[4]),
+x:parseFloat(c[5]),
+y:parseFloat(c[6])
+}
+
+})
+
+records=[...allRecords]
+
+buildFilters()
+loadLocations()
+buildUtilityTable()
+
+}
+
+function buildFilters(){
+
+const companySet=[...new Set(allRecords.map(r=>r.company))]
+const utilitySet=[...new Set(allRecords.map(r=>r.utility))]
+
+const companySel=document.getElementById("companyFilter")
+const utilitySel=document.getElementById("utilityFilter")
+
+companySet.forEach(c=>{
+let opt=document.createElement("option")
+opt.value=c
+opt.text=c
+companySel.appendChild(opt)
+})
+
+utilitySet.forEach(u=>{
+let opt=document.createElement("option")
+opt.value=u
+opt.text=u
+utilitySel.appendChild(opt)
+})
+
+}
+
+function applyFilters(){
+
+const c=document.getElementById("companyFilter").value
+const u=document.getElementById("utilityFilter").value
+
+records=allRecords.filter(r=>
+(c==="All"||r.company===c)&&
+(u==="All"||r.utility===u)
+)
+
+document.getElementById("locations").innerHTML=""
+loadLocations()
+buildUtilityTable()
+
+}
+
+function buildUtilityTable(){
+
+const totals={}
+
+records.forEach(r=>{
+if(!totals[r.utility]) totals[r.utility]={}
+if(!totals[r.utility][r.year]) totals[r.utility][r.year]=0
+totals[r.utility][r.year]+=r.gallons
+})
+
+const tbody=document.querySelector("#utilityTable tbody")
+tbody.innerHTML=""
+
+for(const util in totals){
+for(const yr in totals[util]){
+
+let tr=document.createElement("tr")
+tr.innerHTML="<td>"+util+"</td><td>"+yr+"</td><td>"+totals[util][yr].toLocaleString()+"</td>"
+tbody.appendChild(tr)
+
+}
+}
+
+}
+
+function uniqueLocations(){
+return [...new Set(records.map(r=>r.location))]
+}
+
+function loadLocations(){
+
+const sidebar=document.getElementById("locations")
+
+uniqueLocations().forEach(loc=>{
+
+let btn=document.createElement("button")
+btn.className="locationBtn"
+btn.innerText=loc
+btn.onclick=()=>drawChart(loc)
+
+sidebar.appendChild(btn)
+
+})
+
+}
+
+function drawChart(location){
+
+let data=records.filter(r=>r.location===location)
+let labels=data.map(d=>d.date)
+let values=data.map(d=>d.gallons)
+
+if(siteChart) siteChart.destroy()
+
+siteChart=new Chart(document.getElementById("siteChart"),{
+type:"line",
+data:{
+labels:labels,
+datasets:[{
+label:location+" gallons",
+data:values,
+fill:false
+}]
+},
+options:{
+maintainAspectRatio:false
+}
+})
+
+}
+
+function downloadCSV(){
+window.location="wateruse.csv"
+}
+
+function viewMap(){
+window.open("map.html","_blank")
+}
+
+loadCSV()
+
+</script>
 
 </body>
 </html>
