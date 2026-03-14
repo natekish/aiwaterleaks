@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -44,7 +43,6 @@ th{background:#f0f0f0;}
 </div>
 
 <div class="toolbar">
-
 <button onclick="downloadExcel()">Download Excel</button>
 </div>
 
@@ -183,12 +181,16 @@ const locations=Object.keys(grouped)
 
 locations.forEach(loc=>{
 
-let rec=allRecords.find(r=>r.location===loc)
+let rec = allRecords.find(r =>
+r.location === loc &&
+!isNaN(parseFloat(r.y)) &&
+!isNaN(parseFloat(r.x))
+)
+
+if(!rec) return
 
 let lat=parseFloat(rec.y)
 let lon=parseFloat(rec.x)
-
-if(isNaN(lat)||isNaN(lon)) return
 
 let popup="<b>"+loc+"</b><br><br>"
 
@@ -267,24 +269,6 @@ fill:false
 }]
 }
 })
-
-}
-
-function downloadCSV(){
-
-let rows=["Company,Utility,Location,Date,Gallons"]
-
-records.forEach(r=>{
-rows.push(r.company+","+r.utility+","+r.location+","+r.date+","+r.gallons)
-})
-
-let blob=new Blob([rows.join("\n")],{type:"text/csv"})
-let url=URL.createObjectURL(blob)
-
-let a=document.createElement("a")
-a.href=url
-a.download="wateruse_export.csv"
-a.click()
 
 }
 
