@@ -5,15 +5,12 @@
 <title>Data Center Water Leaks</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 body{font-family:Arial;margin:25px;background:#f5f7fb;}
 .container{display:flex;gap:20px;}
 .sidebar{width:260px;background:white;padding:15px;border-radius:8px;height:620px;overflow:auto;}
 .main{flex:1;background:white;padding:20px;border-radius:8px;}
-#map{height:640px;margin-top:10px;border-radius:8px;}
 .locationBtn{display:block;width:100%;margin-bottom:8px;padding:8px;background:#1976d2;color:white;border:none;border-radius:4px;cursor:pointer;font-size:13px;}
 .locationBtn:hover{background:#0f5aa6;}
 table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13px;}
@@ -43,6 +40,7 @@ th{background:#f0f0f0;}
 
 <div class="toolbar">
 <button onclick="downloadCSV()">Download CSV</button>
+<button onclick="viewMap()">View Map</button>
 </div>
 
 <div class="container">
@@ -55,9 +53,6 @@ th{background:#f0f0f0;}
 <div class="main">
 
 <canvas id="siteChart"></canvas>
-
-<h3>Map</h3>
-<div id="map"></div>
 
 <h3>Annual Water Use by Utility</h3>
 <table id="utilityTable">
@@ -78,10 +73,6 @@ th{background:#f0f0f0;}
 
 let allRecords=[]
 let records=[]
-
-let map=L.map('map').setView([38.85,-77.35],9)
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
-
 let siteChart
 
 async function loadCSV(){
@@ -90,7 +81,6 @@ const response = await fetch("wateruse.csv")
 const text = await response.text()
 
 const rows = text.trim().split("\n")
-const headers = rows[0].split(",")
 
 allRecords = rows.slice(1).map(r=>{
 
@@ -113,7 +103,6 @@ records=[...allRecords]
 
 buildFilters()
 loadLocations()
-buildMap()
 buildUtilityTable()
 
 }
@@ -155,43 +144,6 @@ records=allRecords.filter(r=>
 document.getElementById("locations").innerHTML=""
 loadLocations()
 buildUtilityTable()
-
-}
-
-function buildMap(){
-
-const grouped={}
-
-allRecords.forEach(r=>{
-if(!grouped[r.location]) grouped[r.location]={}
-if(!grouped[r.location][r.year]) grouped[r.location][r.year]=0
-grouped[r.location][r.year]+=r.gallons
-})
-
-const locations=Object.keys(grouped)
-
-locations.forEach(loc=>{
-
-let rec = allRecords.find(r =>
-r.location === loc &&
-!isNaN(r.y) &&
-!isNaN(r.x)
-)
-
-if(!rec) return
-
-let lat=rec.y
-let lon=rec.x
-
-let popup="<b>"+loc+"</b><br><br>"
-
-for(const yr in grouped[loc]){
-popup+=yr+": "+grouped[loc][yr].toLocaleString()+" gallons<br>"
-}
-
-L.marker([lat,lon]).addTo(map).bindPopup(popup)
-
-})
 
 }
 
@@ -265,6 +217,10 @@ fill:false
 
 function downloadCSV(){
 window.location="wateruse.csv"
+}
+
+function viewMap(){
+window.open("map.html","_blank")
 }
 
 loadCSV()
