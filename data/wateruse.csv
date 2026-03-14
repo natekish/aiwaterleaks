@@ -1,1 +1,1318 @@
-Company,Utility,Location,Date,Gallons,X,Y
+﻿Company,Utility,Location,Date,Gallons,X,Y
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-01-01 00:00:00,14184,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-02-01 00:00:00,35244.5,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-03-01 00:00:00,45661.9,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-04-01 00:00:00,575059.1,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-05-01 00:00:00,169691,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-06-01 00:00:00,936664.6,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-07-01 00:00:00,2099735.4,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-08-01 00:00:00,1618583.3,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-09-01 00:00:00,825058.2,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-10-01 00:00:00,253206.3,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-11-01 00:00:00,25076.9,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2023-12-01 00:00:00,14669,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-01-01 00:00:00,16447,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-02-01 00:00:00,15368.1,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-03-01 00:00:00,14992,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-04-01 00:00:00,392640.9,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-05-01 00:00:00,606346.3,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-06-01 00:00:00,1454874.9,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-07-01 00:00:00,1741203.6,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-08-01 00:00:00,1288644.3,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-09-01 00:00:00,47334.3,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-10-01 00:00:00,22146.7,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-11-01 00:00:00,15429,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2024-12-01 00:00:00,18249,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-01-01 00:00:00,14271,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-02-01 00:00:00,15959,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-03-01 00:00:00,47293.1,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-04-01 00:00:00,25337.9,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-05-01 00:00:00,304748.1,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-06-01 00:00:00,959814.5,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-07-01 00:00:00,1299067.1,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-08-01 00:00:00,295826.2,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-09-01 00:00:00,141043.1,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-10-01 00:00:00,21913.7,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-11-01 00:00:00,18374,38.82,-77.65
+Amazon,Prince William Water,15395 John Marshall Hwy ,2025-12-01 00:00:00,19465,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-01-01 00:00:00,4685,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-02-01 00:00:00,5452,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-03-01 00:00:00,5668.2,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-04-01 00:00:00,52965.1,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-05-01 00:00:00,42649.3,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-06-01 00:00:00,101848.3,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-07-01 00:00:00,1076905.9,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-08-01 00:00:00,653190.9,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-09-01 00:00:00,79710.4,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-10-01 00:00:00,12097,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-11-01 00:00:00,6413.4,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2023-12-01 00:00:00,6392.3,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-01-01 00:00:00,8471.1,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-02-01 00:00:00,8797.6,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-03-01 00:00:00,168022.7,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-04-01 00:00:00,30529,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-05-01 00:00:00,103930,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-06-01 00:00:00,485672.5,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-07-01 00:00:00,791420.5,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-08-01 00:00:00,504244.5,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-09-01 00:00:00,28893.5,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-10-01 00:00:00,9589.4,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-11-01 00:00:00,22596,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2024-12-01 00:00:00,7625,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-01-01 00:00:00,8487.1,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-02-01 00:00:00,7426,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-03-01 00:00:00,7678.8,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-04-01 00:00:00,159244.3,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-05-01 00:00:00,86969.2,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-06-01 00:00:00,289636.4,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-07-01 00:00:00,360221.8,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-08-01 00:00:00,111655.5,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-09-01 00:00:00,120385.1,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-10-01 00:00:00,8739.4,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-11-01 00:00:00,10622.1,38.82,-77.65
+Amazon,Prince William Water,15465 John Marshall Hwy ,2025-12-01 00:00:00,16815.4,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-01-01 00:00:00,5515.5,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-02-01 00:00:00,4603.1,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-03-01 00:00:00,5188.1,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-04-01 00:00:00,249083.2,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-05-01 00:00:00,223839.9,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-06-01 00:00:00,451646.6,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-07-01 00:00:00,890106.9,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-08-01 00:00:00,532056.6,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-09-01 00:00:00,370613.4,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-10-01 00:00:00,285701.3,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-11-01 00:00:00,25592.4,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2023-12-01 00:00:00,6461.1,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-01-01 00:00:00,5778.3,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-02-01 00:00:00,5480.7,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-03-01 00:00:00,117453.7,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-04-01 00:00:00,104442.6,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-05-01 00:00:00,122528.2,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-06-01 00:00:00,597080.3,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-07-01 00:00:00,855680.1,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-08-01 00:00:00,490330.8,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-09-01 00:00:00,15086.2,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-10-01 00:00:00,4072.8,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-11-01 00:00:00,7598.3,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2024-12-01 00:00:00,3691,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-01-01 00:00:00,3993.3,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-02-01 00:00:00,4195.1,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-03-01 00:00:00,3951.2,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-04-01 00:00:00,148167,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-05-01 00:00:00,34454,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-06-01 00:00:00,327610,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-07-01 00:00:00,354948.2,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-08-01 00:00:00,93087,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-09-01 00:00:00,54564,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-10-01 00:00:00,4541.2,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-11-01 00:00:00,4155,38.82,-77.65
+Amazon,Prince William Water,15455 John Marshall Hwy,2025-12-01 00:00:00,4749,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-01-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-02-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-03-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-04-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-05-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-06-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-07-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-08-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-09-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-10-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-11-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2023-12-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-01-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-02-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-03-01 00:00:00,0,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-04-01 00:00:00,133802.1,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-05-01 00:00:00,108187.3,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-06-01 00:00:00,443062,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-07-01 00:00:00,720307.8,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-08-01 00:00:00,398441.2,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-09-01 00:00:00,8052.7,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-10-01 00:00:00,7019.5,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-11-01 00:00:00,4978,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2024-12-01 00:00:00,5092,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-01-01 00:00:00,4019,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-02-01 00:00:00,3881.4,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-03-01 00:00:00,4787,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-04-01 00:00:00,134228.6,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-05-01 00:00:00,17373.1,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-06-01 00:00:00,232975.1,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-07-01 00:00:00,244919.1,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-08-01 00:00:00,59269.2,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-09-01 00:00:00,17756.7,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-10-01 00:00:00,6876.8,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-11-01 00:00:00,4147,38.82,-77.65
+Amazon,Prince William Water,15445 John Marshall Hwy,2025-12-01 00:00:00,4053,38.82,-77.65
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-01-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-02-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-03-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-04-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-05-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-06-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-07-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-08-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-09-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-10-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-11-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2023-12-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-01-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-02-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-03-01 00:00:00,0,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-04-01 00:00:00,-0.9,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-05-01 00:00:00,15144.4,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-06-01 00:00:00,295592.1,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-07-01 00:00:00,160696.7,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-08-01 00:00:00,176723.2,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-09-01 00:00:00,51424.1,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-10-01 00:00:00,13761,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-11-01 00:00:00,13973.4,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2024-12-01 00:00:00,6410,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-01-01 00:00:00,7982,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-02-01 00:00:00,7219,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-03-01 00:00:00,206856.2,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-04-01 00:00:00,142718.6,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-05-01 00:00:00,100182.7,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-06-01 00:00:00,151756.3,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-07-01 00:00:00,109700,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-08-01 00:00:00,28048.2,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-09-01 00:00:00,22148.9,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-10-01 00:00:00,5710.2,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-11-01 00:00:00,4906,38.80,-77.62
+Amazon,Prince William Water,14495 John Marshall Hwy,2025-12-01 00:00:00,5281,38.80,-77.62
+Amazon,Prince William Water,7510 Mason King Ct ,2023-01-01 00:00:00,36867.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-02-01 00:00:00,107896.5,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-03-01 00:00:00,103649.4,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-04-01 00:00:00,939564.2,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-05-01 00:00:00,937532.8,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-06-01 00:00:00,2384833.2,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-07-01 00:00:00,3831469.2,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-08-01 00:00:00,3354761,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-09-01 00:00:00,2168540.3,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-10-01 00:00:00,941512.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-11-01 00:00:00,127093.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2023-12-01 00:00:00,7387.1,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-01-01 00:00:00,39081.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-02-01 00:00:00,24915.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-03-01 00:00:00,238534.1,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-04-01 00:00:00,1288192.1,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-05-01 00:00:00,3065424.9,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-06-01 00:00:00,4327320.8,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-07-01 00:00:00,4900353,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-08-01 00:00:00,4287200.6,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-09-01 00:00:00,3389114.5,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-10-01 00:00:00,1299540.1,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-11-01 00:00:00,438964,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2024-12-01 00:00:00,53205.8,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-01-01 00:00:00,65252.6,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-02-01 00:00:00,46871.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-03-01 00:00:00,365131.6,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-04-01 00:00:00,767294.1,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-05-01 00:00:00,1643961.2,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-06-01 00:00:00,3366114.7,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-07-01 00:00:00,4763286.5,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-08-01 00:00:00,2862554,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-09-01 00:00:00,2457981.2,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-10-01 00:00:00,467818,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-11-01 00:00:00,105953.8,38.79,-77.54
+Amazon,Prince William Water,7510 Mason King Ct ,2025-12-01 00:00:00,224004.4,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-01-01 00:00:00,369791,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-02-01 00:00:00,361300,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-03-01 00:00:00,453252,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-04-01 00:00:00,956755,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-05-01 00:00:00,958826,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-06-01 00:00:00,1567577,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-07-01 00:00:00,2157892,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-08-01 00:00:00,2012580,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-09-01 00:00:00,1373147,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-10-01 00:00:00,689063,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-11-01 00:00:00,5331,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2023-12-01 00:00:00,175304,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-01-01 00:00:00,305954,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-02-01 00:00:00,293930,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-03-01 00:00:00,578532,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-04-01 00:00:00,971576,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-05-01 00:00:00,1451743,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-06-01 00:00:00,1901709,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-07-01 00:00:00,2182489,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-08-01 00:00:00,1879012,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-09-01 00:00:00,1459811,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-10-01 00:00:00,880919,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-11-01 00:00:00,572633,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2024-12-01 00:00:00,262262,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-01-01 00:00:00,209430,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-02-01 00:00:00,235669,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-03-01 00:00:00,423994,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-04-01 00:00:00,1264847,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-05-01 00:00:00,1271593,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-06-01 00:00:00,2034178,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-07-01 00:00:00,1944637.3,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-08-01 00:00:00,1681518,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-09-01 00:00:00,1589024,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-10-01 00:00:00,652212,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-11-01 00:00:00,394237,38.79,-77.54
+Amazon,Prince William Water,7505 Mason King Ct ,2025-12-01 00:00:00,344948,38.79,-77.54
+Amazon,Prince William Water,7600 Doane Dr ,2023-01-01 00:00:00,4824,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-02-01 00:00:00,5940,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-03-01 00:00:00,6261,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-04-01 00:00:00,220355.4,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-05-01 00:00:00,91375.5,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-06-01 00:00:00,287059.9,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-07-01 00:00:00,606925.3,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-08-01 00:00:00,389908.3,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-09-01 00:00:00,219753.7,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-10-01 00:00:00,72154.2,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-11-01 00:00:00,20324.8,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2023-12-01 00:00:00,5055,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-01-01 00:00:00,5271,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-02-01 00:00:00,4854.1,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-03-01 00:00:00,4584,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-04-01 00:00:00,119709.2,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-05-01 00:00:00,113648.9,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-06-01 00:00:00,326948.8,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-07-01 00:00:00,390586.6,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-08-01 00:00:00,250689.7,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-09-01 00:00:00,5455.4,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-10-01 00:00:00,8002.4,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-11-01 00:00:00,10215.2,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2024-12-01 00:00:00,6705,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-01-01 00:00:00,5827,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-02-01 00:00:00,4439.6,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-03-01 00:00:00,4394,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-04-01 00:00:00,77546.2,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-05-01 00:00:00,29656.9,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-06-01 00:00:00,238872.5,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-07-01 00:00:00,336529.9,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-08-01 00:00:00,69188.5,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-09-01 00:00:00,41517.1,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-10-01 00:00:00,6890.1,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-11-01 00:00:00,4778.3,38.79,-77.55
+Amazon,Prince William Water,7600 Doane Dr ,2025-12-01 00:00:00,5166.9,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-01-01 00:00:00,10506.6,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-02-01 00:00:00,28588.2,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-03-01 00:00:00,9972,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-04-01 00:00:00,444407.3,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-05-01 00:00:00,218972.4,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-06-01 00:00:00,853893,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-07-01 00:00:00,1547181.3,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-08-01 00:00:00,1108758,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-09-01 00:00:00,664837.7,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-10-01 00:00:00,217291.9,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-11-01 00:00:00,14209.4,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2023-12-01 00:00:00,9067,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-01-01 00:00:00,9150,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-02-01 00:00:00,9265.3,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-03-01 00:00:00,11896,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-04-01 00:00:00,204120.9,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-05-01 00:00:00,686344.1,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-06-01 00:00:00,1612411.6,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-07-01 00:00:00,1699962.6,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-08-01 00:00:00,960055.2,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-09-01 00:00:00,62198.8,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-10-01 00:00:00,18890.5,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-11-01 00:00:00,19151.5,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2024-12-01 00:00:00,9869,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-01-01 00:00:00,9894,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-02-01 00:00:00,10622.6,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-03-01 00:00:00,12236,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-04-01 00:00:00,120045.4,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-05-01 00:00:00,160072.7,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-06-01 00:00:00,990899.6,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-07-01 00:00:00,1175609.4,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-08-01 00:00:00,437271.5,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-09-01 00:00:00,317971.2,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-10-01 00:00:00,38833.4,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-11-01 00:00:00,9259.3,38.79,-77.55
+Amazon,Prince William Water,11800 Brewers Spring Rd  ,2025-12-01 00:00:00,9362,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-01-01 00:00:00,9370,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-02-01 00:00:00,9116.6,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-03-01 00:00:00,67723.7,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-04-01 00:00:00,246561.7,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-05-01 00:00:00,146457.5,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-06-01 00:00:00,316463.8,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-07-01 00:00:00,706021.9,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-08-01 00:00:00,541102.1,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-09-01 00:00:00,428889.5,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-10-01 00:00:00,95591.6,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-11-01 00:00:00,8468.3,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2023-12-01 00:00:00,9692.8,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-01-01 00:00:00,9574,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-02-01 00:00:00,9428.4,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-03-01 00:00:00,9260.8,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-04-01 00:00:00,168419.6,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-05-01 00:00:00,330643.9,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-06-01 00:00:00,739025.2,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-07-01 00:00:00,1038000.1,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-08-01 00:00:00,880808,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-09-01 00:00:00,284671.8,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-10-01 00:00:00,88601.3,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-11-01 00:00:00,26558,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2024-12-01 00:00:00,9734.6,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-01-01 00:00:00,23276.3,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-02-01 00:00:00,8142.3,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-03-01 00:00:00,9003.5,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-04-01 00:00:00,70083.5,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-05-01 00:00:00,59996.5,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-06-01 00:00:00,326651.8,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-07-01 00:00:00,412133.6,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-08-01 00:00:00,91578.1,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-09-01 00:00:00,91448.5,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-10-01 00:00:00,12172.2,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-11-01 00:00:00,7556.7,38.79,-77.55
+Amazon,Prince William Water,11801 Brewers Spring Rd ,2025-12-01 00:00:00,7959.2,38.79,-77.55
+Amazon,Prince William Water,7060 Wellington Rd ,2023-01-01 00:00:00,12628.5,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-02-01 00:00:00,7821.6,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-03-01 00:00:00,8754.5,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-04-01 00:00:00,240823.8,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-05-01 00:00:00,103320.4,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-06-01 00:00:00,387245.7,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-07-01 00:00:00,1114196.7,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-08-01 00:00:00,755593.9,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-09-01 00:00:00,556042,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-10-01 00:00:00,75911.2,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-11-01 00:00:00,114355,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2023-12-01 00:00:00,9240,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-01-01 00:00:00,10017.4,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-02-01 00:00:00,7874.9,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-03-01 00:00:00,8944.6,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-04-01 00:00:00,188876.7,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-05-01 00:00:00,87411.9,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-06-01 00:00:00,604785.9,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-07-01 00:00:00,887957.4,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-08-01 00:00:00,538903.5,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-09-01 00:00:00,31899,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-10-01 00:00:00,7584.2,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-11-01 00:00:00,7388.3,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2024-12-01 00:00:00,8879.6,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-01-01 00:00:00,10764.9,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-02-01 00:00:00,9145.8,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-03-01 00:00:00,58097.4,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-04-01 00:00:00,66637.6,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-05-01 00:00:00,153918.1,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-06-01 00:00:00,357597.3,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-07-01 00:00:00,326249.2,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-08-01 00:00:00,135935,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-09-01 00:00:00,136304.3,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-10-01 00:00:00,48852.5,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-11-01 00:00:00,15449.5,38.78,-77.56
+Amazon,Prince William Water,7060 Wellington Rd ,2025-12-01 00:00:00,9037.8,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-01-01 00:00:00,5021,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-02-01 00:00:00,4297,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-03-01 00:00:00,42090.5,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-04-01 00:00:00,213631.8,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-05-01 00:00:00,92959.3,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-06-01 00:00:00,357785.4,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-07-01 00:00:00,1138974.4,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-08-01 00:00:00,745328.2,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-09-01 00:00:00,560066.9,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-10-01 00:00:00,66878.8,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-11-01 00:00:00,62939.7,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2023-12-01 00:00:00,30242.6,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-01-01 00:00:00,61233.6,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-02-01 00:00:00,4832.2,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-03-01 00:00:00,39046.9,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-04-01 00:00:00,201203.5,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-05-01 00:00:00,87682,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-06-01 00:00:00,549729.6,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-07-01 00:00:00,825411.8,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-08-01 00:00:00,517046.9,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-09-01 00:00:00,31421.7,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-10-01 00:00:00,9107.5,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-11-01 00:00:00,7949.3,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2024-12-01 00:00:00,6849.1,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-01-01 00:00:00,7629.6,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-02-01 00:00:00,7599.7,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-03-01 00:00:00,48214.4,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-04-01 00:00:00,39806.3,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-05-01 00:00:00,45524.2,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-06-01 00:00:00,366530.4,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-07-01 00:00:00,388906,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-08-01 00:00:00,88665.3,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-09-01 00:00:00,43107.9,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-10-01 00:00:00,28859.7,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-11-01 00:00:00,5292.1,38.78,-77.56
+Amazon,Prince William Water,7070 Wellington Rd ,2025-12-01 00:00:00,18716.5,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-01-01 00:00:00,2392,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-02-01 00:00:00,1938,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-03-01 00:00:00,2276,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-04-01 00:00:00,1111,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-05-01 00:00:00,531,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-06-01 00:00:00,699,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-07-01 00:00:00,499,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-08-01 00:00:00,762,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-09-01 00:00:00,402,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-10-01 00:00:00,728,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-11-01 00:00:00,1804,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2023-12-01 00:00:00,1656,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-01-01 00:00:00,2366,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-02-01 00:00:00,1926,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-03-01 00:00:00,1795,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-04-01 00:00:00,975,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-05-01 00:00:00,493,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-06-01 00:00:00,13,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-07-01 00:00:00,802,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-08-01 00:00:00,433,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-09-01 00:00:00,610,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-10-01 00:00:00,750,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-11-01 00:00:00,1291,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2024-12-01 00:00:00,2231,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-01-01 00:00:00,3084,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-02-01 00:00:00,2427,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-03-01 00:00:00,2357,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-04-01 00:00:00,1512,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-05-01 00:00:00,619,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-06-01 00:00:00,622,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-07-01 00:00:00,793,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-08-01 00:00:00,9546,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-09-01 00:00:00,749,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-10-01 00:00:00,1146,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-11-01 00:00:00,2004,38.78,-77.56
+Amazon,Prince William Water,7080 Wellington Rd,2025-12-01 00:00:00,2034,38.78,-77.56
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-01-01 00:00:00,4995,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-02-01 00:00:00,4308.8,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-03-01 00:00:00,5013.9,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-04-01 00:00:00,407854.3,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-05-01 00:00:00,102769,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-06-01 00:00:00,326149.2,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-07-01 00:00:00,1263377.2,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-08-01 00:00:00,793805.3,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-09-01 00:00:00,551936.7,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-10-01 00:00:00,127671.6,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-11-01 00:00:00,53368,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2023-12-01 00:00:00,3437.2,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-01-01 00:00:00,3976,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-02-01 00:00:00,3505.5,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-03-01 00:00:00,4557,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-04-01 00:00:00,242981.3,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-05-01 00:00:00,164721.9,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-06-01 00:00:00,567458.8,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-07-01 00:00:00,823065.8,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-08-01 00:00:00,528779.1,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-09-01 00:00:00,29447.8,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-10-01 00:00:00,18788.7,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-11-01 00:00:00,11009.8,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2024-12-01 00:00:00,4892.9,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-01-01 00:00:00,4810,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-02-01 00:00:00,5432.4,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-03-01 00:00:00,6065,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-04-01 00:00:00,251833.2,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-05-01 00:00:00,111564.3,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-06-01 00:00:00,314304.2,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-07-01 00:00:00,276466,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-08-01 00:00:00,96313.3,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-09-01 00:00:00,18872.9,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-10-01 00:00:00,11124,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-11-01 00:00:00,4603,38.78,-77.54
+Amazon,Prince William Water,8200 Bethlehem Rd ,2025-12-01 00:00:00,5743.3,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-01-01 00:00:00,8114.4,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-02-01 00:00:00,7117.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-03-01 00:00:00,181704.2,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-04-01 00:00:00,354634.8,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-05-01 00:00:00,139117.8,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-06-01 00:00:00,656472,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-07-01 00:00:00,1875154.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-08-01 00:00:00,1301659.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-09-01 00:00:00,839871.3,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-10-01 00:00:00,330094,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-11-01 00:00:00,7008.3,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2023-12-01 00:00:00,6021,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-01-01 00:00:00,6437,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-02-01 00:00:00,5890,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-03-01 00:00:00,5240.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-04-01 00:00:00,312999.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-05-01 00:00:00,230104,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-06-01 00:00:00,1120228.9,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-07-01 00:00:00,1525827.7,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-08-01 00:00:00,945526.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-09-01 00:00:00,14751.3,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-10-01 00:00:00,6365.7,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-11-01 00:00:00,13343.1,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2024-12-01 00:00:00,6052.2,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-01-01 00:00:00,6278,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-02-01 00:00:00,5230.8,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-03-01 00:00:00,5868,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-04-01 00:00:00,211444,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-05-01 00:00:00,85937,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-06-01 00:00:00,697239.9,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-07-01 00:00:00,773082.8,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-08-01 00:00:00,207635.4,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-09-01 00:00:00,113706.4,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-10-01 00:00:00,18537.8,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-11-01 00:00:00,8737.9,38.78,-77.54
+Amazon,Prince William Water,8210 Bethlehem Rd,2025-12-01 00:00:00,5568.1,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-01-01 00:00:00,10847.8,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-02-01 00:00:00,10386.6,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-03-01 00:00:00,148158.3,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-04-01 00:00:00,240737,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-05-01 00:00:00,108347,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-06-01 00:00:00,495007.9,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-07-01 00:00:00,1630514.5,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-08-01 00:00:00,1123119.9,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-09-01 00:00:00,865556.8,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-10-01 00:00:00,109298.2,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-11-01 00:00:00,12426,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2023-12-01 00:00:00,10780.7,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-01-01 00:00:00,10388.6,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-02-01 00:00:00,9476.1,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-03-01 00:00:00,8716.9,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-04-01 00:00:00,103136.5,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-05-01 00:00:00,300304.6,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-06-01 00:00:00,991755.6,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-07-01 00:00:00,1380851.4,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-08-01 00:00:00,843702.8,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-09-01 00:00:00,45255.9,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-10-01 00:00:00,93276,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-11-01 00:00:00,9369.9,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2024-12-01 00:00:00,11138.6,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-01-01 00:00:00,11293.9,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-02-01 00:00:00,10000.4,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-03-01 00:00:00,12811.5,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-04-01 00:00:00,166362.4,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-05-01 00:00:00,84940,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-06-01 00:00:00,608471.8,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-07-01 00:00:00,498351.5,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-08-01 00:00:00,155817.3,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-09-01 00:00:00,109611.1,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-10-01 00:00:00,29892.6,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-11-01 00:00:00,13575.2,38.78,-77.54
+Amazon,Prince William Water,8180 Bethlehem Rd ,2025-12-01 00:00:00,16066,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-01-01 00:00:00,3903,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-02-01 00:00:00,21015.1,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-03-01 00:00:00,26587.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-04-01 00:00:00,327168.5,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-05-01 00:00:00,111278.5,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-06-01 00:00:00,314971.5,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-07-01 00:00:00,1081309.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-08-01 00:00:00,723510.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-09-01 00:00:00,522259.9,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-10-01 00:00:00,43549,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-11-01 00:00:00,4521.9,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2023-12-01 00:00:00,4249.2,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-01-01 00:00:00,4136.9,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-02-01 00:00:00,4033.3,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-03-01 00:00:00,4950,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-04-01 00:00:00,89850.2,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-05-01 00:00:00,275431.7,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-06-01 00:00:00,685033.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-07-01 00:00:00,976053.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-08-01 00:00:00,666368.7,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-09-01 00:00:00,55627.5,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-10-01 00:00:00,29105.2,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-11-01 00:00:00,89314.4,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2024-12-01 00:00:00,3303.7,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-01-01 00:00:00,3637.1,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-02-01 00:00:00,3667.1,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-03-01 00:00:00,141377.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-04-01 00:00:00,33203.5,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-05-01 00:00:00,47408,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-06-01 00:00:00,425430,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-07-01 00:00:00,546794.9,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-08-01 00:00:00,143793.2,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-09-01 00:00:00,100782,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-10-01 00:00:00,15048.6,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-11-01 00:00:00,11259.9,38.78,-77.54
+Amazon,Prince William Water,8190 Bethlehem Rd,2025-12-01 00:00:00,5745,38.78,-77.54
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-01-01 00:00:00,6025.3,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-02-01 00:00:00,5374,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-03-01 00:00:00,6882.5,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-04-01 00:00:00,457607.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-05-01 00:00:00,103452.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-06-01 00:00:00,640453.5,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-07-01 00:00:00,2063057,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-08-01 00:00:00,1063462.9,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-09-01 00:00:00,704512.4,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-10-01 00:00:00,96855.4,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-11-01 00:00:00,11377.3,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2023-12-01 00:00:00,5801.6,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-01-01 00:00:00,6292.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-02-01 00:00:00,5319.8,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-03-01 00:00:00,5830.9,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-04-01 00:00:00,208563.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-05-01 00:00:00,161612.1,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-06-01 00:00:00,856495.3,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-07-01 00:00:00,1275991.2,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-08-01 00:00:00,746284,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-09-01 00:00:00,70583,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-10-01 00:00:00,48738.9,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-11-01 00:00:00,7065.1,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2024-12-01 00:00:00,5565.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-01-01 00:00:00,6143.9,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-02-01 00:00:00,6599.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-03-01 00:00:00,128543.6,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-04-01 00:00:00,63210.6,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-05-01 00:00:00,84460.5,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-06-01 00:00:00,620321.3,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-07-01 00:00:00,649366.2,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-08-01 00:00:00,146904.9,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-09-01 00:00:00,80750.2,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-10-01 00:00:00,15549.9,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-11-01 00:00:00,5526.7,38.76,-77.52
+Amazon,Prince William Water,9020 Freedom Center Blvd,2025-12-01 00:00:00,5542.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-01-01 00:00:00,9043,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-02-01 00:00:00,8061,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-03-01 00:00:00,10084.5,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-04-01 00:00:00,422681.5,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-05-01 00:00:00,158210.1,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-06-01 00:00:00,582311.3,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-07-01 00:00:00,1840127.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-08-01 00:00:00,1011672.6,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-09-01 00:00:00,755355.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-10-01 00:00:00,102917.5,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-11-01 00:00:00,11078.4,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2023-12-01 00:00:00,7203.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-01-01 00:00:00,8619.4,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-02-01 00:00:00,7744.5,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-03-01 00:00:00,8733,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-04-01 00:00:00,214892.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-05-01 00:00:00,148580.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-06-01 00:00:00,704694.2,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-07-01 00:00:00,1080316.1,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-08-01 00:00:00,673215.3,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-09-01 00:00:00,91483.3,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-10-01 00:00:00,31723.1,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-11-01 00:00:00,7942.6,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2024-12-01 00:00:00,18598.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-01-01 00:00:00,6521,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-02-01 00:00:00,6640.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-03-01 00:00:00,26211.5,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-04-01 00:00:00,41867,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-05-01 00:00:00,75535.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-06-01 00:00:00,540332.5,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-07-01 00:00:00,623198.7,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-08-01 00:00:00,290388.1,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-09-01 00:00:00,242053.9,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-10-01 00:00:00,17547.2,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-11-01 00:00:00,7550.7,38.76,-77.52
+Amazon,Prince William Water,9040 Freedom Center Blvd,2025-12-01 00:00:00,7944.4,38.76,-77.52
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-01-01 00:00:00,7796.3,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-02-01 00:00:00,9493.3,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-03-01 00:00:00,12381.8,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-04-01 00:00:00,368248.2,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-05-01 00:00:00,105891.5,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-06-01 00:00:00,576024.5,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-07-01 00:00:00,1792552.5,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-08-01 00:00:00,968613.2,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-09-01 00:00:00,702914.3,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-10-01 00:00:00,105873.6,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-11-01 00:00:00,7728.4,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2023-12-01 00:00:00,7025,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-01-01 00:00:00,7393.3,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-02-01 00:00:00,8235.3,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-03-01 00:00:00,7129.3,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-04-01 00:00:00,286404.4,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-05-01 00:00:00,152222.4,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-06-01 00:00:00,974402.1,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-07-01 00:00:00,1072020.1,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-08-01 00:00:00,650480.7,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-09-01 00:00:00,31160.6,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-10-01 00:00:00,21901.8,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-11-01 00:00:00,6180.1,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2024-12-01 00:00:00,6525.8,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-01-01 00:00:00,7132.6,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-02-01 00:00:00,6096.7,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-03-01 00:00:00,20743.1,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-04-01 00:00:00,167699.5,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-05-01 00:00:00,41394.2,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-06-01 00:00:00,399278.7,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-07-01 00:00:00,446794.9,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-08-01 00:00:00,114496.8,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-09-01 00:00:00,94977.8,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-10-01 00:00:00,31377.6,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-11-01 00:00:00,5621,38.74,-77.53
+Amazon,Prince William Water,11150 Thomasson Barn Rd,2025-12-01 00:00:00,6801.1,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-01-01 00:00:00,6253,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-02-01 00:00:00,5489,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-03-01 00:00:00,20905.3,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-04-01 00:00:00,367840.6,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-05-01 00:00:00,150682.4,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-06-01 00:00:00,597217,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-07-01 00:00:00,1756641.4,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-08-01 00:00:00,820358.6,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-09-01 00:00:00,622060.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-10-01 00:00:00,103200.9,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-11-01 00:00:00,7918.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2023-12-01 00:00:00,5743.6,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-01-01 00:00:00,5854,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-02-01 00:00:00,5653.6,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-03-01 00:00:00,5778.6,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-04-01 00:00:00,76707.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-05-01 00:00:00,265758.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-06-01 00:00:00,716185.5,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-07-01 00:00:00,1033548.3,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-08-01 00:00:00,621251.4,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-09-01 00:00:00,44442.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-10-01 00:00:00,18826.3,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-11-01 00:00:00,5255.9,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2024-12-01 00:00:00,4731.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-01-01 00:00:00,5669,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-02-01 00:00:00,3982.9,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-03-01 00:00:00,12754.4,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-04-01 00:00:00,135800.6,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-05-01 00:00:00,43058.7,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-06-01 00:00:00,397975.7,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-07-01 00:00:00,436737.7,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-08-01 00:00:00,134458.5,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-09-01 00:00:00,106820,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-10-01 00:00:00,13092.8,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-11-01 00:00:00,3894.5,38.74,-77.53
+Amazon,Prince William Water,11200 Thomasson Barn Rd,2025-12-01 00:00:00,8127.3,38.74,-77.53
+Amazon,Prince William Water,10281 Tanner Way,2023-01-01 00:00:00,4714.6,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-02-01 00:00:00,34993.6,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-03-01 00:00:00,239886.2,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-04-01 00:00:00,538321.2,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-05-01 00:00:00,159031.3,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-06-01 00:00:00,811708.6,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-07-01 00:00:00,2341346.6,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-08-01 00:00:00,1708626.8,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-09-01 00:00:00,1093631.6,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-10-01 00:00:00,86985.2,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-11-01 00:00:00,406819.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2023-12-01 00:00:00,6376.1,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-01-01 00:00:00,5932.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-02-01 00:00:00,5209.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-03-01 00:00:00,5140.7,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-04-01 00:00:00,432822.6,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-05-01 00:00:00,278283.2,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-06-01 00:00:00,1214066.9,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-07-01 00:00:00,1705880,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-08-01 00:00:00,1011075.5,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-09-01 00:00:00,7795.1,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-10-01 00:00:00,94259.9,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-11-01 00:00:00,58478.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2024-12-01 00:00:00,4728.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-01-01 00:00:00,5565.3,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-02-01 00:00:00,5556.9,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-03-01 00:00:00,17728.8,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-04-01 00:00:00,245725,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-05-01 00:00:00,77264.7,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-06-01 00:00:00,704469.2,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-07-01 00:00:00,757097.1,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-08-01 00:00:00,174339,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-09-01 00:00:00,175584.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-10-01 00:00:00,25877.5,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-11-01 00:00:00,8757.4,38.74,-77.50
+Amazon,Prince William Water,10281 Tanner Way,2025-12-01 00:00:00,5260.3,38.74,-77.50
+Amazon,Prince William Water,10301 Tanner Way,2023-01-01 00:00:00,4130.5,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-02-01 00:00:00,4212,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-03-01 00:00:00,236248.6,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-04-01 00:00:00,458988.3,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-05-01 00:00:00,297163.9,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-06-01 00:00:00,983972.6,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-07-01 00:00:00,2344105.6,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-08-01 00:00:00,1707708.8,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-09-01 00:00:00,1140847,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-10-01 00:00:00,91441.3,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-11-01 00:00:00,6552.4,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2023-12-01 00:00:00,4700,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-01-01 00:00:00,4939.9,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-02-01 00:00:00,4837.8,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-03-01 00:00:00,5127.2,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-04-01 00:00:00,325926.5,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-05-01 00:00:00,228305.9,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-06-01 00:00:00,1118009,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-07-01 00:00:00,1624471.2,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-08-01 00:00:00,937312.8,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-09-01 00:00:00,56613.2,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-10-01 00:00:00,24036.6,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-11-01 00:00:00,27367.8,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2024-12-01 00:00:00,5417.3,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-01-01 00:00:00,5563.8,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-02-01 00:00:00,4974.2,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-03-01 00:00:00,6073.4,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-04-01 00:00:00,252025,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-05-01 00:00:00,78885.3,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-06-01 00:00:00,601105.5,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-07-01 00:00:00,617537.3,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-08-01 00:00:00,148163.4,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-09-01 00:00:00,92517,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-10-01 00:00:00,4935.3,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-11-01 00:00:00,4419.7,38.73,-77.51
+Amazon,Prince William Water,10301 Tanner Way,2025-12-01 00:00:00,5854.4,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-01-01 00:00:00,7697.1,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-02-01 00:00:00,6003.1,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-03-01 00:00:00,205013.6,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-04-01 00:00:00,256089.3,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-05-01 00:00:00,190847.7,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-06-01 00:00:00,499533.8,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-07-01 00:00:00,1499258.4,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-08-01 00:00:00,1042593.5,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-09-01 00:00:00,811155.8,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-10-01 00:00:00,122085,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-11-01 00:00:00,6680,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2023-12-01 00:00:00,5354.9,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-01-01 00:00:00,6111.1,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-02-01 00:00:00,6034.2,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-03-01 00:00:00,5933.1,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-04-01 00:00:00,286404.4,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-05-01 00:00:00,152222.4,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-06-01 00:00:00,808720,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-07-01 00:00:00,1189439.2,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-08-01 00:00:00,738714.3,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-09-01 00:00:00,6210,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-10-01 00:00:00,18680.4,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-11-01 00:00:00,8950.2,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2024-12-01 00:00:00,5418.1,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-01-01 00:00:00,5821,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-02-01 00:00:00,5570.5,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-03-01 00:00:00,6577.9,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-04-01 00:00:00,263748,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-05-01 00:00:00,103598.7,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-06-01 00:00:00,677914.6,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-07-01 00:00:00,613319.6,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-08-01 00:00:00,140024.7,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-09-01 00:00:00,36586.8,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-10-01 00:00:00,5321.3,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-11-01 00:00:00,13225.7,38.73,-77.51
+Amazon,Prince William Water,10321 Tanner Way,2025-12-01 00:00:00,5396,38.73,-77.51
+Amazon,Prince William Water,10261 Tanner Way,2023-01-01 00:00:00,6901.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-02-01 00:00:00,6828.6,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-03-01 00:00:00,13361.2,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-04-01 00:00:00,329728.7,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-05-01 00:00:00,132558,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-06-01 00:00:00,580411.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-07-01 00:00:00,1414074.3,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-08-01 00:00:00,1026577.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-09-01 00:00:00,698796.6,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-10-01 00:00:00,27841,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-11-01 00:00:00,5553.2,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2023-12-01 00:00:00,5729.4,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-01-01 00:00:00,6113.7,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-02-01 00:00:00,6467.2,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-03-01 00:00:00,6831.7,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-04-01 00:00:00,210989.5,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-05-01 00:00:00,127906.8,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-06-01 00:00:00,668953.5,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-07-01 00:00:00,993233.4,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-08-01 00:00:00,571303.3,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-09-01 00:00:00,21232.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-10-01 00:00:00,8969.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-11-01 00:00:00,6108.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2024-12-01 00:00:00,6051.3,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-01-01 00:00:00,6208.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-02-01 00:00:00,5595.8,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-03-01 00:00:00,10196.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-04-01 00:00:00,167747.8,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-05-01 00:00:00,43804.7,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-06-01 00:00:00,387037.4,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-07-01 00:00:00,370094.7,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-08-01 00:00:00,110643.6,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-09-01 00:00:00,49045.6,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-10-01 00:00:00,34626.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-11-01 00:00:00,7116.1,38.74,-77.50
+Amazon,Prince William Water,10261 Tanner Way,2025-12-01 00:00:00,5180.6,38.74,-77.50
+Amazon,Prince William Water,9730 Hornbaker Road,2023-01-01 00:00:00,0,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-02-01 00:00:00,0,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-03-01 00:00:00,0,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-04-01 00:00:00,893,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-05-01 00:00:00,663,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-06-01 00:00:00,1247,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-07-01 00:00:00,494,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-08-01 00:00:00,256,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-09-01 00:00:00,380,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-10-01 00:00:00,411,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-11-01 00:00:00,398,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2023-12-01 00:00:00,418,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-01-01 00:00:00,412,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-02-01 00:00:00,430,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-03-01 00:00:00,309,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-04-01 00:00:00,285,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-05-01 00:00:00,286,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-06-01 00:00:00,556,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-07-01 00:00:00,233,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-08-01 00:00:00,209,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-09-01 00:00:00,183,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-10-01 00:00:00,367,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-11-01 00:00:00,245,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2024-12-01 00:00:00,1223,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-01-01 00:00:00,1550,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-02-01 00:00:00,1056,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-03-01 00:00:00,949,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-04-01 00:00:00,491,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-05-01 00:00:00,215,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-06-01 00:00:00,247,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-07-01 00:00:00,430,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-08-01 00:00:00,301,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-09-01 00:00:00,419,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-10-01 00:00:00,412,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-11-01 00:00:00,644,38.75,-77.53
+Amazon,Prince William Water,9730 Hornbaker Road,2025-12-01 00:00:00,992,38.75,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-01-01 00:00:00,9281,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-02-01 00:00:00,10266,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-03-01 00:00:00,261902.2,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-04-01 00:00:00,294352.5,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-05-01 00:00:00,121863,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-06-01 00:00:00,551325.6,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-07-01 00:00:00,2194181.2,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-08-01 00:00:00,1241163.6,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-09-01 00:00:00,918073.4,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-10-01 00:00:00,48780.4,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-11-01 00:00:00,5402,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2023-12-01 00:00:00,5823,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-01-01 00:00:00,7441,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-02-01 00:00:00,7941,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-03-01 00:00:00,248763,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-04-01 00:00:00,144253.1,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-05-01 00:00:00,183976.9,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-06-01 00:00:00,897309.8,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-07-01 00:00:00,1385981.3,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-08-01 00:00:00,778646.9,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-09-01 00:00:00,47228.9,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-10-01 00:00:00,35622.9,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-11-01 00:00:00,5888,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2024-12-01 00:00:00,4812,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-01-01 00:00:00,5576,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-02-01 00:00:00,5502,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-03-01 00:00:00,106542.2,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-04-01 00:00:00,158209.5,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-05-01 00:00:00,43643.2,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-06-01 00:00:00,482365.2,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-07-01 00:00:00,489577.5,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-08-01 00:00:00,144627.6,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-09-01 00:00:00,97077.2,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-10-01 00:00:00,27874.6,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-11-01 00:00:00,7187.5,38.74,-77.53
+Amazon,Prince William Water,9740 Hornbaker Road,2025-12-01 00:00:00,6812.2,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-01-01 00:00:00,7165,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-02-01 00:00:00,5755,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-03-01 00:00:00,223548.3,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-04-01 00:00:00,280355.5,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-05-01 00:00:00,94829.7,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-06-01 00:00:00,624396.2,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-07-01 00:00:00,1782200.8,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-08-01 00:00:00,1292847.4,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-09-01 00:00:00,930875.5,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-10-01 00:00:00,93268.8,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-11-01 00:00:00,7026.5,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2023-12-01 00:00:00,5017,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-01-01 00:00:00,7205,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-02-01 00:00:00,6711,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-03-01 00:00:00,6460,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-04-01 00:00:00,331388,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-05-01 00:00:00,168848.2,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-06-01 00:00:00,805508.6,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-07-01 00:00:00,1174402,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-08-01 00:00:00,676112.3,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-09-01 00:00:00,54070.3,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-10-01 00:00:00,35649.4,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-11-01 00:00:00,5337,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2024-12-01 00:00:00,4939,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-01-01 00:00:00,5820,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-02-01 00:00:00,4277,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-03-01 00:00:00,169028.3,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-04-01 00:00:00,66347.5,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-05-01 00:00:00,78083.2,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-06-01 00:00:00,397332.8,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-07-01 00:00:00,377567.8,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-08-01 00:00:00,107635.6,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-09-01 00:00:00,92942,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-10-01 00:00:00,28415.5,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-11-01 00:00:00,5676.3,38.74,-77.53
+Amazon,Prince William Water,9750 Hornbaker Road,2025-12-01 00:00:00,6662,38.74,-77.53
+Amazon,Prince William Water,9680 Innovation Dr,2023-01-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-02-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-03-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-04-01 00:00:00,555.1,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-05-01 00:00:00,131797.2,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-06-01 00:00:00,162429.2,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-07-01 00:00:00,438648.5,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-08-01 00:00:00,498934.1,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-09-01 00:00:00,610664.2,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-10-01 00:00:00,91055.2,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-11-01 00:00:00,11250.1,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2023-12-01 00:00:00,11769.4,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-01-01 00:00:00,11556,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-02-01 00:00:00,13062.5,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-03-01 00:00:00,11232.1,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-04-01 00:00:00,356837.4,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-05-01 00:00:00,250542.3,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-06-01 00:00:00,1433178.9,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-07-01 00:00:00,2095576.3,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-08-01 00:00:00,1140186.7,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-09-01 00:00:00,8729.2,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-10-01 00:00:00,7423.8,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-11-01 00:00:00,7172,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2024-12-01 00:00:00,7592,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-01-01 00:00:00,8685,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-02-01 00:00:00,7440,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-03-01 00:00:00,8186,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-04-01 00:00:00,248564.1,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-05-01 00:00:00,79273,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-06-01 00:00:00,651726.7,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-07-01 00:00:00,647804.8,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-08-01 00:00:00,192879,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-09-01 00:00:00,24197.2,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-10-01 00:00:00,23109.9,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-11-01 00:00:00,7448.1,38.75,-77.52
+Amazon,Prince William Water,9680 Innovation Dr,2025-12-01 00:00:00,7164.8,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-01-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-02-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-03-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-04-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-05-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-06-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-07-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-08-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-09-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-10-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-11-01 00:00:00,193746,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2023-12-01 00:00:00,210331.3,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-01-01 00:00:00,5438.7,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-02-01 00:00:00,22086.9,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-03-01 00:00:00,6990,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-04-01 00:00:00,516143.8,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-05-01 00:00:00,242040.4,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-06-01 00:00:00,950659.1,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-07-01 00:00:00,1308912.4,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-08-01 00:00:00,799233.2,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-09-01 00:00:00,8456.4,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-10-01 00:00:00,8383.5,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-11-01 00:00:00,5781,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2024-12-01 00:00:00,4696,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-01-01 00:00:00,5941,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-02-01 00:00:00,3927,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-03-01 00:00:00,4945.7,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-04-01 00:00:00,286454.9,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-05-01 00:00:00,55782.1,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-06-01 00:00:00,466706.6,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-07-01 00:00:00,462577.7,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-08-01 00:00:00,108779.1,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-09-01 00:00:00,4552.3,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-10-01 00:00:00,5667.2,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-11-01 00:00:00,5205.8,38.75,-77.52
+Amazon,Prince William Water,9700 Innovation Dr,2025-12-01 00:00:00,5024,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-01-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-02-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-03-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-04-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-05-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-06-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-07-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-08-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-09-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-10-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-11-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2023-12-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-01-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-02-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-03-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-04-01 00:00:00,353.7,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-05-01 00:00:00,70742.7,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-06-01 00:00:00,737793,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-07-01 00:00:00,769460.9,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-08-01 00:00:00,788177.8,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-09-01 00:00:00,339810.6,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-10-01 00:00:00,86348.6,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-11-01 00:00:00,92611.2,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2024-12-01 00:00:00,55898.2,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-01-01 00:00:00,6755,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-02-01 00:00:00,5156,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-03-01 00:00:00,4326,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-04-01 00:00:00,260541,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-05-01 00:00:00,145429,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-06-01 00:00:00,847439,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-07-01 00:00:00,895800,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-08-01 00:00:00,308861,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-09-01 00:00:00,164488,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-10-01 00:00:00,23552,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-11-01 00:00:00,4173,38.75,-77.52
+Amazon,Prince William Water,9740 Innovation Dr,2025-12-01 00:00:00,4190,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-01-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-02-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-03-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-04-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-05-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-06-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-07-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-08-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-09-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-10-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-11-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2023-12-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-01-01 00:00:00,0,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-02-01 00:00:00,108008.4,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-03-01 00:00:00,64279.3,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-04-01 00:00:00,440502,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-05-01 00:00:00,409604.6,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-06-01 00:00:00,528431.1,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-07-01 00:00:00,561796.2,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-08-01 00:00:00,554796.7,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-09-01 00:00:00,187646.5,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-10-01 00:00:00,73745.3,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-11-01 00:00:00,8843.4,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2024-12-01 00:00:00,6592.1,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-01-01 00:00:00,5252,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-02-01 00:00:00,4869,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-03-01 00:00:00,4664,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-04-01 00:00:00,531269,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-05-01 00:00:00,183576,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-06-01 00:00:00,1044764,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-07-01 00:00:00,991674,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-08-01 00:00:00,343786,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-09-01 00:00:00,208658,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-10-01 00:00:00,23986,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-11-01 00:00:00,3259,38.75,-77.52
+Amazon,Prince William Water,9720 Innovation Dr,2025-12-01 00:00:00,4037,38.75,-77.52
+Amazon,Prince William Water,11580 Hayden Rd,2023-01-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-02-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-03-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-04-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-05-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-06-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-07-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-08-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-09-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-10-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-11-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2023-12-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-01-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-02-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-03-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-04-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-05-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-06-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-07-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-08-01 00:00:00,4.7,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-09-01 00:00:00,1988.7,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-10-01 00:00:00,1853.4,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-11-01 00:00:00,4743.2,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2024-12-01 00:00:00,1885.2,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-01-01 00:00:00,719,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-02-01 00:00:00,10682.4,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-03-01 00:00:00,318672.5,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-04-01 00:00:00,474174.3,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-05-01 00:00:00,1105320.9,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-06-01 00:00:00,4967645.9,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-07-01 00:00:00,707461.9,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-08-01 00:00:00,164753.1,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-09-01 00:00:00,111699,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-10-01 00:00:00,50164.6,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-11-01 00:00:00,68313.4,38.77,-77.54
+Amazon,Prince William Water,11580 Hayden Rd,2025-12-01 00:00:00,63485,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-01-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-02-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-03-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-04-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-05-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-06-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-07-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-08-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-09-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-10-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-11-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2023-12-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-01-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-02-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-03-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-04-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-05-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-06-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-07-01 00:00:00,0,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-08-01 00:00:00,9.7,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-09-01 00:00:00,712.3,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-10-01 00:00:00,1535.9,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-11-01 00:00:00,1810.3,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2024-12-01 00:00:00,775.3,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-01-01 00:00:00,25.1,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-02-01 00:00:00,4531.7,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-03-01 00:00:00,161351.5,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-04-01 00:00:00,29025.9,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-05-01 00:00:00,73294.9,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-06-01 00:00:00,112468.9,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-07-01 00:00:00,85983.5,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-08-01 00:00:00,56348.2,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-09-01 00:00:00,89131.7,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-10-01 00:00:00,6614,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-11-01 00:00:00,6323.5,38.77,-77.54
+Amazon,Prince William Water,11600 Hayden Rd,2025-12-01 00:00:00,6325.1,38.77,-77.54
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-01-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-02-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-03-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-04-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-05-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-06-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-07-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-08-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-09-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-10-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-11-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2023-12-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-01-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-02-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-03-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-04-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-05-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-06-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-07-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-08-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-09-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-10-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-11-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2024-12-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-01-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-02-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-03-01 00:00:00,0,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-04-01 00:00:00,49237,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-05-01 00:00:00,153680,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-06-01 00:00:00,131139,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-07-01 00:00:00,201971.6,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-08-01 00:00:00,235171.2,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-09-01 00:00:00,97741.2,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-10-01 00:00:00,110733.1,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-11-01 00:00:00,149133.4,38.78,-77.56
+Amazon,Prince William Water,8300 Buckeye Timber Dr,2025-12-01 00:00:00,186116.8,38.78,-77.56
+Amazon,Fairfax Water,7951 Loisdale Rd,2023-03-01 00:00:00,2131000,38.74,-77.19
+Amazon,Fairfax Water,7961 Loisdale Rd,2023-03-01 00:00:00,1000,38.74,-77.19
+Amazon,Fairfax Water,7961 Loisdale Rd,2025-11-14 00:00:00,0,38.74,-77.19
+Amazon,Fairfax Water,4100 Westfax Dr,2023-02-03 00:00:00,193000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2023-05-01 00:00:00,573000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2023-08-01 00:00:00,3694000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2023-10-31 00:00:00,3083000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2024-02-01 00:00:00,129000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2024-05-01 00:00:00,933000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2024-07-30 00:00:00,7682000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2024-11-01 00:00:00,4296000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2025-02-03 00:00:00,157000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2025-05-05 00:00:00,988000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2025-07-31 00:00:00,4623000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2025-10-29 00:00:00,3294000,38.90,-77.45
+Amazon,Fairfax Water,4100 Westfax Dr,2026-01-30 00:00:00,166000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2023-02-03 00:00:00,8000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2023-05-01 00:00:00,7000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2023-08-01 00:00:00,7000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2023-10-31 00:00:00,7000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2024-02-01 00:00:00,10000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2024-04-30 00:00:00,54000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2024-07-30 00:00:00,56000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2024-11-01 00:00:00,53000,38.90,-77.45
+Amazon,Fairfax Water,4101A Westfax Dr,2025-01-27 00:00:00,0,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2023-07-24 00:00:00,12000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2023-10-20 00:00:00,22000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2024-01-22 00:00:00,32000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2024-04-18 00:00:00,26000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2024-07-22 00:00:00,21000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2024-10-22 00:00:00,19000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2025-01-28 00:00:00,24000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2025-04-21 00:00:00,18000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2025-07-22 00:00:00,22000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2025-10-23 00:00:00,27000,38.90,-77.45
+Amazon,Fairfax Water,3980 Virginia Mallory Dr,2026-01-20 00:00:00,23000,38.90,-77.45
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2023-02-03 00:00:00,360000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2023-05-04 00:00:00,211000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2023-08-08 00:00:00,3455000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2023-09-28 00:00:00,334000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2023-11-02 00:00:00,183000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2024-02-02 00:00:00,336000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2024-05-06 00:00:00,279000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2024-08-02 00:00:00,413000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2024-11-04 00:00:00,371000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2025-02-07 00:00:00,572000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2025-05-02 00:00:00,526000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2025-08-05 00:00:00,402000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2025-11-04 00:00:00,215000,38.91,-77.47
+Amazon,Fairfax Water,4030 Lafayette Center Dr,2026-02-06 00:00:00,17000,38.91,-77.47
+Amazon,Fairfax Water,13600 Eds Dr,2024-06-21 00:00:00,0,38.92,-77.43
+Amazon,Fairfax Water,13600 Eds Dr,2024-09-23 00:00:00,162000,38.92,-77.43
+Amazon,Fairfax Water,13600 Eds Dr,2024-12-19 00:00:00,207000,38.92,-77.43
+Amazon,Fairfax Water,13600 Eds Dr,2025-03-20 00:00:00,155000,38.92,-77.43
+Amazon,Fairfax Water,13600 Eds Dr,2025-06-18 00:00:00,1338000,38.92,-77.43
+Amazon,Fairfax Water,13600 Eds Dr,2025-09-19 00:00:00,1971000,38.92,-77.43
+Amazon,Fairfax Water,13600 Eds Dr,2025-12-23 00:00:00,246000,38.92,-77.43
