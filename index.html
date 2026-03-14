@@ -22,6 +22,7 @@
     .toolbar button:hover{background:#f0f0f0;}
     .chart-container { position: relative; height: 450px; width: 100%; }
     .disclaimer { font-size: 13px; color: #444; margin-top:40px; border-top: 1px solid #ddd; padding-top:20px;}
+    .support-box { background: #e8f5e9; padding: 15px; border-radius: 8px; border: 1px solid #c8e6c9; margin-top: 20px; max-width: 400px; }
     h2, h3 { color: #333; }
 </style>
 </head>
@@ -79,7 +80,7 @@
     <h3>Data Disclaimer & Contributions</h3>
     <p>
         The data presented in this application was obtained through formal Freedom of Information Act (FOIA) requests submitted to the respective public utilities. 
-        While every effort has been made to ensure the accuracy and completeness of the information as provided by the responding agencies, this data is provided "as is" for informational purposes only. 
+        While every effort has been made to ensure accuracy, this data is provided "as is." 
     </p>
     <p>
         <b>Contribute Data:</b> Please submit verified water usage records to 
@@ -89,6 +90,13 @@
         <b>File Your Own Request:</b> Download our 
         <a href="foia_template.docx" download>FOIA Template (Word Document)</a>.
     </p>
+
+    <div class="support-box">
+        <h3>Support This Project</h3>
+        <p>Please donate to support our ongoing efforts to track and analyze data center water usage. Your contribution helps us pay for FOIA fees, technology costs, and outreach efforts.</p>
+        <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/medium?sharesheet=undefined&attribution_id=sl:c84198b3-5e3f-4aa8-a973-fe04f0dcd864"></div>
+        <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+    </div>
 </footer>
 
 <script>
@@ -100,26 +108,27 @@ async function loadCSV(){
     try {
         const response = await fetch("wateruse.csv");
         const text = await response.text();
-        const rows = text.trim().split("\n");
+        const lines = text.trim().split(/\r?\n/);
         
-        allRecords = rows.slice(1).map(r => {
-            // Regex to handle commas inside quotes for location addresses
-            const c = r.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-            if(!c || c.length < 7) return null;
+        allRecords = lines.slice(1).map(line => {
+            // Robust CSV parsing for quoted fields
+            const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+            if(!matches || matches.length < 7) return null;
             
-            const locClean = c[2].replace(/^"|"$/g, '').trim();
-            const rawDate = c[3];
-            const dateObj = new Date(rawDate);
-            const isoDate = !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : rawDate;
-            const yr = !isNaN(dateObj) ? dateObj.getFullYear() : null;
+            const company = matches[0].replace(/^"|"$/g, '').trim();
+            const utility = matches[1].replace(/^"|"$/g, '').trim();
+            const location = matches[2].replace(/^"|"$/g, '').trim();
+            const dateStr = matches[3].replace(/^"|"$/g, '').trim();
+            const gallons = parseFloat(matches[4]) || 0;
 
+            const dateObj = new Date(dateStr);
             return {
-                company: c[0].replace(/^"|"$/g, '').trim(),
-                utility: c[1].replace(/^"|"$/g, '').trim(),
-                location: locClean,
-                date: isoDate,
-                year: yr,
-                gallons: parseFloat(c[4]) || 0
+                company,
+                utility,
+                location,
+                date: !isNaN(dateObj) ? dateObj.toISOString().split('T')[0] : dateStr,
+                year: !isNaN(dateObj) ? dateObj.getFullYear() : null,
+                gallons
             };
         }).filter(item => item !== null);
 
