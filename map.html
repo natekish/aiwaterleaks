@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Data Center Water Map</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+body{font-family:Arial;margin:0;background:#f5f7fb;}
+#map{height:100vh;width:100%;}
+.toolbar{
+position:absolute;
+top:15px;
+left:15px;
+z-index:1000;
+background:white;
+padding:10px 14px;
+border-radius:6px;
+box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+button{padding:8px 12px;margin-right:8px;cursor:pointer;}
+</style>
+</head>
+
+<body>
+
+<div class="toolbar">
+<button onclick="window.close()">Close</button>
+<button onclick="downloadCSV()">Download CSV</button>
+</div>
+
+<div id="map"></div>
+
+<script>
+
+let map = L.map('map').setView([38.85,-77.35],9)
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:19,
+attribution:'© OpenStreetMap'
+}).addTo(map)
+
+async function loadCSV(){
+
+const res = await fetch("wateruse.csv")
+const text = await res.text()
+
+const rows = text.trim().split("\n")
+const data = rows.slice(1).map(r => {
+
+const c = r.split(",")
+
+return{
+company:c[0],
+utility:c[1],
+location:c[2],
+date:c[3],
+gallons:parseFloat(c[4]),
+x:parseFloat(c[5]),
+y:parseFloat(c[6])
+}
+
+})
+
+buildMap(data)
+
+}
+
+function buildMap(data){
+
+const grouped = {}
+
+data.forEach(r=>{
+
+if(!grouped[r.location]) grouped[r.location] = {
+lat:r.y,
+lon:r.x,
+years:{}
+}
+
+let yr = new Date(r.date).getFullYear()
+
+if(!grouped[r.location].years[yr])
+grouped[r.location].years[yr] = 0
+
+grouped[r.location].years[yr] += r.gallons
+
+})
+
+Object.keys(grouped).forEach(loc=>{
+
+let site = grouped[loc]
+
+if(isNaN(site.lat) || isNaN(site.lon)) return
+
+let popup = "<b>"+loc+"</b><br><br>"
+
+Object.keys(site.years).forEach(y=>{
+popup += y + ": " + site.years[y].toLocaleString() + " gallons<br>"
+})
+
+L.marker([site.lat,site.lon]).addTo(map).bindPopup(popup)
+
+})
+
+}
+
+function downloadCSV(){
+window.location="wateruse.csv"
+}
+
+loadCSV()
+
+</script>
+
+</body>
+</html>
