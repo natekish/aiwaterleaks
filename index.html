@@ -19,6 +19,8 @@ th,td{border:1px solid #ccc;padding:6px;}
 th{background:#f0f0f0;}
 .filters{margin-bottom:15px;}
 .toolbar button{margin-right:10px;padding:8px 12px;cursor:pointer;}
+.chartContainer{height:640px;}
+canvas{height:640px !important;}
 </style>
 </head>
 
@@ -44,7 +46,6 @@ th{background:#f0f0f0;}
 <button onclick="viewMap()">View Map</button>
 </div>
 
-<!-- Annual Water Use Section -->
 <div class="section">
 <h3>Annual Water Use by Utility</h3>
 <table id="utilityTable">
@@ -69,7 +70,9 @@ th{background:#f0f0f0;}
 <div class="main">
 
 <h3>Site Water Use</h3>
+<div class="chartContainer">
 <canvas id="siteChart"></canvas>
+</div>
 
 </div>
 </div>
@@ -215,6 +218,9 @@ label:location+" gallons",
 data:values,
 fill:false
 }]
+},
+options:{
+maintainAspectRatio:false
 }
 })
 
