@@ -3,18 +3,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Data Center Water Leaks</title>
+<title>Amazon Water Use Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <style>
 body {font-family:Arial;margin:25px;background:#f5f7fb;}
 .container {display:flex;gap:25px;}
 .sidebar {width:260px;background:white;padding:15px;border-radius:8px;height:620px;overflow:auto;}
 .main {flex:1;background:white;padding:20px;border-radius:8px;}
-#map {height:640px;margin-top:10px;border-radius:8px;}
+#map {height:320px;margin-top:10px;border-radius:8px;}
 
 .locationBtn{
 display:block;
@@ -40,7 +41,7 @@ font-size:13px;
 
 <body>
 
-<h2>Data Center Water Leaks </h2>
+<h2>Amazon Water Use Dashboard</h2>
 <p>Units: gallons</p>
 
 <div class="filters">
@@ -54,6 +55,7 @@ font-size:13px;
 <select id="utilityFilter" onchange="applyFilters()">
 <option value="All">All</option>
 <option value="Fairfax Water">Fairfax Water</option>
+<option value="Prince William Water">Prince William Water</option>
 </select>
 </div>
 
@@ -73,7 +75,7 @@ font-size:13px;
 
 <canvas id="siteChart"></canvas>
 
-<h3>Click Address Pin to see Annual Water Use</h3>
+<h3>Click Map to see Annual Water Use</h3>
 <div id="map"></div>
 
 </div>
@@ -89,95 +91,168 @@ Facility address locations displayed in the dashboard are compiled from publicly
 
 <script>
 
-const allRecords = [{"company": "Amazon", "utility": "Fairfax Water", "location": "7951 Loisdale Rd", "date": "2023-03-01", "year": 2023, "gallons": 2131000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "7961 Loisdale Rd", "date": "2023-03-01", "year": 2023, "gallons": 1000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "7961 Loisdale Rd", "date": "2025-11-14", "year": 2025, "gallons": 0.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2023-02-03", "year": 2023, "gallons": 193000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2023-05-01", "year": 2023, "gallons": 573000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2023-08-01", "year": 2023, "gallons": 3694000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2023-10-31", "year": 2023, "gallons": 3083000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2024-02-01", "year": 2024, "gallons": 129000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2024-05-01", "year": 2024, "gallons": 933000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2024-07-30", "year": 2024, "gallons": 7682000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2024-11-01", "year": 2024, "gallons": 4296000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2025-02-03", "year": 2025, "gallons": 157000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2025-05-05", "year": 2025, "gallons": 988000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2025-07-31", "year": 2025, "gallons": 4623000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2025-10-29", "year": 2025, "gallons": 3294000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4100 Westfax Dr", "date": "2026-01-30", "year": 2026, "gallons": 166000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2023-02-03", "year": 2023, "gallons": 8000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2023-05-01", "year": 2023, "gallons": 7000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2023-08-01", "year": 2023, "gallons": 7000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2023-10-31", "year": 2023, "gallons": 7000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2024-02-01", "year": 2024, "gallons": 10000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2024-04-30", "year": 2024, "gallons": 54000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2024-07-30", "year": 2024, "gallons": 56000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2024-11-01", "year": 2024, "gallons": 53000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4101A Westfax Dr", "date": "2025-01-27", "year": 2025, "gallons": 0.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2023-07-24", "year": 2023, "gallons": 12000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2023-10-20", "year": 2023, "gallons": 22000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2024-01-22", "year": 2024, "gallons": 32000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2024-04-18", "year": 2024, "gallons": 26000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2024-07-22", "year": 2024, "gallons": 21000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2024-10-22", "year": 2024, "gallons": 19000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2025-01-28", "year": 2025, "gallons": 24000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2025-04-21", "year": 2025, "gallons": 18000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2025-07-22", "year": 2025, "gallons": 22000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2025-10-23", "year": 2025, "gallons": 27000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "3980 Virginia Mallory Dr", "date": "2026-01-20", "year": 2026, "gallons": 23000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2023-02-03", "year": 2023, "gallons": 360000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2023-05-04", "year": 2023, "gallons": 211000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2023-08-08", "year": 2023, "gallons": 3455000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2023-09-28", "year": 2023, "gallons": 334000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2023-11-02", "year": 2023, "gallons": 183000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2024-02-02", "year": 2024, "gallons": 336000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2024-05-06", "year": 2024, "gallons": 279000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2024-08-02", "year": 2024, "gallons": 413000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2024-11-04", "year": 2024, "gallons": 371000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2025-02-07", "year": 2025, "gallons": 572000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2025-05-02", "year": 2025, "gallons": 526000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2025-08-05", "year": 2025, "gallons": 402000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2025-11-04", "year": 2025, "gallons": 215000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "4030 Lafayette Center Dr", "date": "2026-02-06", "year": 2026, "gallons": 17000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2024-06-21", "year": 2024, "gallons": 0.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2024-09-23", "year": 2024, "gallons": 162000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2024-12-19", "year": 2024, "gallons": 207000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2025-03-20", "year": 2025, "gallons": 155000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2025-06-18", "year": 2025, "gallons": 1338000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2025-09-19", "year": 2025, "gallons": 1971000.0}, {"company": "Amazon", "utility": "Fairfax Water", "location": "13600 Eds Dr", "date": "2025-12-23", "year": 2025, "gallons": 246000.0}];
-const coords = {"7951 Loisdale Rd": [38.7735, -77.1821], "7961 Loisdale Rd": [38.7737, -77.1819], "4100 Westfax Dr": [38.8625, -77.1482], "4101A Westfax Dr": [38.8626, -77.1479], "3980 Virginia Mallory Dr": [38.8584, -77.1498], "4030 Lafayette Center Dr": [38.8671, -77.1536], "13600 Eds Dr": [38.8819, -77.2114]};
-const annualTotals = {"7951 Loisdale Rd": {"2023": 2131000.0}, "7961 Loisdale Rd": {"2023": 1000.0, "2025": 0.0}, "4100 Westfax Dr": {"2023": 7543000.0, "2024": 13040000.0, "2025": 9062000.0, "2026": 166000.0}, "4101A Westfax Dr": {"2023": 29000.0, "2024": 173000.0, "2025": 0.0}, "3980 Virginia Mallory Dr": {"2023": 34000.0, "2024": 98000.0, "2025": 91000.0, "2026": 23000.0}, "4030 Lafayette Center Dr": {"2023": 4543000.0, "2024": 1399000.0, "2025": 1715000.0, "2026": 17000.0}, "13600 Eds Dr": {"2024": 369000.0, "2025": 3710000.0}};
+let allRecords=[]
+let records=[]
 
-let records = [...allRecords];
+let coords = {
+"7951 Loisdale Rd":[38.7735,-77.1821],
+"7961 Loisdale Rd":[38.7737,-77.1819],
+"4100 Westfax Dr":[38.8625,-77.1482],
+"4101A Westfax Dr":[38.8626,-77.1479],
+"3980 Virginia Mallory Dr":[38.8584,-77.1498],
+"4030 Lafayette Center Dr":[38.8671,-77.1536],
+"13600 Eds Dr":[38.8819,-77.2114]
+}
 
-let map = L.map('map').setView([38.84,-77.15],11);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+let map=L.map('map').setView([38.84,-77.15],11)
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
+
+let siteChart
+
+async function loadExcel(){
+
+const response = await fetch("wateruse.xlsx")
+const data = await response.arrayBuffer()
+
+const workbook = XLSX.read(data)
+const sheet = workbook.Sheets[workbook.SheetNames[0]]
+const json = XLSX.utils.sheet_to_json(sheet)
+
+allRecords = json.map(r => ({
+company:r.Company,
+utility:r.Utility,
+location:r.Location,
+date:r.Date,
+year:new Date(r.Date).getFullYear(),
+gallons:Number(r.Gallons)
+}))
+
+records=[...allRecords]
+
+buildMap()
+loadLocations()
+
+}
+
+function buildMap(){
+
+const grouped={}
+
+records.forEach(r=>{
+if(!grouped[r.location]) grouped[r.location]={}
+if(!grouped[r.location][r.year]) grouped[r.location][r.year]=0
+grouped[r.location][r.year]+=r.gallons
+})
 
 Object.keys(coords).forEach(addr=>{
 
-let popup="<b>"+addr+"</b><br>Amazon<br>Fairfax Water<br><br>";
-popup+="<b>Annual Water Use (gallons)</b><br>";
+let popup="<b>"+addr+"</b><br>Amazon<br><br>"
+popup+="<b>Annual Water Use (gallons)</b><br>"
 
-let totals=annualTotals[addr];
-
-if(totals){
-for(const year in totals){
-popup+=year+": "+totals[year].toLocaleString()+"<br>";
+if(grouped[addr]){
+for(const year in grouped[addr]){
+popup+=year+": "+grouped[addr][year].toLocaleString()+"<br>"
 }
 }
 
-L.marker(coords[addr]).addTo(map).bindPopup(popup);
+L.marker(coords[addr]).addTo(map).bindPopup(popup)
 
-});
+})
 
-let siteChart;
+}
 
 function applyFilters(){
-const company=document.getElementById("companyFilter").value;
-const utility=document.getElementById("utilityFilter").value;
+
+const company=document.getElementById("companyFilter").value
+const utility=document.getElementById("utilityFilter").value
 
 records=allRecords.filter(r=>
 (company==="All"||r.company===company)&&
 (utility==="All"||r.utility===utility)
-);
+)
 
-document.getElementById("locations").innerHTML="";
-loadLocations();
+document.getElementById("locations").innerHTML=""
+
+loadLocations()
+
 }
 
-function uniqueLocations(){return [...new Set(records.map(r=>r.location))];}
+function uniqueLocations(){
+return [...new Set(records.map(r=>r.location))]
+}
 
 function loadLocations(){
-const sidebar=document.getElementById("locations");
+
+const sidebar=document.getElementById("locations")
 
 uniqueLocations().forEach(loc=>{
-let btn=document.createElement("button");
-btn.className="locationBtn";
-btn.innerText=loc;
-btn.onclick=()=>drawChart(loc);
-sidebar.appendChild(btn);
-});
+
+let btn=document.createElement("button")
+btn.className="locationBtn"
+btn.innerText=loc
+btn.onclick=()=>drawChart(loc)
+
+sidebar.appendChild(btn)
+
+})
+
 }
 
 function drawChart(location){
-let data=records.filter(r=>r.location===location);
-let labels=data.map(d=>d.date);
-let values=data.map(d=>d.gallons);
 
-if(siteChart) siteChart.destroy();
+let data=records.filter(r=>r.location===location)
+let labels=data.map(d=>d.date)
+let values=data.map(d=>d.gallons)
+
+if(siteChart) siteChart.destroy()
 
 siteChart=new Chart(document.getElementById("siteChart"),{
 type:"line",
-data:{labels:labels,datasets:[{label:location+" gallons",data:values,fill:false}]}
-});
+data:{
+labels:labels,
+datasets:[{
+label:location+" gallons",
+data:values,
+fill:false
+}]
+}
+})
+
 }
 
 function downloadCSV(){
-let rows=["Company,Utility,Location,Date,Gallons"];
-records.forEach(r=>{rows.push(r.company+","+r.utility+","+r.location+","+r.date+","+r.gallons);});
 
-let blob=new Blob([rows.join("\n")],{type:"text/csv"});
-let url=URL.createObjectURL(blob);
-let a=document.createElement("a");
-a.href=url;
-a.download="water_use_data.csv";
-a.click();
+let rows=["Company,Utility,Location,Date,Gallons"]
+
+records.forEach(r=>{
+rows.push(r.company+","+r.utility+","+r.location+","+r.date+","+r.gallons)
+})
+
+let blob=new Blob([rows.join("\n")],{type:"text/csv"})
+
+let url=URL.createObjectURL(blob)
+
+let a=document.createElement("a")
+a.href=url
+a.download="water_use_data.csv"
+a.click()
+
 }
 
 function downloadGraph(){
-if(!siteChart) return;
-let link=document.createElement("a");
-link.href=siteChart.toBase64Image();
-link.download="water_use_graph.png";
-link.click();
+
+if(!siteChart) return
+
+let link=document.createElement("a")
+
+link.href=siteChart.toBase64Image()
+link.download="water_use_graph.png"
+link.click()
+
 }
 
-loadLocations();
+loadExcel()
 
 </script>
 
