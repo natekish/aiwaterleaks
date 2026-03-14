@@ -1,64 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Data Center Water Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<meta charset="UTF-8">
+<title>Data Center Water Map</title>
 
-    <style>
-        body { margin: 0; font-family: Arial; }
-        #map { height: 100vh; width: 100%; }
-        .toolbar {
-            position: absolute; top: 15px; left: 15px; z-index: 1000;
-            background: white; padding: 10px 14px; border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-    </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    body { margin: 0; font-family: Arial; }
+    #map { height: 100vh; width: 100%; }
+</style>
 </head>
+
 <body>
-
-<div class="toolbar">
-    <strong>Data Center Water Usage</strong>
-</div>
-
 <div id="map"></div>
 
 <script>
-    // Center map on Northern Virginia area
-    let map = L.map('map').setView([38.85, -77.45], 10);
+// 1. Initialize map centered on your Northern Virginia data
+// Note: Leaflet uses [Lat, Lng]
+let map = L.map('map').setView([38.82, -77.65], 11);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
 
-    async function load() {
-        try {
-            // Loading the local geojson file
-            const res = await fetch("./wateruse.geojson");
-            const geo = await res.json();
+async function load() {
+    try {
+        // 2. Fetch the GeoJSON file
+        const res = await fetch("./wateruse.geojson");
+        const geo = await res.json();
 
-            L.geoJSON(geo, {
-                onEachFeature: function(feature, layer) {
-                    let p = feature.properties;
-                    // Updated to match your GeoJSON's specific property names
-                    let popup = `
-                        <b>Location:</b> ${p.Location}<br>
-                        <b>Company:</b> ${p.Company}<br>
-                        <b>Utility:</b> ${p.Utility}<br>
-                        <b>Date:</b> ${p.Date}<br>
-                        <b>Gallons:</b> ${p.Gallons.toLocaleString()}
-                    `;
-                    layer.bindPopup(popup);
-                }
-            }).addTo(map);
-        } catch (err) {
-            console.error("Error loading GeoJSON. Note: This fetch will fail if opened directly via file://. Use a local server.");
-        }
+        L.geoJSON(geo, {
+            onEachFeature: function(feature, layer) {
+                let p = feature.properties;
+                // 3. Match keys exactly: Location, Company, Utility, etc.
+                let popup = `
+                    <b>Location:</b> ${p.Location}<br>
+                    <b>Company:</b> ${p.Company}<br>
+                    <b>Utility:</b> ${p.Utility}<br>
+                    <b>Date:</b> ${p.Date}<br>
+                    <b>Gallons:</b> ${p.Gallons.toLocaleString()}
+                `;
+                layer.bindPopup(popup);
+            }
+        }).addTo(map);
+    } catch (err) {
+        console.error("Error loading GeoJSON. Make sure you are using a local server!", err);
     }
+}
 
-    load();
+load();
 </script>
 </body>
 </html>
