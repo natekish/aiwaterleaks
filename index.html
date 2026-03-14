@@ -112,7 +112,7 @@ background:#f0f0f0;
 <div class="disclaimer">
 <b>Data Disclaimer</b><br><br>
 The water consumption data presented in this dashboard were obtained through Freedom of Information Act (FOIA) requests submitted to the public water utility.
-Facility address locations displayed in the dashboard are compiled from publicly available sources including. 
+Facility address locations displayed in the dashboard are compiled from publicly available sources.
 </div>
 
 <script>
@@ -179,6 +179,12 @@ return null
 
 async function buildMap(){
 
+map.eachLayer(function(layer){
+if(layer instanceof L.Marker){
+map.removeLayer(layer)
+}
+})
+
 const grouped={}
 
 records.forEach(r=>{
@@ -189,7 +195,9 @@ grouped[r.location][r.year]+=r.gallons
 
 for(const addr of Object.keys(grouped)){
 
-const coord=await geocode(addr)
+try{
+
+const coord = await geocode(addr)
 if(!coord) continue
 
 let popup="<b>"+addr+"</b><br><br>"
@@ -199,7 +207,12 @@ for(const year in grouped[addr]){
 popup+=year+": "+grouped[addr][year].toLocaleString()+"<br>"
 }
 
-L.marker(coord).addTo(map).bindPopup(popup)
+const marker=L.marker(coord).addTo(map)
+marker.bindPopup(popup)
+
+}catch(err){
+console.log("Geocode failed:",addr)
+}
 
 }
 
@@ -261,6 +274,7 @@ document.getElementById("locations").innerHTML=""
 
 loadLocations()
 buildUtilityTable()
+buildMap()
 
 }
 
