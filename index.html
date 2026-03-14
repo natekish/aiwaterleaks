@@ -44,7 +44,6 @@ th{background:#f0f0f0;}
 <button onclick="viewMap()">View Map</button>
 </div>
 
-<!-- Annual Water Use Section -->
 <div class="section">
 <h3>Annual Water Use by Utility</h3>
 <table id="utilityTable">
@@ -91,11 +90,14 @@ allRecords = rows.slice(1).map(r=>{
 
 const c = r.split(",")
 
+// Format date to YYYY-MM-DD by taking the first 10 characters
+const formattedDate = c[3] ? c[3].substring(0, 10) : "";
+
 return{
 company:c[0],
 utility:c[1],
 location:c[2],
-date:c[3],
+date:formattedDate,
 year:new Date(c[3]).getFullYear(),
 gallons:parseFloat(c[4]),
 x:parseFloat(c[5]),
@@ -213,8 +215,26 @@ labels:labels,
 datasets:[{
 label:location+" gallons",
 data:values,
-fill:false
+fill:false,
+borderColor: '#1976d2',
+tension: 0.1
 }]
+},
+options: {
+    scales: {
+        x: {
+            title: {
+                display: true,
+                text: 'Date (YYYY-MM-DD)'
+            }
+        },
+        y: {
+            title: {
+                display: true,
+                text: 'Gallons'
+            }
+        }
+    }
 }
 })
 
