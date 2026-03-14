@@ -22,6 +22,7 @@ table{border-collapse:collapse;width:100%;margin-top:20px;font-size:13px;}
 th,td{border:1px solid #ccc;padding:6px;}
 th{background:#f0f0f0;}
 .filters{margin-bottom:15px;}
+.toolbar button{margin-right:10px;padding:8px 12px;cursor:pointer;}
 </style>
 </head>
 
@@ -40,6 +41,11 @@ th{background:#f0f0f0;}
 <select id="utilityFilter" onchange="applyFilters()">
 <option value="All">All</option>
 </select>
+</div>
+
+<div class="toolbar">
+<button onclick="downloadCSV()">Download CSV</button>
+<button onclick="downloadExcel()">Download Excel</button>
 </div>
 
 <div class="container">
@@ -77,7 +83,6 @@ let allRecords=[]
 let records=[]
 
 let map=L.map('map').setView([38.85,-77.35],9)
-
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
 
 let siteChart
@@ -159,7 +164,6 @@ records=allRecords.filter(r=>
 )
 
 document.getElementById("locations").innerHTML=""
-
 loadLocations()
 buildUtilityTable()
 
@@ -168,18 +172,18 @@ buildUtilityTable()
 async function geocode(location){
 
 let cached=localStorage.getItem("geo_"+location)
-
 if(cached) return JSON.parse(cached)
 
-const url="https://nominatim.openstreetmap.org/search?format=json&q="+encodeURIComponent(location+" Virginia")
+// improved search query
+const query = location + ", Fairfax County, Virginia USA"
+const url="https://nominatim.openstreetmap.org/search?format=json&q="+encodeURIComponent(query)
 
-const res=await fetch(url)
+const res=await fetch(url,{headers:{'User-Agent':'water-dashboard'}})
 const data=await res.json()
 
 if(!data.length) return null
 
 const coords={lat:parseFloat(data[0].lat),lon:parseFloat(data[0].lon)}
-
 localStorage.setItem("geo_"+location,JSON.stringify(coords))
 
 return coords
@@ -228,39 +232,28 @@ function buildUtilityTable(){
 const totals={}
 
 records.forEach(r=>{
-
 if(!totals[r.utility]) totals[r.utility]={}
-
 if(!totals[r.utility][r.year]) totals[r.utility][r.year]=0
-
 totals[r.utility][r.year]+=r.gallons
-
 })
 
 const tbody=document.querySelector("#utilityTable tbody")
-
 tbody.innerHTML=""
 
 for(const util in totals){
-
 for(const yr in totals[util]){
 
 let tr=document.createElement("tr")
-
 tr.innerHTML="<td>"+util+"</td><td>"+yr+"</td><td>"+totals[util][yr].toLocaleString()+"</td>"
-
 tbody.appendChild(tr)
 
 }
-
 }
 
 }
 
 function uniqueLocations(){
-
 return [...new Set(records.map(r=>r.location))]
-
 }
 
 function loadLocations(){
@@ -270,11 +263,8 @@ const sidebar=document.getElementById("locations")
 uniqueLocations().forEach(loc=>{
 
 let btn=document.createElement("button")
-
 btn.className="locationBtn"
-
 btn.innerText=loc
-
 btn.onclick=()=>drawChart(loc)
 
 sidebar.appendChild(btn)
@@ -286,9 +276,7 @@ sidebar.appendChild(btn)
 function drawChart(location){
 
 let data=records.filter(r=>r.location===location)
-
 let labels=data.map(d=>d.date)
-
 let values=data.map(d=>d.gallons)
 
 if(siteChart) siteChart.destroy()
@@ -304,6 +292,30 @@ fill:false
 }]
 }
 })
+
+}
+
+function downloadCSV(){
+
+let rows=["Company,Utility,Location,Date,Gallons"]
+
+records.forEach(r=>{
+rows.push(r.company+","+r.utility+","+r.location+","+r.date+","+r.gallons)
+})
+
+let blob=new Blob([rows.join("\n")],{type:"text/csv"})
+let url=URL.createObjectURL(blob)
+
+let a=document.createElement("a")
+a.href=url
+a.download="wateruse_export.csv"
+a.click()
+
+}
+
+function downloadExcel(){
+
+window.location="wateruse.xlsx"
 
 }
 
