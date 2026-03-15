@@ -239,14 +239,29 @@
             </div>
         </div>
 
-        <div class="video-container">
-            <video controls autoplay muted loop>
-                <source src="openai.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <div class="video-caption">"Industry denies it but water utility data shows AI is thirsty"</div>
-        </div>
-    </div>
+        <div class="video-container" style="position: relative;">
+    <video id="leakVideo" controls autoplay muted loop>
+        <source src="openai.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <button id="unmuteBtn" onclick="toggleMute()" style="
+        position: absolute; 
+        top: 10px; 
+        right: 10px; 
+        background: rgba(0, 0, 0, 0.6); 
+        color: white; 
+        border: none; 
+        padding: 5px 10px; 
+        border-radius: 5px; 
+        cursor: pointer; 
+        font-size: 12px;
+        z-index: 10;">
+        🔊 Unmute
+    </button>
+
+    <div class="video-caption">"Industry leaders deny what water utility data shows - AI is thirsty"</div>
+</div>
 </footer>
 
 
@@ -402,6 +417,19 @@ function drawChart(locationName){
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
     });
+}
+
+function toggleMute() {
+    const video = document.getElementById('leakVideo');
+    const btn = document.getElementById('unmuteBtn');
+    
+    if (video.muted) {
+        video.muted = false;
+        btn.innerText = "🔇 Mute";
+    } else {
+        video.muted = true;
+        btn.innerText = "🔊 Unmute";
+    }
 }
 
 function downloadCSV(){ window.location="wateruse.csv"; }
