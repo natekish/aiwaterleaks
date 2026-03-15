@@ -26,7 +26,7 @@
         /* High Contrast Rivers */
         .high-contrast-rivers { filter: hue-rotate(160deg) brightness(1.2) saturate(3); }
         
-        /* Watershed Label - Made un-clickable so utility layer works */
+        /* Watershed Label */
         .huc8-label {
             background: rgba(255, 255, 255, 0.75);
             border: 2px solid #8b5cf6;
@@ -36,16 +36,20 @@
             font-weight: 800;
             color: #4c1d95;
             text-transform: uppercase;
-            pointer-events: none !important; /* Critical Fix */
+            pointer-events: none !important;
             text-align: center;
         }
 
-        /* Utility Pop-up Styling */
+        /* Pin Styling */
+        .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
+
         .leaflet-popup-content { font-size: 14px; line-height: 1.5; width: 280px !important; }
         .epa-stat { display: flex; justify-content: space-between; margin-bottom: 6px; }
         .epa-label { color: #64748b; font-size: 11px; font-weight: 600; }
         .epa-value { font-weight: bold; font-size: 13px; color: #1e293b; }
-        .comparison-box { margin-top: 10px; font-size: 11px; background: #f0f9ff; padding: 8px; border-radius: 4px; border-left: 4px solid #0ea5e9; color: #0369a1; }
+        
+        /* Search Bar Customization */
+        .leaflet-geosearch-button { margin-left: 10px !important; margin-top: 10px !important; }
     </style>
 </head>
 <body>
@@ -58,7 +62,30 @@
 
     var map = L.map('map', { center: [38.85, -77.45], zoom: 10, layers: [streetMap] });
 
-    // 1. Watershed Layer (Bottom)
+    // 1. ADD ADDRESS SEARCH BAR
+    const searchControl = new GeoSearch.GeoSearchControl({
+        provider: new GeoSearch.OpenStreetMapProvider(),
+        style: 'bar',
+        showMarker: true,
+        showPopup: false,
+        marker: {
+            icon: new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41], iconAnchor: [12, 41]
+            }),
+            draggable: false,
+        },
+        maxMarkers: 1,
+        retainZoomLevel: false,
+        animateZoom: true,
+        autoClose: true,
+        searchLabel: 'Enter address...',
+        keepResult: true
+    });
+    map.addControl(searchControl);
+
+    // 2. Overlays
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
         style: { color: '#8b5cf6', weight: 3, dashArray: '8, 4', fillOpacity: 0.05 },
@@ -71,7 +98,6 @@
         }
     }).addTo(map);
 
-    // 2. Water Utility Layer (Top)
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         style: { color: '#1976d2', weight: 2, fillOpacity: 0.15, fillColor: '#64b5f6' }
@@ -81,33 +107,21 @@
         const p = layer.feature.properties;
         const name = p.PWS_NAME || p.PWS_Name || "Public Utility";
         const pop = p.Population_Served_Count || p.Population_Served || 0;
-        const annualNeed = pop * 36500;
-        
         return `
             <div style="padding: 5px;">
                 <strong style="color: #1e3a8a; font-size: 15px;">${name}</strong><br>
                 <small>Utility Service Area</small><hr>
-                <div class="epa-stat">
-                    <span class="epa-label">Population Served:</span>
-                    <span class="epa-value">${pop.toLocaleString()}</span>
-                </div>
-                <div class="epa-stat" style="flex-direction: column;">
-                    <span class="epa-label">Est. Annual Community Need:</span>
-                    <span class="epa-value" style="color:#0284c7; font-size: 14px;">${annualNeed.toLocaleString()} gal</span>
-                </div>
-                <div class="comparison-box">
-                    This community requires ~${annualNeed.toLocaleString()} gallons/year for all residents.
-                </div>
+                <div class="epa-stat"><span class="epa-label">Pop Served:</span><span class="epa-value">${pop.toLocaleString()}</span></div>
+                <div class="epa-stat" style="flex-direction: column;"><span class="epa-label">Annual Need:</span><span class="epa-value">${(pop * 36500).toLocaleString()} gal</span></div>
             </div>`;
     });
 
-    // 3. Rivers Layer
     var riversLayer = L.esri.dynamicMapLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
         layers: [1, 2, 3, 4, 5, 6, 9], opacity: 0.9, className: 'high-contrast-rivers'
     }).addTo(map);
 
-    // Controls
+    // Layer Controls
     var baseMaps = { "Street Map": streetMap, "Satellite View": satelliteMap };
     var overlayMaps = {
         "Water Utility Service Area": epaBoundaries,
@@ -116,26 +130,44 @@
     };
     L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
-    // 4. Data Center Pins
+    // 3. RENDER DATA CENTER PINS
     async function loadMapData() {
-        const darkRedIcon = new L.Icon({
+        // Custom dark red icon for data centers
+        const dcIcon = new L.Icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41], iconAnchor: [12, 41]
+            iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker'
         });
 
         try {
             const response = await fetch('wateruse_agg.geojson');
             const data = await response.json();
             L.geoJSON(data, {
-                pointToLayer: (f, l) => L.marker(l, { icon: darkRedIcon }),
-                onEachFeature: (f, layer) => {
-                    const p = f.properties;
-                    layer.bindPopup(`<strong>${p.Location}</strong><br><small>${p.Company}</small><hr>${p.YearlyTotals}<br><strong>Total: ${p.TotalGallons} gal</strong>`);
+                pointToLayer: (feature, latlng) => {
+                    return L.marker(latlng, { icon: dcIcon });
+                },
+                onEachFeature: (feature, layer) => {
+                    const p = feature.properties;
+                    layer.bindPopup(`
+                        <div style="min-width: 200px;">
+                            <strong style="font-size: 14px;">${p.Location}</strong><br>
+                            <span style="color: #64748b;">${p.Company}</span>
+                            <hr style="margin: 8px 0; border: 0; border-top: 1px solid #eee;">
+                            <div style="font-size: 12px; line-height: 1.6;">
+                                ${p.YearlyTotals}
+                                <div style="margin-top: 5px; font-weight: bold; color: #b91c1c;">
+                                    Total: ${p.TotalGallons} gal
+                                </div>
+                            </div>
+                        </div>
+                    `);
                 }
             }).addTo(map);
-        } catch (e) { console.error(e); }
+        } catch (e) { 
+            console.error("Error loading GeoJSON data. Ensure 'wateruse_agg.geojson' is in the same folder.", e); 
+        }
     }
+
     loadMapData();
 </script>
 </body>
