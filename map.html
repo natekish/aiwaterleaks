@@ -16,124 +16,90 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css"/>
-    <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/bundle.min.js"></script>
-
     <style>
-        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; display: flex; }
-        #map { height: 100vh; flex-grow: 1; position: relative; }
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+        #map { height: 100vh; width: 100%; position: relative; background: #0b1622; }
         
-        #sidebar { width: 350px; height: 100vh; overflow-y: auto; background: #f8fafc; border-left: 1px solid #e2e8f0; padding: 20px; box-sizing: border-box; z-index: 1000; }
-        h2 { color: #1e3a8a; font-size: 1.2rem; margin-top: 0; }
-        h3 { color: #334155; font-size: 1rem; margin-bottom: 8px; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; }
-        
-        .disclaimer-box { background: #fff1f2; border-left: 4px solid #f43f5e; padding: 10px; margin-bottom: 20px; font-size: 12px; }
-        
-        /* WATERSHED LABELS - Optimized for WBD Dataset */
-        .huc8-label {
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #8b5cf6;
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #4c1d95;
-            text-transform: uppercase;
-            pointer-events: none !important;
-            text-align: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        .click-through { pointer-events: none !important; }
+        .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); }
+        .huc8-label { 
+            background: rgba(255,255,255,0.85); border: 1px solid #8b5cf6; 
+            padding: 2px 4px; font-size: 10px; font-weight: bold; color: #4c1d95;
+            pointer-events: none; 
         }
 
-        .high-contrast-rivers { filter: hue-rotate(160deg) brightness(1.2) saturate(3); }
         .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
+        .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; }
         
-        .epa-stat { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 13px; }
-        .epa-label { color: #64748b; }
-        .epa-value { font-weight: bold; color: #1e293b; }
+        .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; }
     </style>
 </head>
 <body>
 
-<div id="sidebar">
-    <h2>Basin Data Center Map</h2>
-    <div class="disclaimer-box">
-        <strong>Data Disclaimer:</strong> Obtained via FOIA requests to public utilities. Provided "as is."
-    </div>
-    <h3>Contribute</h3>
-    <p style="font-size: 13px;">Email verified water bills to:<br><strong>datacenterwaterleaks@gmail.com</strong></p>
-    <hr>
-    <a href="https://foiacouncil.dls.virginia.gov/opinions/2023/ao_04_23.pdf" target="_blank" style="font-size: 12px; color: #2563eb;">VA FOIA Council Opinion (AO-04-23)</a>
-</div>
-
 <div id="map"></div>
 
 <script>
+    // 1. UPDATED SATELLITE LAYER (Google Hybrid: Satellite + Labels)
     var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' });
-    var satelliteMap = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { attribution: '© Google' });
+    var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { 
+        attribution: '© Google (Hybrid)',
+        maxZoom: 20
+    });
 
     var map = L.map('map', { center: [38.85, -77.45], zoom: 10, layers: [streetMap] });
 
-    // Address Search
-    const searchControl = new GeoSearch.GeoSearchControl({
-        provider: new GeoSearch.OpenStreetMapProvider(),
-        style: 'bar', position: 'topleft', showMarker: true,
-        marker: { icon: new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41] }) }
-    });
-    map.addControl(searchControl);
+    // Custom Panes for stacking priority
+    map.createPane('backPane');    map.getPane('backPane').style.zIndex = 400; 
+    map.createPane('middlePane');  map.getPane('middlePane').style.zIndex = 450; 
+    map.createPane('frontPane');   map.getPane('frontPane').style.zIndex = 500; 
 
-    // 1. USGS WBD HUC-08 LAYER (WITH LABELS)
+    // 2. WATERSHEDS (HUC-08)
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
-        style: { color: '#8b5cf6', weight: 2.5, dashArray: '10, 5', fillOpacity: 0.05 },
-        onEachFeature: function(f, l) {
-            // Accessing the 'name' field as defined in the USGS WBD catalog
-            if (f.properties && f.properties.name) {
-                l.bindTooltip(f.properties.name + " Basin", { 
-                    permanent: true, 
-                    direction: 'center', 
-                    className: 'huc8-label',
-                    opacity: 1.0
-                });
-            }
-        }
+        pane: 'backPane',
+        className: 'click-through',
+        style: { color: '#8b5cf6', weight: 2, dashArray: '5, 5', fillOpacity: 0.1 }
     }).addTo(map);
 
-    // 2. WATER UTILITY SERVICE AREAS (FIXED POPUP)
+    huc8Layer.on('createfeature', function(e) {
+        if (e.feature.properties.name) {
+            e.feature.layer.bindTooltip(e.feature.properties.name, { permanent: true, direction: 'center', className: 'huc8-label' });
+        }
+    });
+
+    // 3. RIVERS & GAGES (Luminous Cyan)
+    var riversLayer = L.esri.dynamicMapLayer({
+        url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
+        layers: [0, 1, 2, 3, 4, 5, 6, 9], 
+        pane: 'middlePane',
+        className: 'luminous-rivers'
+    }).addTo(map);
+
+    // 4. WATER UTILITIES (Interactive)
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
-        style: { color: '#1976d2', weight: 2, fillOpacity: 0.15 }
+        pane: 'frontPane',
+        style: { color: '#00d4ff', weight: 2.5, fillOpacity: 0.2, fillColor: '#0055ff' }
     }).addTo(map);
 
     epaBoundaries.bindPopup(function(layer) {
         const p = layer.feature.properties;
-        // Logic to catch multiple naming conventions (PWS_NAME or PWS_Name)
-        const name = p.PWS_NAME || p.PWS_Name || p.pws_name || "Public Utility";
+        // Robust check for utility name variations
+        const uName = p.PWS_NAME || p.PWS_Name || p.pws_name || p.NAME || "Public Utility";
         const pop = p.Population_Served_Count || p.Population_Served || 0;
-        const annualNeed = pop * 36500;
-
+        
         return `
-            <div style="min-width: 220px;">
-                <strong style="color: #1e3a8a; font-size: 15px;">${name}</strong><br>
-                <small style="color: #64748b;">Utility Service Area</small>
-                <hr style="margin: 8px 0; border: 0; border-top: 1px solid #e2e8f0;">
-                <div class="epa-stat">
-                    <span class="epa-label">Population Served:</span>
-                    <span class="epa-value">${pop.toLocaleString()}</span>
-                </div>
-                <div class="epa-stat" style="flex-direction: column;">
-                    <span class="epa-label">Est. Annual Community Need:</span>
-                    <span class="epa-value" style="color: #0284c7; font-size: 14px;">${annualNeed.toLocaleString()} gal</span>
-                </div>
+            <div style="min-width: 200px;">
+                <div class="utility-header">${uName}</div>
+                <small style="color: #666;">Water Utility Boundary</small>
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 8px 0;">
+                <div class="stat-row"><span>Pop. Served:</span><strong>${pop.toLocaleString()}</strong></div>
+                <div class="stat-row"><span>Est. Daily Need:</span><strong>${(pop * 100).toLocaleString()} gal</strong></div>
             </div>`;
     });
 
-    // 3. RIVERS & STREAMS
-    var riversLayer = L.esri.dynamicMapLayer({
-        url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
-        layers: [1, 2, 3, 4, 5, 6, 9], opacity: 0.9, className: 'high-contrast-rivers'
-    }).addTo(map);
-
-    // 4. DATA CENTER PINS
+    // 5. DATA CENTER PINS
     async function loadMapData() {
         const dcIcon = new L.Icon({ 
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', 
@@ -144,26 +110,25 @@
             const response = await fetch('wateruse_agg.geojson');
             const data = await response.json();
             L.geoJSON(data, {
+                pane: 'frontPane',
                 pointToLayer: (f, latlng) => L.marker(latlng, { icon: dcIcon }),
                 onEachFeature: (f, layer) => {
-                    const p = f.properties;
-                    layer.bindPopup(`
-                        <strong>${p.Location}</strong><br>
-                        ${p.Company}<br>
-                        <hr>
-                        ${p.YearlyTotals}<br>
-                        <strong>Total: ${p.TotalGallons} gal</strong>
-                    `);
+                    layer.bindPopup(`<strong>${f.properties.Location}</strong><br>${f.properties.Company}<hr>Total Usage: ${f.properties.TotalGallons} gal`);
                 }
             }).addTo(map);
-        } catch (e) { console.error("Could not load GeoJSON pins", e); }
+        } catch (e) { console.error("Error loading geojson", e); }
     }
 
-    L.control.layers({ "Street": streetMap, "Satellite": satelliteMap }, { 
-        "Watersheds (HUC-8)": huc8Layer, 
-        "Water Utilities": epaBoundaries, 
-        "Rivers & Streams": riversLayer 
-    }).addTo(map);
+    // LAYER CONTROL
+    L.control.layers(
+        { "Street Map": streetMap, "Satellite with Labels": satelliteHybrid }, 
+        { 
+            "Water Utilities": epaBoundaries, 
+            "Rivers & Gages": riversLayer, 
+            "Watersheds (HUC-8)": huc8Layer 
+        }, 
+        { collapsed: false }
+    ).addTo(map);
 
     loadMapData();
 </script>
