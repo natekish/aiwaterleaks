@@ -23,25 +23,10 @@
         body { margin: 0; font-family: Arial, sans-serif; }
         #map { height: 100vh; width: 100%; }
 
-        /* Toolbar Styling */
-        .toolbar {
-            position: absolute;
-            top: 15px;
-            left: 50px;
-            z-index: 1000;
-            background: white;
-            padding: 10px;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-        .toolbar button {
-            padding: 8px 12px;
-            background: #1976d2;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-weight: bold;
-            cursor: default;
+        /* Custom Search Bar Position (Left) */
+        .leaflet-geosearch-button {
+            margin-left: 10px !important;
+            margin-top: 10px !important;
         }
 
         /* Popup Styling */
@@ -62,10 +47,6 @@
 </head>
 <body>
 
-<div class="toolbar">
-    <button>Search your address to see local water impact</button>
-</div>
-
 <div id="map"></div>
 
 <script>
@@ -76,11 +57,24 @@
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // 1. ADD ADDRESS SEARCH BAR
+    // 1. ADD ADDRESS SEARCH BAR (Moved to top-left with Red Pin)
     const searchControl = new GeoSearch.GeoSearchControl({
         provider: new GeoSearch.OpenStreetMapProvider(),
         style: 'bar',
+        position: 'topleft', 
         showMarker: true,
+        showPopup: true,
+        marker: {
+            draggable: false,
+            icon: new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+            }),
+        },
         retainZoomLevel: false,
         animateZoom: true,
         autoClose: true,
@@ -88,7 +82,7 @@
     });
     map.addControl(searchControl);
 
-    // 2. EPA WATER SYSTEM LAYER
+    // 2. WATER SYSTEM LAYER
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         style: { color: '#1976d2', weight: 2, fillOpacity: 0.15, fillColor: '#64b5f6' }
@@ -99,10 +93,7 @@
         const name = p.PWS_NAME || p.PWS_Name || "Public Utility";
         const population = p.Population_Served_Count || p.Population_Served || 0;
         
-        // CALCULATION: Community Water Needs (Annually)
-        // 100 gallons/day * 365 days = 36,500 gallons per person per year
         const annualCommunityNeed = population * 36500;
-        
         const popFormatted = population.toLocaleString();
         const volumeFormatted = annualCommunityNeed.toLocaleString();
 
@@ -130,8 +121,8 @@
         `;
     });
 
-    // 3. LAYER CONTROL
-    L.control.layers(null, { "EPA Water Systems": epaBoundaries }, { collapsed: false }).addTo(map);
+    // 3. LAYER CONTROL (Updated label)
+    L.control.layers(null, { "Water Utility Service Area": epaBoundaries }, { collapsed: false }).addTo(map);
 
     // 4. LOAD DATA CENTER PINS
     async function loadMapData() {
