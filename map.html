@@ -10,7 +10,7 @@
     </script>
 
     <meta charset="UTF-8">
-    <title>Data Center Water Usage Summary</title>
+    <title>Water Impact Map</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -18,19 +18,17 @@
 
     <style>
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-        #map { height: 100vh; width: 100%; position: relative; background: #0b1622; }
+        #map { height: 100vh; width: 100%; background: #0b1622; }
         
-        .click-through { pointer-events: none !important; }
-        .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); }
-        .huc8-label { 
-            background: rgba(255,255,255,0.85); border: 1px solid #8b5cf6; 
-            padding: 2px 4px; font-size: 10px; font-weight: bold; color: #4c1d95;
-            pointer-events: none; 
-        }
-
+        /* High-Visibility Filters */
+        .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); pointer-events: none; }
         .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
+        
+        /* UI Elements */
         .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; }
         
+        /* Popup Styling */
+        .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
         .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; }
     </style>
@@ -40,35 +38,33 @@
 <div id="map"></div>
 
 <script>
-    // 1. UPDATED SATELLITE LAYER (Google Hybrid: Satellite + Labels)
+    // Base Layers
     var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' });
     var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { 
         attribution: '© Google (Hybrid)',
         maxZoom: 20
     });
 
-    var map = L.map('map', { center: [38.85, -77.45], zoom: 10, layers: [streetMap] });
+    var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid] });
 
-    // Custom Panes for stacking priority
-    map.createPane('backPane');    map.getPane('backPane').style.zIndex = 400; 
-    map.createPane('middlePane');  map.getPane('middlePane').style.zIndex = 450; 
-    map.createPane('frontPane');   map.getPane('frontPane').style.zIndex = 500; 
+    // Stacking Panes (Order: Bottom to Top)
+    map.createPane('backPane');    map.getPane('backPane').style.zIndex = 400; // Watersheds
+    map.createPane('middlePane');  map.getPane('middlePane').style.zIndex = 450; // Rivers
+    map.createPane('frontPane');   map.getPane('frontPane').style.zIndex = 500; // Utilities/Pins
 
-    // 2. WATERSHEDS (HUC-08)
+    // 1. WATERSHEDS (HUC-8)
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
         pane: 'backPane',
-        className: 'click-through',
-        style: { color: '#8b5cf6', weight: 2, dashArray: '5, 5', fillOpacity: 0.1 }
+        style: { color: '#8b5cf6', weight: 2, dashArray: '8, 4', fillOpacity: 0.1 }
     }).addTo(map);
 
-    huc8Layer.on('createfeature', function(e) {
-        if (e.feature.properties.name) {
-            e.feature.layer.bindTooltip(e.feature.properties.name, { permanent: true, direction: 'center', className: 'huc8-label' });
-        }
+    huc8Layer.bindPopup(layer => {
+        const p = layer.feature.properties;
+        return `<div class="basin-header">${p.name || "Unknown"} Basin</div><strong>HUC-8:</strong> ${p.huc8}`;
     });
 
-    // 3. RIVERS & GAGES (Luminous Cyan)
+    // 2. RIVERS & GAGES (Luminous Cyan)
     var riversLayer = L.esri.dynamicMapLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
         layers: [0, 1, 2, 3, 4, 5, 6, 9], 
@@ -76,30 +72,30 @@
         className: 'luminous-rivers'
     }).addTo(map);
 
-    // 4. WATER UTILITIES (Interactive)
+    // 3. WATER UTILITIES (With Demand Estimate)
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         pane: 'frontPane',
         style: { color: '#00d4ff', weight: 2.5, fillOpacity: 0.2, fillColor: '#0055ff' }
     }).addTo(map);
 
-    epaBoundaries.bindPopup(function(layer) {
+    epaBoundaries.bindPopup(layer => {
         const p = layer.feature.properties;
-        // Robust check for utility name variations
-        const uName = p.PWS_NAME || p.PWS_Name || p.pws_name || p.NAME || "Public Utility";
+        const uName = p.PWS_NAME || p.PWS_Name || p.pws_name || "Public Utility";
         const pop = p.Population_Served_Count || p.Population_Served || 0;
-        
+        const dailyEstimate = pop * 100; // 100 gal/day/person
+
         return `
-            <div style="min-width: 200px;">
+            <div style="min-width: 220px;">
                 <div class="utility-header">${uName}</div>
-                <small style="color: #666;">Water Utility Boundary</small>
-                <hr style="border: 0; border-top: 1px solid #eee; margin: 8px 0;">
+                <small>Utility Service Boundary</small>
+                <hr style="margin: 8px 0; border: 0; border-top: 1px solid #eee;">
                 <div class="stat-row"><span>Pop. Served:</span><strong>${pop.toLocaleString()}</strong></div>
-                <div class="stat-row"><span>Est. Daily Need:</span><strong>${(pop * 100).toLocaleString()} gal</strong></div>
+                <div class="stat-row"><span>Daily Community Demand:</span><strong style="color: #1e40af;">${dailyEstimate.toLocaleString()} gal</strong></div>
             </div>`;
     });
 
-    // 5. DATA CENTER PINS
+    // 4. DATA CENTER PINS
     async function loadMapData() {
         const dcIcon = new L.Icon({ 
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', 
@@ -113,15 +109,14 @@
                 pane: 'frontPane',
                 pointToLayer: (f, latlng) => L.marker(latlng, { icon: dcIcon }),
                 onEachFeature: (f, layer) => {
-                    layer.bindPopup(`<strong>${f.properties.Location}</strong><br>${f.properties.Company}<hr>Total Usage: ${f.properties.TotalGallons} gal`);
+                    layer.bindPopup(`<strong>${f.properties.Location}</strong><br>${f.properties.Company}<hr>Usage: ${f.properties.TotalGallons} gal`);
                 }
             }).addTo(map);
-        } catch (e) { console.error("Error loading geojson", e); }
+        } catch (e) { console.error("GeoJSON error", e); }
     }
 
-    // LAYER CONTROL
     L.control.layers(
-        { "Street Map": streetMap, "Satellite with Labels": satelliteHybrid }, 
+        { "Satellite (Hybrid)": satelliteHybrid, "Street Map": streetMap }, 
         { 
             "Water Utilities": epaBoundaries, 
             "Rivers & Gages": riversLayer, 
