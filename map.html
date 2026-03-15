@@ -50,14 +50,25 @@
 <div id="map"></div>
 
 <script>
-    var map = L.map('map').setView([38.85, -77.45], 11);
-
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Define Base Layers
+    var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+    });
 
-    // 1. ADD ADDRESS SEARCH BAR (Moved to top-left with Red Pin)
+    var satelliteMap = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        attribution: '© Google'
+    });
+
+    // Initialize Map with Street Map as default
+    var map = L.map('map', {
+        center: [38.85, -77.45],
+        zoom: 11,
+        layers: [streetMap]
+    });
+
+    // 1. ADD ADDRESS SEARCH BAR (Left with Red Pin)
     const searchControl = new GeoSearch.GeoSearchControl({
         provider: new GeoSearch.OpenStreetMapProvider(),
         style: 'bar',
@@ -121,8 +132,17 @@
         `;
     });
 
-    // 3. LAYER CONTROL (Updated label)
-    L.control.layers(null, { "Water Utility Service Area": epaBoundaries }, { collapsed: false }).addTo(map);
+    // 3. UPDATED LAYER CONTROL (Toggle Satellite and Utility Area)
+    var baseMaps = {
+        "Street Map": streetMap,
+        "Satellite": satelliteMap
+    };
+
+    var overlayMaps = {
+        "Water Utility Service Area": epaBoundaries
+    };
+
+    L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
     // 4. LOAD DATA CENTER PINS
     async function loadMapData() {
