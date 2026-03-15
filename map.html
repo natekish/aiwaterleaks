@@ -84,7 +84,7 @@
         const p = layer.feature.properties;
         const uName = p.PWS_NAME || p.PWS_Name || "Public Utility";
         const pop = p.Population_Served_Count || p.Population_Served || 0;
-        const dailyEstimate = pop * 100; // Standard 100 gal/day/person
+        const dailyEstimate = pop * 100;
 
         return `
             <div style="min-width: 220px;">
@@ -96,7 +96,7 @@
             </div>`;
     });
 
-    // 5. DATA CENTER PINS (With Yearly Totals)
+    // 5. DATA CENTER PINS (Fixed to parse YearlyTotals)
     async function loadMapData() {
         const dcIcon = new L.Icon({ 
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', 
@@ -111,27 +111,29 @@
                 pointToLayer: (f, latlng) => L.marker(latlng, { icon: dcIcon }),
                 onEachFeature: (f, layer) => {
                     const props = f.properties;
-                    let popupContent = `<strong>${props.Location || 'DC Location'}</strong><br>${props.Company || 'Operator'}<hr>`;
+                    let popupContent = `<div style="min-width: 220px;">`;
+                    popupContent += `<strong>${props.Location || 'DC Location'}</strong><br>${props.Company || 'Operator'}<hr>`;
                     
-                    // Specific years to display if present in GeoJSON
-                    const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
-                    let foundYear = false;
-
-                    years.forEach(year => {
-                        if (props[year]) {
-                            const val = parseFloat(props[year]);
-                            popupContent += `<div class="stat-row"><span>${year} Usage:</span><strong>${val.toLocaleString()} gal</strong></div>`;
-                            foundYear = true;
-                        }
-                    });
-
-                    if (props.TotalGallons) {
-                        const total = parseFloat(props.TotalGallons);
-                        popupContent += `<hr><div class="stat-row"><strong>Total Usage:</strong><strong style="color: #991b1b;">${total.toLocaleString()} gal</strong></div>`;
-                    } else if (!foundYear) {
-                        popupContent += `<div>No usage data available.</div>`;
+                    // Logic to extract yearly data from the "YearlyTotals" string field
+                    if (props.YearlyTotals) {
+                        const lines = props.YearlyTotals.split('<br>');
+                        lines.forEach(line => {
+                            if(line.trim() !== "") {
+                                const parts = line.split(':');
+                                if(parts.length === 2) {
+                                    popupContent += `<div class="stat-row"><span>${parts[0].trim()}:</span><strong>${parts[1].trim()}</strong></div>`;
+                                } else {
+                                    popupContent += `<div class="stat-row"><span>${line}</span></div>`;
+                                }
+                            }
+                        });
                     }
 
+                    if (props.TotalGallons) {
+                        popupContent += `<hr><div class="stat-row"><strong>Aggregate Total:</strong><strong style="color: #991b1b;">${props.TotalGallons} gal</strong></div>`;
+                    }
+
+                    popupContent += `</div>`;
                     layer.bindPopup(popupContent);
                 }
             }).addTo(map);
