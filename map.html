@@ -1,79 +1,129 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXY7BHERXJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NXY7BHERXJ');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXY7BHERXJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NXY7BHERXJ');
+    </script>
 
     <meta charset="UTF-8">
     <title>Data Center Water Usage Summary</title>
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
         #map { height: 100vh; width: 100%; }
 
-        /* Styling for the toolbar you requested */
-    .toolbar {
-        position: absolute;
-        top: 15px;
-        left: 50px; /* Shifted slightly to the right to clear Leaflet zoom buttons */
-        z-index: 1000;
-        background: white;
-        padding: 10px;
-        border-radius: 6px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+        .toolbar {
+            position: absolute;
+            top: 15px;
+            left: 50px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
     
-    .toolbar button {
-        padding: 8px 12px;
-        background: #1976d2;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: default; /* Changed to default since it's an instructional label */
-        font-weight: bold;
-    }
-        .leaflet-popup-content { font-size: 14px; line-height: 1.5; }
+        .toolbar button {
+            padding: 8px 12px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .leaflet-popup-content { font-size: 14px; line-height: 1.5; width: 220px !important; }
         .total-row { border-top: 1px solid #ccc; margin-top: 5px; padding-top: 5px; font-weight: bold; }
-    
+        
+        /* Specific styling for the EPA popup comparisons */
+        .epa-stat { display: flex; justify-content: space-between; margin-bottom: 2px; }
+        .epa-label { color: #64748b; font-size: 12px; }
+        .epa-value { font-weight: bold; font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="toolbar">
-    <button>To view annual water use click pins</button>
+    <button>Compare Data Center Use to Community Size</button>
 </div>
 
 <div id="map"></div>
 
 <script>
-    // Initialize map centered on the Northern Virginia data cluster
     var map = L.map('map').setView([38.85, -77.45], 11);
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    var openStreetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
+    // EPA Water System Boundaries Layer
+    var epaBoundaries = L.esri.featureLayer({
+        url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
+        style: function () {
+            return {
+                color: '#1976d2',
+                weight: 2,
+                fillOpacity: 0.15,
+                fillColor: '#64b5f6'
+            };
+        }
+    });
+
+    // EPA Popup: Detailed Community Impact Comparison
+    epaBoundaries.bindPopup(function (layer) {
+        const p = layer.feature.properties;
+        
+        // Formatting numbers
+        const pop = p.Population_Served_Count ? p.Population_Served_Count.toLocaleString() : "Unknown";
+        const conn = p.Service_Connections_Count ? p.Service_Connections_Count.toLocaleString() : "Unknown";
+
+        return `
+            <div style="padding: 5px;">
+                <strong style="color: #1e3a8a; font-size: 15px;">${p.PWS_NAME}</strong><br>
+                <small style="color: #64748b;">Public Water Utility Area</small>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 8px 0;">
+                
+                <div class="epa-stat">
+                    <span class="epa-label">Population Served:</span>
+                    <span class="epa-value">${pop}</span>
+                </div>
+                <div class="epa-stat">
+                    <span class="epa-label">Household Connections:</span>
+                    <span class="epa-value">${conn}</span>
+                </div>
+
+                <div style="margin-top: 10px; font-size: 11px; background: #f8fafc; padding: 6px; border-radius: 4px; border-left: 3px solid #3b82f6;">
+                    <strong>Tip:</strong> Click nearby red pins to see how many of these ${pop} residents' worth of water is consumed by one facility.
+                </div>
+            </div>
+        `;
+    });
+
+    // Layer Control
+    var overlayLayers = {
+        "EPA Community Water Systems": epaBoundaries
+    };
+    L.control.layers(null, overlayLayers, { collapsed: false }).addTo(map);
+
+    // Data Center Pins Loading
     async function loadMapData() {
         try {
-            // Loading the aggregated GeoJSON
             const response = await fetch('wateruse_agg.geojson');
             const data = await response.json();
 
             L.geoJSON(data, {
                 onEachFeature: function (feature, layer) {
                     const p = feature.properties;
-                    
-                    // Create the popup content with yearly breakdown
                     const popupContent = `
                         <strong>${p.Location}</strong><br>
                         <small>${p.Company} | ${p.Utility}</small><hr>
@@ -81,13 +131,11 @@
                         ${p.YearlyTotals}
                         <div class="total-row">All-time Total: ${p.TotalGallons} gal</div>
                     `;
-                    
                     layer.bindPopup(popupContent);
                 }
             }).addTo(map);
         } catch (error) {
             console.error('Error loading the map data:', error);
-            alert("To view the map, please run this folder using a local web server (e.g., Live Server in VS Code).");
         }
     }
 
