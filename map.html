@@ -30,7 +30,8 @@
         /* Popup Styling */
         .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
         .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; }
-        .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; border-bottom: 1px solid #f9f9f9; padding-bottom: 2px; }
+        .stat-row strong { margin-left: 10px; }
     </style>
 </head>
 <body>
@@ -38,7 +39,7 @@
 <div id="map"></div>
 
 <script>
-    // Base Layers
+    // 1. BASE LAYERS
     var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' });
     var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { 
         attribution: '© Google (Hybrid)',
@@ -52,7 +53,7 @@
     map.createPane('middlePane');  map.getPane('middlePane').style.zIndex = 450; // Rivers
     map.createPane('frontPane');   map.getPane('frontPane').style.zIndex = 500; // Utilities/Pins
 
-    // 1. WATERSHEDS (HUC-8)
+    // 2. WATERSHEDS (HUC-8)
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
         pane: 'backPane',
@@ -64,7 +65,7 @@
         return `<div class="basin-header">${p.name || "Unknown"} Basin</div><strong>HUC-8:</strong> ${p.huc8}`;
     });
 
-    // 2. RIVERS & GAGES (Luminous Cyan)
+    // 3. RIVERS & GAGES (Luminous Cyan)
     var riversLayer = L.esri.dynamicMapLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
         layers: [0, 1, 2, 3, 4, 5, 6, 9], 
@@ -72,7 +73,7 @@
         className: 'luminous-rivers'
     }).addTo(map);
 
-    // 3. WATER UTILITIES (With Demand Estimate)
+    // 4. WATER UTILITIES (With Demand Estimate)
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         pane: 'frontPane',
@@ -81,9 +82,9 @@
 
     epaBoundaries.bindPopup(layer => {
         const p = layer.feature.properties;
-        const uName = p.PWS_NAME || p.PWS_Name || p.pws_name || "Public Utility";
+        const uName = p.PWS_NAME || p.PWS_Name || "Public Utility";
         const pop = p.Population_Served_Count || p.Population_Served || 0;
-        const dailyEstimate = pop * 100; // 100 gal/day/person
+        const dailyEstimate = pop * 100; // Standard 100 gal/day/person
 
         return `
             <div style="min-width: 220px;">
@@ -91,11 +92,11 @@
                 <small>Utility Service Boundary</small>
                 <hr style="margin: 8px 0; border: 0; border-top: 1px solid #eee;">
                 <div class="stat-row"><span>Pop. Served:</span><strong>${pop.toLocaleString()}</strong></div>
-                <div class="stat-row"><span>Daily Community Demand:</span><strong style="color: #1e40af;">${dailyEstimate.toLocaleString()} gal</strong></div>
+                <div class="stat-row"><span>Est. Daily Demand:</span><strong style="color: #1e40af;">${dailyEstimate.toLocaleString()} gal</strong></div>
             </div>`;
     });
 
-    // 4. DATA CENTER PINS
+    // 5. DATA CENTER PINS (With Yearly Totals)
     async function loadMapData() {
         const dcIcon = new L.Icon({ 
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', 
@@ -109,10 +110,32 @@
                 pane: 'frontPane',
                 pointToLayer: (f, latlng) => L.marker(latlng, { icon: dcIcon }),
                 onEachFeature: (f, layer) => {
-                    layer.bindPopup(`<strong>${f.properties.Location}</strong><br>${f.properties.Company}<hr>Usage: ${f.properties.TotalGallons} gal`);
+                    const props = f.properties;
+                    let popupContent = `<strong>${props.Location || 'DC Location'}</strong><br>${props.Company || 'Operator'}<hr>`;
+                    
+                    // Specific years to display if present in GeoJSON
+                    const years = ['2020', '2021', '2022', '2023', '2024', '2025'];
+                    let foundYear = false;
+
+                    years.forEach(year => {
+                        if (props[year]) {
+                            const val = parseFloat(props[year]);
+                            popupContent += `<div class="stat-row"><span>${year} Usage:</span><strong>${val.toLocaleString()} gal</strong></div>`;
+                            foundYear = true;
+                        }
+                    });
+
+                    if (props.TotalGallons) {
+                        const total = parseFloat(props.TotalGallons);
+                        popupContent += `<hr><div class="stat-row"><strong>Total Usage:</strong><strong style="color: #991b1b;">${total.toLocaleString()} gal</strong></div>`;
+                    } else if (!foundYear) {
+                        popupContent += `<div>No usage data available.</div>`;
+                    }
+
+                    layer.bindPopup(popupContent);
                 }
             }).addTo(map);
-        } catch (e) { console.error("GeoJSON error", e); }
+        } catch (e) { console.error("GeoJSON load failed:", e); }
     }
 
     L.control.layers(
