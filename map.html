@@ -23,10 +23,15 @@
         body { margin: 0; font-family: Arial, sans-serif; }
         #map { height: 100vh; width: 100%; }
 
-        /* Custom Search Bar Position (Left) */
+        /* Search Bar Position & Styling */
         .leaflet-geosearch-button {
             margin-left: 10px !important;
             margin-top: 10px !important;
+        }
+
+        /* Contrast filter for Data Center pins (Makes them Dark Maroon) */
+        .dark-red-marker {
+            filter: hue-rotate(0deg) brightness(0.4) saturate(2);
         }
 
         /* Popup Styling */
@@ -50,29 +55,29 @@
 <div id="map"></div>
 
 <script>
-    // Define Base Layers
+    // Define Base Maps
     var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '© OpenStreetMap contributors'
+        attribution: '© OpenStreetMap'
     });
 
     var satelliteMap = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
         maxZoom: 20,
-        attribution: '© Google'
+        attribution: '© Google Satellite'
     });
 
-    // Initialize Map with Street Map as default
+    // Initialize Map
     var map = L.map('map', {
         center: [38.85, -77.45],
         zoom: 11,
         layers: [streetMap]
     });
 
-    // 1. ADD ADDRESS SEARCH BAR (Left with Red Pin)
+    // 1. ADDRESS SEARCH BAR (Left side with Bright Red Pin)
     const searchControl = new GeoSearch.GeoSearchControl({
         provider: new GeoSearch.OpenStreetMapProvider(),
         style: 'bar',
-        position: 'topleft', 
+        position: 'topleft',
         showMarker: true,
         showPopup: true,
         marker: {
@@ -84,16 +89,14 @@
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
                 shadowSize: [41, 41]
-            }),
+            })
         },
-        retainZoomLevel: false,
-        animateZoom: true,
         autoClose: true,
         searchLabel: 'Enter address...'
     });
     map.addControl(searchControl);
 
-    // 2. WATER SYSTEM LAYER
+    // 2. WATER UTILITY BOUNDARIES
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         style: { color: '#1976d2', weight: 2, fillOpacity: 0.15, fillColor: '#64b5f6' }
@@ -103,73 +106,70 @@
         const p = layer.feature.properties;
         const name = p.PWS_NAME || p.PWS_Name || "Public Utility";
         const population = p.Population_Served_Count || p.Population_Served || 0;
-        
         const annualCommunityNeed = population * 36500;
-        const popFormatted = population.toLocaleString();
-        const volumeFormatted = annualCommunityNeed.toLocaleString();
-
+        
         return `
             <div style="padding: 5px;">
                 <strong style="color: #1e3a8a; font-size: 15px;">${name}</strong><br>
                 <small style="color: #64748b;">Utility Service Area</small>
                 <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 8px 0;">
-                
                 <div class="epa-stat">
                     <span class="epa-label">Population Served:</span>
-                    <span class="epa-value">${popFormatted} people</span>
+                    <span class="epa-value">${population.toLocaleString()} people</span>
                 </div>
                 <div class="epa-stat" style="margin-top: 5px; flex-direction: column;">
                     <span class="epa-label">Est. Annual Community Need:</span>
-                    <span class="epa-value" style="color: #0369a1; font-size: 14px;">${volumeFormatted} gal/yr</span>
+                    <span class="epa-value" style="color: #0369a1;">${annualCommunityNeed.toLocaleString()} gal/yr</span>
                 </div>
-
                 <div class="comparison-box">
-                    <strong>Community Comparison:</strong> This entire community of ${popFormatted} residents needs ${volumeFormatted} gallons a year. 
-                    <br><br>
-                    Check the nearby data center pins; many use hundreds of millions of gallons annually.
+                    <strong>Community Comparison:</strong> This entire community needs ${annualCommunityNeed.toLocaleString()} gallons a year. Check pins for Data Center usage totals.
                 </div>
-            </div>
-        `;
+            </div>`;
     });
 
-    // 3. UPDATED LAYER CONTROL (Toggle Satellite and Utility Area)
+    // 3. LAYER TOGGLE CONTROL
     var baseMaps = {
         "Street Map": streetMap,
-        "Satellite": satelliteMap
+        "Satellite View": satelliteMap
     };
-
     var overlayMaps = {
         "Water Utility Service Area": epaBoundaries
     };
-
     L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
-    // 4. LOAD DATA CENTER PINS
+    // 4. DATA CENTER PINS (Dark Red)
     async function loadMapData() {
+        const darkRedIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+            className: 'dark-red-marker'
+        });
+
         try {
             const response = await fetch('wateruse_agg.geojson');
             const data = await response.json();
             L.geoJSON(data, {
-                onEachFeature: function (feature, layer) {
+                pointToLayer: (feature, latlng) => L.marker(latlng, { icon: darkRedIcon }),
+                onEachFeature: (feature, layer) => {
                     const p = feature.properties;
-                    const popupContent = `
+                    layer.bindPopup(`
                         <strong>${p.Location}</strong><br>
                         <small>${p.Company} | ${p.Utility}</small><hr>
                         <strong>Yearly Totals:</strong><br>${p.YearlyTotals}
                         <div style="border-top: 1px solid #ccc; margin-top: 5px; padding-top: 5px; font-weight: bold;">
                             All-time Total: ${p.TotalGallons} gal
                         </div>
-                    `;
-                    layer.bindPopup(popupContent);
+                    `);
                 }
             }).addTo(map);
-        } catch (error) {
-            console.error('Error loading pins:', error);
-        }
+        } catch (e) { console.error(e); }
     }
 
     loadMapData();
 </script>
-
 </body>
 </html>
