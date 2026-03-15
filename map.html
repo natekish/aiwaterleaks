@@ -14,13 +14,16 @@
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
     <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.11.0/dist/geosearch.css"/>
+    <script src="https://unpkg.com/leaflet-geosearch@3.11.0/dist/bundle.min.js"></script>
 
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
         #map { height: 100vh; width: 100%; }
 
+        /* Toolbar Styling */
         .toolbar {
             position: absolute;
             top: 15px;
@@ -31,7 +34,6 @@
             border-radius: 6px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
-    
         .toolbar button {
             padding: 8px 12px;
             background: #1976d2;
@@ -39,21 +41,29 @@
             border: none;
             border-radius: 4px;
             font-weight: bold;
+            cursor: default;
         }
 
-        .leaflet-popup-content { font-size: 14px; line-height: 1.5; width: 220px !important; }
-        .total-row { border-top: 1px solid #ccc; margin-top: 5px; padding-top: 5px; font-weight: bold; }
-        
-        /* Specific styling for the EPA popup comparisons */
-        .epa-stat { display: flex; justify-content: space-between; margin-bottom: 2px; }
+        /* Popup Styling */
+        .leaflet-popup-content { font-size: 14px; line-height: 1.5; width: 260px !important; }
+        .epa-stat { display: flex; justify-content: space-between; margin-bottom: 4px; }
         .epa-label { color: #64748b; font-size: 12px; }
-        .epa-value { font-weight: bold; font-size: 13px; }
+        .epa-value { font-weight: bold; font-size: 13px; color: #1e293b; }
+        .comparison-box { 
+            margin-top: 12px; 
+            font-size: 11px; 
+            background: #fff7ed; 
+            padding: 10px; 
+            border-radius: 4px; 
+            border-left: 4px solid #f97316; 
+            color: #9a3412; 
+        }
     </style>
 </head>
 <body>
 
 <div class="toolbar">
-    <button>Compare Data Center Use to Community Size</button>
+    <button>Search your address to see local water impact</button>
 </div>
 
 <div id="map"></div>
@@ -61,81 +71,89 @@
 <script>
     var map = L.map('map').setView([38.85, -77.45], 11);
 
-    var openStreetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // EPA Water System Boundaries Layer
+    // 1. ADD ADDRESS SEARCH BAR
+    const searchControl = new GeoSearch.GeoSearchControl({
+        provider: new GeoSearch.OpenStreetMapProvider(),
+        style: 'bar',
+        showMarker: true,
+        retainZoomLevel: false,
+        animateZoom: true,
+        autoClose: true,
+        searchLabel: 'Enter address...'
+    });
+    map.addControl(searchControl);
+
+    // 2. EPA WATER SYSTEM LAYER
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
-        style: function () {
-            return {
-                color: '#1976d2',
-                weight: 2,
-                fillOpacity: 0.15,
-                fillColor: '#64b5f6'
-            };
-        }
-    });
+        style: { color: '#1976d2', weight: 2, fillOpacity: 0.15, fillColor: '#64b5f6' }
+    }).addTo(map);
 
-    // EPA Popup: Detailed Community Impact Comparison
     epaBoundaries.bindPopup(function (layer) {
         const p = layer.feature.properties;
+        const name = p.PWS_NAME || p.PWS_Name || "Public Utility";
+        const population = p.Population_Served_Count || p.Population_Served || 0;
         
-        // Formatting numbers
-        const pop = p.Population_Served_Count ? p.Population_Served_Count.toLocaleString() : "Unknown";
-        const conn = p.Service_Connections_Count ? p.Service_Connections_Count.toLocaleString() : "Unknown";
+        // CALCULATION: Community Water Needs (Annually)
+        // 100 gallons/day * 365 days = 36,500 gallons per person per year
+        const annualCommunityNeed = population * 36500;
+        
+        const popFormatted = population.toLocaleString();
+        const volumeFormatted = annualCommunityNeed.toLocaleString();
 
         return `
             <div style="padding: 5px;">
-                <strong style="color: #1e3a8a; font-size: 15px;">${p.PWS_NAME}</strong><br>
-                <small style="color: #64748b;">Public Water Utility Area</small>
+                <strong style="color: #1e3a8a; font-size: 15px;">${name}</strong><br>
+                <small style="color: #64748b;">Utility Service Area</small>
                 <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 8px 0;">
                 
                 <div class="epa-stat">
                     <span class="epa-label">Population Served:</span>
-                    <span class="epa-value">${pop}</span>
+                    <span class="epa-value">${popFormatted} people</span>
                 </div>
-                <div class="epa-stat">
-                    <span class="epa-label">Household Connections:</span>
-                    <span class="epa-value">${conn}</span>
+                <div class="epa-stat" style="margin-top: 5px; flex-direction: column;">
+                    <span class="epa-label">Est. Annual Community Need:</span>
+                    <span class="epa-value" style="color: #0369a1; font-size: 14px;">${volumeFormatted} gal/yr</span>
                 </div>
 
-                <div style="margin-top: 10px; font-size: 11px; background: #f8fafc; padding: 6px; border-radius: 4px; border-left: 3px solid #3b82f6;">
-                    <strong>Tip:</strong> Click nearby red pins to see how many of these ${pop} residents' worth of water is consumed by one facility.
+                <div class="comparison-box">
+                    <strong>Community Comparison:</strong> This entire community of ${popFormatted} residents needs ${volumeFormatted} gallons a year. 
+                    <br><br>
+                    Check the nearby data center pins; many use hundreds of millions of gallons annually.
                 </div>
             </div>
         `;
     });
 
-    // Layer Control
-    var overlayLayers = {
-        "EPA Community Water Systems": epaBoundaries
-    };
-    L.control.layers(null, overlayLayers, { collapsed: false }).addTo(map);
+    // 3. LAYER CONTROL
+    L.control.layers(null, { "EPA Water Systems": epaBoundaries }, { collapsed: false }).addTo(map);
 
-    // Data Center Pins Loading
+    // 4. LOAD DATA CENTER PINS
     async function loadMapData() {
         try {
             const response = await fetch('wateruse_agg.geojson');
             const data = await response.json();
-
             L.geoJSON(data, {
                 onEachFeature: function (feature, layer) {
                     const p = feature.properties;
                     const popupContent = `
                         <strong>${p.Location}</strong><br>
                         <small>${p.Company} | ${p.Utility}</small><hr>
-                        <strong>Yearly Totals:</strong><br>
-                        ${p.YearlyTotals}
-                        <div class="total-row">All-time Total: ${p.TotalGallons} gal</div>
+                        <strong>Yearly Totals:</strong><br>${p.YearlyTotals}
+                        <div style="border-top: 1px solid #ccc; margin-top: 5px; padding-top: 5px; font-weight: bold;">
+                            All-time Total: ${p.TotalGallons} gal
+                        </div>
                     `;
                     layer.bindPopup(popupContent);
                 }
             }).addTo(map);
         } catch (error) {
-            console.error('Error loading the map data:', error);
+            console.error('Error loading pins:', error);
         }
     }
 
