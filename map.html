@@ -22,24 +22,30 @@
     <style>
         body { margin: 0; font-family: Arial, sans-serif; }
         #map { height: 100vh; width: 100%; }
-        .leaflet-geosearch-button { margin-left: 10px !important; margin-top: 10px !important; }
         
-        /* Marker & Layer Styling */
-        .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2); }
+        /* High Contrast Rivers */
+        .high-contrast-rivers { filter: hue-rotate(160deg) brightness(1.2) saturate(3); }
         
-        /* Teal Filter for Rivers & Streams */
-        .teal-rivers { filter: hue-rotate(140deg) brightness(1.2) saturate(2.5); }
-
-        .huc-label {
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid #8b5cf6;
-            border-radius: 4px;
-            padding: 2px 5px;
-            font-size: 10px;
-            font-weight: bold;
-            color: #5b21b6;
-            white-space: nowrap;
+        /* Watershed Label - Made un-clickable so utility layer works */
+        .huc8-label {
+            background: rgba(255, 255, 255, 0.75);
+            border: 2px solid #8b5cf6;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #4c1d95;
+            text-transform: uppercase;
+            pointer-events: none !important; /* Critical Fix */
+            text-align: center;
         }
+
+        /* Utility Pop-up Styling */
+        .leaflet-popup-content { font-size: 14px; line-height: 1.5; width: 280px !important; }
+        .epa-stat { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .epa-label { color: #64748b; font-size: 11px; font-weight: 600; }
+        .epa-value { font-weight: bold; font-size: 13px; color: #1e293b; }
+        .comparison-box { margin-top: 10px; font-size: 11px; background: #f0f9ff; padding: 8px; border-radius: 4px; border-left: 4px solid #0ea5e9; color: #0369a1; }
     </style>
 </head>
 <body>
@@ -50,74 +56,72 @@
     var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' });
     var satelliteMap = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { attribution: '© Google Satellite' });
 
-    var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [streetMap] });
+    var map = L.map('map', { center: [38.85, -77.45], zoom: 10, layers: [streetMap] });
 
-    // 1. Address Search (Bright Red Pin)
-    const searchControl = new GeoSearch.GeoSearchControl({
-        provider: new GeoSearch.OpenStreetMapProvider(),
-        style: 'bar', position: 'topleft', showMarker: true,
-        marker: {
-            icon: new L.Icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [25, 41], iconAnchor: [12, 41]
-            })
-        }
-    });
-    map.addControl(searchControl);
-
-    // 2. Overlays
-    
-    var epaBoundaries = L.esri.featureLayer({
-        url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
-        style: { color: '#1976d2', weight: 2, fillOpacity: 0.1 }
-    }).addTo(map);
-
-    var huc12Layer = L.esri.featureLayer({
-        url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/6',
-        style: { color: '#8b5cf6', weight: 1.5, dashArray: '5, 5', fillOpacity: 0.05 },
+    // 1. Watershed Layer (Bottom)
+    var huc8Layer = L.esri.featureLayer({
+        url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
+        style: { color: '#8b5cf6', weight: 3, dashArray: '8, 4', fillOpacity: 0.05 },
         onEachFeature: function(feature, layer) {
             if (feature.properties && feature.properties.Name) {
                 layer.bindTooltip(feature.properties.Name, {
-                    permanent: true, direction: 'center', className: 'huc-label'
+                    permanent: true, direction: 'center', className: 'huc8-label', opacity: 0.8
                 });
             }
         }
+    }).addTo(map);
+
+    // 2. Water Utility Layer (Top)
+    var epaBoundaries = L.esri.featureLayer({
+        url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
+        style: { color: '#1976d2', weight: 2, fillOpacity: 0.15, fillColor: '#64b5f6' }
+    }).addTo(map);
+
+    epaBoundaries.bindPopup(function (layer) {
+        const p = layer.feature.properties;
+        const name = p.PWS_NAME || p.PWS_Name || "Public Utility";
+        const pop = p.Population_Served_Count || p.Population_Served || 0;
+        const annualNeed = pop * 36500;
+        
+        return `
+            <div style="padding: 5px;">
+                <strong style="color: #1e3a8a; font-size: 15px;">${name}</strong><br>
+                <small>Utility Service Area</small><hr>
+                <div class="epa-stat">
+                    <span class="epa-label">Population Served:</span>
+                    <span class="epa-value">${pop.toLocaleString()}</span>
+                </div>
+                <div class="epa-stat" style="flex-direction: column;">
+                    <span class="epa-label">Est. Annual Community Need:</span>
+                    <span class="epa-value" style="color:#0284c7; font-size: 14px;">${annualNeed.toLocaleString()} gal</span>
+                </div>
+                <div class="comparison-box">
+                    This community requires ~${annualNeed.toLocaleString()} gallons/year for all residents.
+                </div>
+            </div>`;
     });
 
-    // RIVERS & STREAMS (Set to Teal via CSS Class)
+    // 3. Rivers Layer
     var riversLayer = L.esri.dynamicMapLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
-        layers: [1, 2, 3, 4, 5, 6, 9], 
-        opacity: 0.8,
-        className: 'teal-rivers' 
-    });
+        layers: [1, 2, 3, 4, 5, 6, 9], opacity: 0.9, className: 'high-contrast-rivers'
+    }).addTo(map);
 
-    // WETLANDS (WMS Service for higher reliability)
-    var wetlandsLayer = L.tileLayer.wms('https://www.fws.gov/wetlands/arcgis/services/Wetlands/MapServer/WMSServer', {
-        layers: '1',
-        format: 'image/png',
-        transparent: true,
-        opacity: 0.6,
-        attribution: 'U.S. Fish & Wildlife Service'
-    });
-
-    // Layer Controls
+    // Controls
     var baseMaps = { "Street Map": streetMap, "Satellite View": satelliteMap };
     var overlayMaps = {
         "Water Utility Service Area": epaBoundaries,
-        "HUC-12 Subwatersheds": huc12Layer,
-        "Rivers & Streams (Teal)": riversLayer,
-        "Wetlands (FWS)": wetlandsLayer
+        "HUC-8 Watershed Basins": huc8Layer,
+        "Rivers & Streams": riversLayer
     };
     L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 
-    // 3. Data Center Pins (Dark Red/Maroon)
+    // 4. Data Center Pins
     async function loadMapData() {
         const darkRedIcon = new L.Icon({
             iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
             shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-            iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker'
+            iconSize: [25, 41], iconAnchor: [12, 41]
         });
 
         try {
@@ -127,15 +131,10 @@
                 pointToLayer: (f, l) => L.marker(l, { icon: darkRedIcon }),
                 onEachFeature: (f, layer) => {
                     const p = f.properties;
-                    layer.bindPopup(`
-                        <strong>${p.Location}</strong><br>
-                        <small>${p.Company}</small><hr>
-                        ${p.YearlyTotals}<br>
-                        <strong>Total: ${p.TotalGallons} gal</strong>
-                    `);
+                    layer.bindPopup(`<strong>${p.Location}</strong><br><small>${p.Company}</small><hr>${p.YearlyTotals}<br><strong>Total: ${p.TotalGallons} gal</strong>`);
                 }
             }).addTo(map);
-        } catch (e) { console.error('GeoJSON Load Error:', e); }
+        } catch (e) { console.error(e); }
     }
     loadMapData();
 </script>
