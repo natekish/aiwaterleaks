@@ -70,37 +70,30 @@
     
     .chart-container { position: relative; height: 450px; width: 100%; }
 
-    /* FIXED FOOTER STYLES */
-    footer {
-        background: white;
-        border-top: 1px solid #e2e8f0;
-        padding: 40px 0;
-        width: calc(100% + 50px); /* Adjusting for body margin */
-        margin: 40px -25px -25px -25px; 
-    }
 
-    .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 25px;
-    }
-
-    .footer-section {
-        width: 100%;
-        text-align: left;
-    }
-
-.support-box {
-        background: #ffffff;
-        padding: 30px;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        margin-top: 30px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    h2, h3 { color: #333; }
+        /* FOOTER & FIXED SUPPORT BOX */
+        footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 60px 0; margin-top: auto; }
+        .footer-container { max-width: 1100px; width: 90%; margin: 0 auto; }
+        .footer-section { width: 100%; text-align: center; }
+        .footer-section h3 { font-size: 1.4rem; color: #0f172a; margin-bottom: 15px; }
+        .footer-section p.disclaimer { font-size: 0.9rem; color: #94a3b8; max-width: 800px; margin: 0 auto 40px; line-height: 1.6; }
+        
+        .support-box { 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #6366f1; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.04);
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 700px;
+            margin: 20px auto 0;
+        }
+        .support-box h3 { color: #1e293b; margin-top: 0; }
+        .support-box p { color: #64748b; margin-bottom: 30px; font-size: 1rem; }
+        
+        .gfm-embed { margin: 0 auto; display: inline-block; }
 </style>
 </head>
 <body>
@@ -162,28 +155,21 @@
     </div>
 </div>
 
-<footer>
-    <div class="footer-container">
-        <div class="footer-section">
-            <h3>Data Disclaimer & Contributions</h3>
-            <p>
-                <b>Disclaimer:</b> This application was obtained through formal Freedom of Information Act (FOIA) requests submitted to the respective public utilities. 
-                While every effort has been made to ensure accuracy, this data is provided "as is." 
-            </p>
-            <p>
-                <b>Contribute Data:</b> We encourage the submission of verified water usage records by the public to 
-                <a href="mailto:datacenterwaterleaks@gmail.com">datacenterwaterleaks@gmail.com</a>.
-            </p>
-
-            <div class="support-box">
-                <h3>Support This Project</h3>
-                <p>Please donate to support our ongoing efforts. Your contribution helps us pay for FOIA fees, technology costs, and outreach efforts.</p>
-                <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
-                <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Data Disclaimer and Support</h3>
+                <p class="disclaimer">The information presented in this application is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is" for transparency purposes.</p>
+                
+                <div class="support-box">
+                    <h3>Support This Project</h3>
+                    <p>Your contribution helps us cover FOIA fees, technology costs, and the research required to keep this data public and accessible.</p>
+                    <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
+                    <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
 <script>
 let allRecords=[];

@@ -16,31 +16,65 @@
         .counter-number { font-size: 32px; font-weight: 800; font-family: 'Courier New', monospace; color: #0f172a; }
         .counter-unit { font-size: 14px; color: #94a3b8; margin-top: 5px; }
 
-        /* Logo styling + Home Link */
         .logo-box { width: 180px; height: 180px; background: white; border-radius: 50%; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s; }
         .logo-box:hover { transform: scale(1.02); }
         .logo-box img { width: 85%; height: auto; }
         
-        /* Grid adjusted to handle 4 items elegantly */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1100px; width: 90%; margin-bottom: 60px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1100px; width: 90%; margin-bottom: 40px; }
         .card { background: white; border-radius: 16px; padding: 35px; text-align: center; transition: transform 0.2s; border: 1px solid #e2e8f0; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-color: #1976d2; }
         .icon { font-size: 2.5rem; margin-bottom: 15px; }
         h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.25rem; }
         .card p { font-size: 0.95rem; color: #64748b; margin-bottom: 25px; flex-grow: 1; }
         .btn { padding: 12px 24px; color: white; border-radius: 6px; font-weight: 600; width: 85%; border: none; cursor: pointer; display: inline-block; text-decoration: none; text-align: center; }
+        
         .usage-btn { background: #d32f2f; }
         .offset-btn { background: #10b981; }
         .map-btn { background: #1976d2; }
-        .law-btn { background: #6366f1; } /* Indigo for Law */
+        .law-btn { background: #6366f1; }
 
-        /* FOOTER */
-        footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 40px 0; margin-top: auto; }
+        /* SUBMIT DATA SECTION */
+        .submit-section { max-width: 1100px; width: 90%; margin-bottom: 60px; background: #fff; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; box-sizing: border-box; }
+        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 10px; color: #0f172a; text-align: center; }
+        .section-subtitle { text-align: center; color: #64748b; margin-bottom: 30px; }
+        
+        .role-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .role-box { padding: 25px; border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; }
+        .role-box h3 { margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        .role-box ul { padding-left: 20px; color: #475569; font-size: 0.9rem; line-height: 1.6; }
+
+        .foia-guide { background: #eff6ff; padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #3b82f6; }
+        .foia-guide h4 { margin-top: 0; color: #1d4ed8; }
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .step { font-size: 0.85rem; color: #1e40af; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #bfdbfe; }
+
+        .drop-zone { background: #fff; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 40px; text-align: center; transition: all 0.2s; cursor: pointer; }
+        .drop-zone:hover { border-color: #1976d2; background: #f0f7ff; }
+        .submit-data-btn { background: #0f172a; color: white; padding: 12px 30px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; margin-top: 20px; }
+
+          /* FOOTER & FIXED SUPPORT BOX */
+        footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 60px 0; margin-top: auto; }
         .footer-container { max-width: 1100px; width: 90%; margin: 0 auto; }
-        .footer-section { width: 100%; margin-bottom: 40px; text-align: left; }
-        .footer-section h3 { font-size: 1.2rem; color: #0f172a; margin-bottom: 15px; }
-        .footer-section p { font-size: 0.95rem; color: #64748b; line-height: 1.6; }
-        .support-box { background: #ffffff; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0; width: 100%; box-sizing: border-box; margin-top: 20px; }
+        .footer-section { width: 100%; text-align: center; }
+        .footer-section h3 { font-size: 1.4rem; color: #0f172a; margin-bottom: 15px; }
+        .footer-section p.disclaimer { font-size: 0.9rem; color: #94a3b8; max-width: 800px; margin: 0 auto 40px; line-height: 1.6; }
+        
+        .support-box { 
+            background: #ffffff; 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #6366f1; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.04);
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 700px;
+            margin: 20px auto 0;
+        }
+        .support-box h3 { color: #1e293b; margin-top: 0; }
+        .support-box p { color: #64748b; margin-bottom: 30px; font-size: 1rem; }
+        
+        .gfm-embed { margin: 0 auto; display: inline-block; }
     </style>
 </head>
 <body>
@@ -71,21 +105,18 @@
             <p>Explore utility billing data and consumption trends for data centers.</p>
             <span class="btn usage-btn">View Usage Data</span>
         </a>
-
         <a href="offsets.html" target="_blank" class="card">
             <span class="icon">🌿</span>
             <h2>Water Offsets</h2>
             <p>Review verified corporate replenishment and nature-based solutions.</p>
             <span class="btn offset-btn">View Offset Data</span>
         </a>
-
         <a href="map.html" target="_blank" class="card">
             <span class="icon">🗺️</span>
             <h2>Impact Map</h2>
             <p>Compare consumption hot-spots against regional restoration efforts.</p>
             <span class="btn map-btn">Explore Map</span>
         </a>
-
         <a href="https://public.flourish.studio/visualisation/27352160/" target="_blank" class="card">
             <span class="icon">⚖️</span>
             <h2>Transparency Law</h2>
@@ -94,15 +125,58 @@
         </a>
     </div>
 
+    <div class="submit-section">
+        <h2 class="section-title">Encourage Transparency</h2>
+        <p class="section-subtitle">Help us build a more sustainable future by contributing data.</p>
+
+        <div class="role-grid">
+            <div class="role-box">
+                <h3><span>👥</span> For the Public</h3>
+                <ul>
+                    <li>Request data from local municipalities using FOIA.</li>
+                    <li>Upload utility bills or PDF reports found online.</li>
+                    <li>Help identify unlisted data center locations.</li>
+                </ul>
+            </div>
+            <div class="role-box">
+                <h3><span>🏢</span> For Operators</h3>
+                <ul>
+                    <li>Voluntarily disclose annual water consumption.</li>
+                    <li>Share project details for restoration offsets.</li>
+                    <li>Provide direct CSV/Excel data for higher accuracy.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="foia-guide">
+            <h4>How to make a FOIA Request</h4>
+            <div class="steps">
+                <div class="step"><strong>1. Identify Agency:</strong> Contact the city water department or utility provider for the site.</div>
+                <div class="step"><strong>2. Use Template:</strong> Download <a href="foia-template.docx">FOIA Template</a>. Specify dates (e.g. 2022-2024).</div>
+                <div class="step"><strong>3. Submit & Track:</strong> Submit via email. Agencies must usually respond within 5-10 days.</div>
+            </div>
+            <p style="margin-top: 15px; font-size: 0.85rem;"><a href="foia-opinion.pdf" target="_blank">View Legal Opinion on Public Water Data →</a></p>
+        </div>
+
+        <form action="https://formspree.io/f/datacenterwaterleaks@gmail.com" method="POST" enctype="multipart/form-data">
+            <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <span style="font-size: 3rem;">📁</span>
+                <h3> Drop Data here or email to <a href="mailto:datacenterwaterleaks@gmail.com">datacenterwaterleaks@gmail.com</a></h3>
+                <p id="fileLabel">Support for CSV, XLSX, and PDF documents.</p>
+                <input type="file" name="upload" id="fileInput" style="display:none" multiple onchange="updateLabel()">
+                <button type="submit" class="submit-data-btn">Submit Data</button>
+            </div>
+        </form>
+    </div>
+
     <footer>
         <div class="footer-container">
             <div class="footer-section">
-                <h3>Data Disclaimer & Contributions</h3>
-                <p>The information presented in this application is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is" for transparency purposes.</p>
-                
+                <h3>Data Disclaimer and Support</h3>
+                <p class="disclaimer">The information presented is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is".</p>
                 <div class="support-box">
                     <h3>Support This Project</h3>
-                    <p>Please donate to support our ongoing efforts. Your contribution helps us pay for FOIA fees, technology costs, and outreach efforts.</p>
+                    <p>Your contribution helps cover FOIA fees and technology costs required to keep this data public.</p>
                     <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
                     <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
                 </div>
@@ -111,11 +185,20 @@
     </footer>
 
     <script>
+        function updateLabel() {
+            const input = document.getElementById('fileInput');
+            const label = document.getElementById('fileLabel');
+            if (input.files.length > 0) {
+                label.innerText = input.files.length + " file(s) selected: " + Array.from(input.files).map(f => f.name).join(', ');
+                label.style.color = "#10b981";
+                label.style.fontWeight = "bold";
+            }
+        }
+
         function animateCounter(id, target) {
             const element = document.getElementById(id);
             const duration = 2000;
             const startTime = performance.now();
-
             function update(currentTime) {
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
@@ -156,24 +239,21 @@
                 const useRows = parseCSV(useRes);
                 const offRows = parseCSV(offRes);
 
-                // Read directly from the Gallons (index 4) and Benefit (index 6) columns
+                // Consumption from wateruse.csv (Column 4)
                 const usageTotal = useRows.reduce((sum, row) => sum + (parseFloat(row[4]) || 0), 0);
+                // Restoration from wateroffsets.csv (Column 6)
                 const offsetTotal = offRows.reduce((sum, row) => sum + (parseFloat(row[6]) || 0), 0);
 
-                // Total Consumption = Sum of both files
-                animateCounter('useCounter', usageTotal + offsetTotal);
-                
-                // Benefit = Just the offsets file
+                animateCounter('useCounter', usageTotal);
                 animateCounter('restoreCounter', offsetTotal);
 
             } catch (e) {
                 console.error("CSV loading error:", e);
-                // Fallbacks if files are missing
-                animateCounter('useCounter', 5583820432);
+                // Hardcoded fallbacks if CSVs aren't found
+                animateCounter('useCounter', 5421890432);
                 animateCounter('restoreCounter', 161930000);
             }
         }
-
         window.onload = initDashboard;
     </script>
 </body>
