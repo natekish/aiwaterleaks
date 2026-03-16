@@ -23,7 +23,6 @@
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         #map { height: 100vh; width: 100%; background: #0b1622; }
         
-        /* 1. TOP CENTER SEARCH BAR STYLING */
         #search-container {
             position: absolute;
             top: 20px;
@@ -34,7 +33,6 @@
             max-width: 90%;
         }
 
-        /* Make the geocoder always expanded and centered */
         .leaflet-control-geocoder {
             width: 100% !important;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
@@ -51,23 +49,25 @@
             outline: none !important;
         }
 
-        /* Style the type-ahead dropdown */
         .leaflet-control-geocoder-results {
             border-radius: 0 0 8px 8px;
             border-top: 1px solid #eee;
         }
 
-        /* 2. Map Elements */
         .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); pointer-events: none; }
         .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
         .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; }
+        
+        /* Popup Styling */
+        .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
+        .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; border-bottom: 1px solid #f9f9f9; padding-bottom: 2px; }
+        .stat-row strong { margin-left: 10px; }
     </style>
 </head>
 <body>
 
 <div id="search-container"></div>
-
 <div id="map"></div>
 
 <script>
@@ -81,17 +81,16 @@
         center: [38.85, -77.45], 
         zoom: 11, 
         layers: [satelliteHybrid],
-        zoomControl: false // Moved to bottom-right to clear the top area
+        zoomControl: false 
     });
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // 3. INITIALIZE SEARCH WITH TYPE-AHEAD
     var geocoder = L.Control.geocoder({
         defaultMarkGeocode: false,
         placeholder: "Search address or location...",
-        collapsed: false, // Keep it open
-        suggestMinLength: 3 // Start showing suggestions after 3 letters
+        collapsed: false,
+        suggestMinLength: 3
     })
     .on('markgeocode', function(e) {
         var bbox = e.geocode.bbox;
@@ -101,19 +100,25 @@
     })
     .addTo(map);
 
-    // Manually move the geocoder into our top-center container
     document.getElementById('search-container').appendChild(geocoder.getContainer());
 
-    // 4. MAP LAYERS
     map.createPane('backPane');    map.getPane('backPane').style.zIndex = 400; 
     map.createPane('middlePane');  map.getPane('middlePane').style.zIndex = 450; 
     map.createPane('frontPane');   map.getPane('frontPane').style.zIndex = 500; 
 
+    // 1. WATERSHED POPUPS (HUC-8 Name and Number)
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
         pane: 'backPane',
         style: { color: '#8b5cf6', weight: 2, dashArray: '8, 4', fillOpacity: 0.1 }
     }).addTo(map);
+
+    huc8Layer.bindPopup(layer => {
+        const p = layer.feature.properties;
+        return `
+            <div class="basin-header">${p.name || "Unknown"} Basin</div>
+            <div class="stat-row"><span>HUC-8 ID:</span><strong>${p.huc8}</strong></div>`;
+    });
 
     var riversLayer = L.esri.dynamicMapLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
@@ -122,11 +127,27 @@
         className: 'luminous-rivers'
     }).addTo(map);
 
+    // 2. WATER UTILITY POPUPS (Name, Population, Demand)
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         pane: 'frontPane',
         style: { color: '#00d4ff', weight: 2.5, fillOpacity: 0.2, fillColor: '#0055ff' }
     }).addTo(map);
+
+    epaBoundaries.bindPopup(layer => {
+        const p = layer.feature.properties;
+        const uName = p.PWS_NAME || p.PWS_Name || "Public Utility";
+        const pop = p.Population_Served_Count || p.Population_Served || 0;
+        const dailyEstimate = pop * 100; // Standard 100 gal/person/day
+
+        return `
+            <div style="min-width: 220px;">
+                <div class="utility-header">${uName}</div>
+                <hr style="margin: 8px 0; border: 0; border-top: 1px solid #eee;">
+                <div class="stat-row"><span>Population Served:</span><strong>${pop.toLocaleString()}</strong></div>
+                <div class="stat-row"><span>Est. Water Demand:</span><strong style="color: #1e40af;">${dailyEstimate.toLocaleString()} gal/day</strong></div>
+            </div>`;
+    });
 
     async function loadMapData() {
         const dcIcon = new L.Icon({ 
