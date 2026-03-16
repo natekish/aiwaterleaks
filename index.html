@@ -21,16 +21,18 @@
         .logo-box:hover { transform: scale(1.02); }
         .logo-box img { width: 85%; height: auto; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; width: 90%; margin-bottom: 60px; }
+        /* Grid adjusted to handle 4 items elegantly */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1100px; width: 90%; margin-bottom: 60px; }
         .card { background: white; border-radius: 16px; padding: 35px; text-align: center; transition: transform 0.2s; border: 1px solid #e2e8f0; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-color: #1976d2; }
         .icon { font-size: 2.5rem; margin-bottom: 15px; }
-        h2 { margin: 0 0 10px 0; color: #1e293b; }
+        h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 1.25rem; }
         .card p { font-size: 0.95rem; color: #64748b; margin-bottom: 25px; flex-grow: 1; }
         .btn { padding: 12px 24px; color: white; border-radius: 6px; font-weight: 600; width: 85%; border: none; cursor: pointer; display: inline-block; text-decoration: none; text-align: center; }
         .usage-btn { background: #d32f2f; }
         .offset-btn { background: #10b981; }
         .map-btn { background: #1976d2; }
+        .law-btn { background: #6366f1; } /* Indigo for Law */
 
         /* FOOTER */
         footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 40px 0; margin-top: auto; }
@@ -38,7 +40,7 @@
         .footer-section { width: 100%; margin-bottom: 40px; text-align: left; }
         .footer-section h3 { font-size: 1.2rem; color: #0f172a; margin-bottom: 15px; }
         .footer-section p { font-size: 0.95rem; color: #64748b; line-height: 1.6; }
-        .support-box { background: #f8fafc; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0; width: 100%; box-sizing: border-box; margin-top: 20px; }
+        .support-box { background: #ffffff; padding: 40px; border-radius: 12px; border: 1px solid #e2e8f0; width: 100%; box-sizing: border-box; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -77,11 +79,18 @@
             <span class="btn offset-btn">View Offset Data</span>
         </a>
 
-        <a href="map.html" class="card">
+        <a href="map.html" target="_blank" class="card">
             <span class="icon">🗺️</span>
             <h2>Impact Map</h2>
             <p>Compare consumption hot-spots against regional restoration efforts.</p>
             <span class="btn map-btn">Explore Map</span>
+        </a>
+
+        <a href="https://public.flourish.studio/visualisation/27352160/" target="_blank" class="card">
+            <span class="icon">⚖️</span>
+            <h2>Transparency Law</h2>
+            <p>Track legislative progress on mandatory water reporting for data centers.</p>
+            <span class="btn law-btn">View Legislation</span>
         </a>
     </div>
 
@@ -139,7 +148,6 @@
 
         async function initDashboard() {
             try {
-                // Fetch both files
                 const [useRes, offRes] = await Promise.all([
                     fetch("wateruse.csv").then(r => r.text()),
                     fetch("wateroffsets.csv").then(r => r.text())
@@ -148,15 +156,14 @@
                 const useRows = parseCSV(useRes);
                 const offRows = parseCSV(offRes);
 
-                // Column 4 in wateruse (Gallons)
+                // Read directly from the Gallons (index 4) and Benefit (index 6) columns
                 const usageTotal = useRows.reduce((sum, row) => sum + (parseFloat(row[4]) || 0), 0);
-                // Column 6 in wateroffsets (Benefit)
                 const offsetTotal = offRows.reduce((sum, row) => sum + (parseFloat(row[6]) || 0), 0);
 
-                // Total Consumption = All gallons from BOTH files
+                // Total Consumption = Sum of both files
                 animateCounter('useCounter', usageTotal + offsetTotal);
                 
-                // Benefit = Just offsets
+                // Benefit = Just the offsets file
                 animateCounter('restoreCounter', offsetTotal);
 
             } catch (e) {
