@@ -48,11 +48,13 @@
         .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
         .step { font-size: 0.85rem; color: #1e40af; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #bfdbfe; }
 
-        .drop-zone { background: #fff; border: 2px dashed #cbd5e1; border-radius: 16px; padding: 40px; text-align: center; transition: all 0.2s; cursor: pointer; }
-        .drop-zone:hover { border-color: #1976d2; background: #f0f7ff; }
-        .submit-data-btn { background: #0f172a; color: white; padding: 12px 30px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer; margin-top: 20px; }
+        /* Updated Google Form Submission Area */
+        .google-form-box { background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; padding: 40px; text-align: center; transition: all 0.2s; }
+        .google-form-box:hover { border-color: #673ab7; background: #f3e5f5; }
+        .submit-data-btn { background: #673ab7; color: white; padding: 15px 40px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; text-decoration: none; display: inline-block; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .submit-data-btn:hover { background: #512da8; transform: translateY(-2px); }
 
-          /* FOOTER & FIXED SUPPORT BOX */
+/* FOOTER & FIXED SUPPORT BOX */
         footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 60px 0; margin-top: auto; }
         .footer-container { max-width: 1100px; width: 90%; margin: 0 auto; }
         .footer-section { width: 100%; text-align: center; }
@@ -113,20 +115,20 @@
         </a>
         <a href="map.html" target="_blank" class="card">
             <span class="icon">🗺️</span>
-            <h2>Impact Map</h2>
+            <h2>Water Map</h2>
             <p>Compare consumption hot-spots against regional restoration efforts.</p>
             <span class="btn map-btn">Explore Map</span>
         </a>
         <a href="https://public.flourish.studio/visualisation/27352160/" target="_blank" class="card">
             <span class="icon">⚖️</span>
-            <h2>Transparency Law</h2>
+            <h2>Data Center Water Transparency Laws</h2>
             <p>Track legislative progress on mandatory water reporting for data centers.</p>
             <span class="btn law-btn">View Legislation</span>
         </a>
     </div>
 
     <div class="submit-section">
-        <h2 class="section-title">Encourage Transparency</h2>
+        <h2 class="section-title">Commit to Water Transparency</h2>
         <p class="section-subtitle">Help us build a more sustainable future by contributing data.</p>
 
         <div class="role-grid">
@@ -158,15 +160,13 @@
             <p style="margin-top: 15px; font-size: 0.85rem;"><a href="foia-opinion.pdf" target="_blank">View Legal Opinion on Public Water Data →</a></p>
         </div>
 
-        <form action="https://formspree.io/f/datacenterwaterleaks@gmail.com" method="POST" enctype="multipart/form-data">
-            <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
-                <span style="font-size: 3rem;">📁</span>
-                <h3> Drop Data here or email to <a href="mailto:datacenterwaterleaks@gmail.com">datacenterwaterleaks@gmail.com</a></h3>
-                <p id="fileLabel">Support for CSV, XLSX, and PDF documents.</p>
-                <input type="file" name="upload" id="fileInput" style="display:none" multiple onchange="updateLabel()">
-                <button type="submit" class="submit-data-btn">Submit Data</button>
-            </div>
-        </form>
+        <div class="google-form-box">
+            <span style="font-size: 3rem;">📄</span>
+            <h3>Submit Data Documents</h3>
+            <p>Upload FOIA results, utility bills, or operator reports securely via Google.</p>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Or email directly to: <strong>datacenterwaterleaks@gmail.com</strong></p>
+            <a href="https://forms.gle/vSYmXhoHZHGvTndd6" target="_blank" class="submit-data-btn">Submit Data</a>
+        </div>
     </div>
 
     <footer>
@@ -185,16 +185,6 @@
     </footer>
 
     <script>
-        function updateLabel() {
-            const input = document.getElementById('fileInput');
-            const label = document.getElementById('fileLabel');
-            if (input.files.length > 0) {
-                label.innerText = input.files.length + " file(s) selected: " + Array.from(input.files).map(f => f.name).join(', ');
-                label.style.color = "#10b981";
-                label.style.fontWeight = "bold";
-            }
-        }
-
         function animateCounter(id, target) {
             const element = document.getElementById(id);
             const duration = 2000;
@@ -239,9 +229,7 @@
                 const useRows = parseCSV(useRes);
                 const offRows = parseCSV(offRes);
 
-                // Consumption from wateruse.csv (Column 4)
                 const usageTotal = useRows.reduce((sum, row) => sum + (parseFloat(row[4]) || 0), 0);
-                // Restoration from wateroffsets.csv (Column 6)
                 const offsetTotal = offRows.reduce((sum, row) => sum + (parseFloat(row[6]) || 0), 0);
 
                 animateCounter('useCounter', usageTotal);
@@ -249,7 +237,6 @@
 
             } catch (e) {
                 console.error("CSV loading error:", e);
-                // Hardcoded fallbacks if CSVs aren't found
                 animateCounter('useCounter', 5421890432);
                 animateCounter('restoreCounter', 161930000);
             }
