@@ -1,6 +1,2 @@
-Company,Project Name,Watershed ,Watershed ID ,X,Y,Gallons ,Project type,Project Category,Implementation Partner,Status,Benefit Duration (10),Verification Source
-Microsoft,Improving Water Quality in VA,Middle Potomac-Anacostia-Occoquan Basin,02070008,38.69350331,-77.25566064,21930000,Watershed Replenishment,Land Cover Restoration,The Nature Conservancy,Active,10,LimnoTech
-Google,Riparian Buffers w/ Alliance for Chesapeake Bay,Middle Potomac-Anacostia-Occoquan Basin,02070008,38.69350331,-77.25566064,0,Watershed Replenishment,Riparian Buffer,Alliance for the Chesapeake Bay,Complete,15,Partner Audited
-Meta,Potomac River Basin Restoration,Middle Potomac-Anacostia-Occoquan Basin,02070008,38.69350331,-77.25566064,35000000,Watershed Replenishment,Aquatic Habitat Restoration,Ducks Unlimited / TNC,Active,10,LimnoTech
-CyrusOne,Water Restoration Certificates (WRCs),Middle Potomac-Anacostia-Occoquan Basin,02070008,38.69350331,-77.25566064,0,Watershed Replenishment,Water Restoration Certificates,Bonneville Environmental Foundation,Annual Recurring,1,"ISOS Group, Inc."
-QTS Data Centers,Zero-Water Cooling (Freedom Design),Middle Potomac-Anacostia-Occoquan Basin,02070008,38.69350331,-77.25566064,0,Water Use Efficiency,Demand Reduction,QTS Data Centers,Operational,10,Design Certification
+Company,Project Name,Watershed ,Watershed ID ,X,Y,Gallons ,Project type,Project Category,Implementation Partner,Status,Benefit Duration (10)
+Google,Riparian Buffers w/ Alliance for Chesapeake Bay,South Fork Shenandoah Basin,02070008,38.22200856,-79.02033798,0,Watershed Replenishment,Riparian Buffer,Alliance for the Chesapeake Bay,Complete,15
