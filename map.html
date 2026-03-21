@@ -23,16 +23,21 @@
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         #map { height: 100vh; width: 100%; background: #0b1622; }
         
-        #search-container { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 300px; }
-        .leaflet-control-geocoder { box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-radius: 8px; border: none; width: 100%; }
+        #search-container { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 400px; max-width: 90%; }
+        .leaflet-control-geocoder { width: 100% !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important; border-radius: 8px !important; background: white; border: 2px solid #1e40af !important; }
+        .leaflet-control-geocoder-form input { width: 100% !important; padding: 12px !important; font-size: 16px !important; border: none !important; outline: none !important; }
 
-        .stat-row { display: flex; justify-content: space-between; margin-top: 3px; }
-        .stat-row span { color: #64748b; font-weight: 500; }
-        .project-header { font-weight: bold; color: #10b981; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
+        .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); pointer-events: none; }
+        .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
         
-        /* Dark Mode Control Layers */
-        .leaflet-control-layers { background: rgba(15, 23, 42, 0.9) !important; color: #fff !important; border: none !important; border-radius: 12px !important; padding: 10px !important; backdrop-filter: blur(8px); }
-        .leaflet-popup-content-wrapper { border-radius: 12px; padding: 5px; }
+        /* Popup UI */
+        .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; margin-bottom: 8px; border-bottom: 1px solid #ddd; text-transform: uppercase; }
+        .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
+        .project-header { color: #10b981; font-weight: bold; border-bottom: 2px solid #10b981; margin-bottom: 5px; }
+        .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; padding-bottom: 2px; }
+        .stat-row strong { margin-left: 10px; color: #1e293b; }
+        
+        .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; }
     </style>
 </head>
 <body>
@@ -41,37 +46,80 @@
 <div id="map"></div>
 
 <script>
-    var map = L.map('map', { center: [38.9, -77.45], zoom: 10 });
+    var streetMap = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OSM' });
+    var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { attribution: '© Google (Hybrid)', maxZoom: 20 });
 
-    var streetMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-    var satelliteHybrid = L.esri.basemapLayer('ImageryHybrid');
+    var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid], zoomControl: false });
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    var dcMarkers = L.layerGroup().addTo(map);
-    var offsetMarkers = L.layerGroup().addTo(map);
-
-    // EPA Water Service Boundaries (Public Water Systems)
-    var epaBoundaries = L.esri.featureLayer({
-        url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/SDWIS_Service_Areas_Public_View/FeatureServer/0',
-        style: { color: '#3b82f6', weight: 1, fillOpacity: 0.1 }
-    }).addTo(map);
-
-    // Watersheds (HUC8)
-    var huc8Layer = L.esri.featureLayer({
-        url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Wetlands/FeatureServer/0',
-        style: { color: '#10b981', weight: 1, fillOpacity: 0.05 }
-    });
-
-    // Rivers and Streams
-    var riversLayer = L.esri.featureLayer({
-        url: 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/USA_Rivers_and_Streams/FeatureServer/0',
-        style: { color: '#60a5fa', weight: 1.5 }
-    });
-
-    var geocoder = L.Control.geocoder({ defaultMarkGeocode: false })
-        .on('markgeocode', function(e) { map.fitBounds(e.geocode.bbox); })
-        .addTo(map);
+    var geocoder = L.Control.geocoder({ defaultMarkGeocode: false, placeholder: "Search location...", collapsed: false }).on('markgeocode', function(e) { map.fitBounds(e.geocode.bbox); L.marker(e.geocode.center).addTo(map).bindPopup(e.geocode.name).openPopup(); }).addTo(map);
     document.getElementById('search-container').appendChild(geocoder.getContainer());
 
+    map.createPane('backPane'); map.getPane('backPane').style.zIndex = 400; 
+    map.createPane('middlePane'); map.getPane('middlePane').style.zIndex = 450;
+    map.createPane('frontPane'); map.getPane('frontPane').style.zIndex = 500; 
+
+    // 1. WATERSHEDS
+    var huc8Layer = L.esri.featureLayer({
+        url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
+        pane: 'backPane',
+        style: { color: '#8b5cf6', weight: 2, dashArray: '8, 4', fillOpacity: 0.1 }
+    }).addTo(map);
+
+    huc8Layer.bindPopup(layer => {
+        const p = layer.feature.properties;
+        return `<div class="basin-header">${p.name || "Unknown"} Basin</div><div class="stat-row"><span>HUC-8 ID:</span><strong>${p.huc8}</strong></div>`;
+    });
+
+     // 2. RIVERS
+
+    var riversLayer = L.esri.dynamicMapLayer({
+
+        url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer',
+
+        layers: [0, 1, 2, 3, 4, 5, 6, 9], 
+        pane: 'middlePane',
+        className: 'luminous-rivers'
+
+    }).addTo(map);
+
+
+    // 3. UTILITIES (EPA Boundaries + Demand Estimate)
+
+    var epaBoundaries = L.esri.featureLayer({
+        url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
+        pane: 'frontPane',
+        style: { color: '#00d4ff', weight: 2.5, fillOpacity: 0.2, fillColor: '#0055ff' }
+    }).addTo(map);
+
+
+    epaBoundaries.bindPopup(function(layer) {
+
+        const p = layer.feature.properties;
+        const uName = p.PWS_NAME || p.PWS_Name || "Public Utility";
+        const pop = p.Population_Served_Count || p.Population_Served || 0;
+        const dailyEstimate = pop * 100;
+
+
+        return `
+
+            <div style="min-width: 220px;">
+                <div class="utility-header">${uName}</div>
+                <div class="stat-row"><span>Population Served:</span><strong>${pop.toLocaleString()}</strong></div>
+                <div class="stat-row"><span>Est. Water Demand:</span><strong style="color: #1e40af;">${dailyEstimate.toLocaleString()} gal/day</strong></div>
+            </div>`;
+
+    });
+
+
+
+
+
+    // 4. DYNAMIC CSV LOADING
+    const dcMarkers = L.layerGroup().addTo(map);
+    const offsetMarkers = L.layerGroup().addTo(map);
+
+    // Robust CSV Parser (handles quotes and commas correctly)
     function parseCSV(text) {
         const rows = [];
         const lines = text.trim().split(/\r?\n/);
@@ -94,84 +142,28 @@
     }
 
     async function loadMapData() {
-        const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41] });
+        const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker' });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
         
-        // 1. LOAD & AGGREGATE WATER USAGE FROM CSV
+        // Load Red Markers (Usage)
         try {
-            const res = await fetch('wateruse.csv');
-            const text = await res.text();
-            const rows = parseCSV(text);
-            const headers = rows[0];
+            const res = await fetch('wateruse_agg.geojson');
+            const data = await res.json();
+            L.geoJSON(data, { 
+                pointToLayer: (f, latlng) => L.marker(latlng, { icon: dcIcon }), 
+                onEachFeature: (f, layer) => { layer.bindPopup(`<strong>${f.properties.Location}</strong><hr>${f.properties.YearlyTotals || ''}`); } 
+            }).addTo(dcMarkers);
+        } catch (e) {}
 
-            const idx = {
-                company: headers.indexOf('Company'),
-                location: headers.indexOf('Location'),
-                date: headers.indexOf('Date'),
-                gallons: headers.indexOf('Gallons'),
-                lat: headers.indexOf('X'),
-                lng: headers.indexOf('Y')
-            };
-
-            const locations = {};
-
-            rows.slice(1).forEach(row => {
-                const lat = parseFloat(row[idx.lat]);
-                const lng = parseFloat(row[idx.lng]);
-                if (isNaN(lat) || isNaN(lng)) return;
-
-                const key = `${lat.toFixed(4)}|${lng.toFixed(4)}`;
-                const gallons = parseFloat(row[idx.gallons]) || 0;
-                
-                // Extract Year
-                const yearMatch = row[idx.date] ? row[idx.date].match(/\d{4}/) : null;
-                const year = yearMatch ? yearMatch[0] : 'Unknown';
-
-                if (!locations[key]) {
-                    locations[key] = {
-                        lat: lat, lng: lng,
-                        name: row[idx.location],
-                        company: row[idx.company],
-                        total: 0,
-                        yearly: {}
-                    };
-                }
-                
-                locations[key].total += gallons;
-                locations[key].yearly[year] = (locations[key].yearly[year] || 0) + gallons;
-            });
-
-            Object.values(locations).forEach(loc => {
-                let yearlyHtml = Object.entries(loc.yearly)
-                    .sort((a, b) => b[0] - a[0])
-                    .map(([yr, val]) => `<span>${yr}:</span> <strong>${val.toLocaleString()} gal</strong>`)
-                    .join('<br>');
-
-                L.marker([loc.lat, loc.lng], { icon: dcIcon })
-                    .bindPopup(`
-                        <div style="min-width:200px">
-                            <strong style="font-size:14px;">${loc.name}</strong><br>
-                            <span style="color:#64748b">${loc.company}</span><hr>
-                            <div class="stat-row" style="display:block; font-size:12px;">
-                                ${yearlyHtml}
-                            </div>
-                            <div style="margin-top:8px; border-top:1px solid #eee; padding-top:5px; font-weight:bold;">
-                                Total: ${loc.total.toLocaleString()} gal
-                            </div>
-                        </div>
-                    `)
-                    .addTo(dcMarkers);
-            });
-        } catch (e) { console.error("Water Use Load Error:", e); }
-
-        // 2. LOAD WATER PROJECTS FROM CSV
+        // Load Green Markers (Projects) from CSV
         try {
             const res = await fetch('wateroffsets.csv');
             const text = await res.text();
             const rows = parseCSV(text);
             const headers = rows[0];
 
-            const idxOff = {
+            // Map columns by name to be flexible
+            const idx = {
                 company: headers.indexOf('Company'),
                 project: headers.indexOf('Project Name'),
                 lat: headers.indexOf('X'),
@@ -182,30 +174,35 @@
             };
 
             rows.slice(1).forEach(row => {
-                const lat = parseFloat(row[idxOff.lat]);
-                const lng = parseFloat(row[idxOff.lng]);
+                const lat = parseFloat(row[idx.lat]);
+                const lng = parseFloat(row[idx.lng]);
                 
                 if (!isNaN(lat) && !isNaN(lng)) {
-                    const gal = row[idxOff.gallons] ? parseInt(row[idxOff.gallons].replace(/,/g, '')).toLocaleString() : '0';
+                    const gallonsVal = row[idx.gallons] ? parseInt(row[idx.gallons].replace(/,/g, '')).toLocaleString() : '0';
+                    
                     L.marker([lat, lng], { icon: offsetIcon })
                         .bindPopup(`
-                            <div class="project-header">Water Restoration Project</div>
-                            <strong>${row[idxOff.project]}</strong><br>
-                            <span style="color:#64748b">by ${row[idxOff.company]}</span><hr>
-                            <div class="stat-row"><span>Type:</span><strong>${row[idxOff.type]}</strong></div>
-                            <div class="stat-row" style="color:#10b981;"><span>Benefit:</span><strong>${gal} gal</strong></div>
-                        `).addTo(offsetMarkers);
+                            <div class="project-header">Water Project</div>
+                            <div style="font-size: 13px;">
+                                <strong>${row[idx.project]}</strong><br>
+                                <span style="color:#64748b">by ${row[idx.company]}</span><hr style="margin:5px 0; border:0; border-top:1px solid #eee;">
+                                <div class="stat-row"><span>Type:</span><strong>${row[idx.type]}</strong></div>
+                                <div class="stat-row"><span>Category:</span><strong>${row[idx.cat]}</strong></div>
+                                <div class="stat-row" style="margin-top:5px; color:#10b981;"><span>Benefit:</span><strong>${gallonsVal} gal</strong></div>
+                            </div>
+                        `)
+                        .addTo(offsetMarkers);
                 }
             });
-        } catch (e) { console.error("Offsets Load Error:", e); }
+        } catch (e) { console.error("CSV Load Error:", e); }
     }
 
     var baseLayers = { "Satellite": satelliteHybrid, "Street": streetMap };
     var overlays = {
-        "Data Centers (Usage)": dcMarkers,
-        "Water Projects (Restoration)": offsetMarkers,
-        "Utility Service Areas": epaBoundaries,
-        "Rivers & Streams": riversLayer,
+        "Water Utility Service Areas": epaBoundaries,
+        "Data Centers": dcMarkers,
+        "Water Projects": offsetMarkers,
+        "Rivers and Streams": riversLayer,
         "Watersheds": huc8Layer
     };
 
