@@ -112,12 +112,13 @@
     });
 
 
-// 4. National Wetlands Inventory Layer
+// 4. National Wetlands Inventory Layer with Labels
 var wetlandsLayer = L.esri.dynamicMapLayer({
     url: 'https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer',
-    opacity: 0.6,
+    layers: [0, 1, 2, 3, 4, 5], // This usually captures polygons + labels
+    opacity: 0.85,
     useCors: true
-});
+}).addTo(map);
 
 
     // 5. DYNAMIC CSV LOADING
@@ -206,10 +207,10 @@ var wetlandsLayer = L.esri.dynamicMapLayer({
     var overlays = {
     "Data Centers (Usage)": dcMarkers,
     "Water Projects": offsetMarkers,
-    "Wetlands (NWI)": wetlandsLayer, // <--- Add this line
     "Service Areas": epaBoundaries,
+    "Wetlands (NWI)": wetlandsLayer, // <--- Add this line
     "Rivers & Streams": riversLayer,
-    "Watersheds": huc8Layer
+    "Watersheds (HUC-8)": huc8Layer
 };
 
     L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
