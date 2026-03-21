@@ -22,12 +22,17 @@
     <style>
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         #map { height: 100vh; width: 100%; background: #0b1622; }
+        
         #search-container { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 300px; }
         .leaflet-control-geocoder { box-shadow: 0 4px 15px rgba(0,0,0,0.3); border-radius: 8px; border: none; width: 100%; }
-        .stat-row { display: flex; justify-content: space-between; margin-top: 3px; font-size: 12px; }
+
+        .stat-row { display: flex; justify-content: space-between; margin-top: 3px; }
         .stat-row span { color: #64748b; font-weight: 500; }
         .project-header { font-weight: bold; color: #10b981; margin-bottom: 5px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-        .leaflet-control-layers { background: rgba(15, 23, 42, 0.9) !important; color: #fff !important; border-radius: 12px !important; padding: 10px !important; }
+        
+        /* Dark Mode Control Layers */
+        .leaflet-control-layers { background: rgba(15, 23, 42, 0.9) !important; color: #fff !important; border: none !important; border-radius: 12px !important; padding: 10px !important; backdrop-filter: blur(8px); }
+        .leaflet-popup-content-wrapper { border-radius: 12px; padding: 5px; }
     </style>
 </head>
 <body>
@@ -44,21 +49,33 @@
     var dcMarkers = L.layerGroup().addTo(map);
     var offsetMarkers = L.layerGroup().addTo(map);
 
-    // EPA Water Service Boundaries
+    // EPA Water Service Boundaries (Public Water Systems)
     var epaBoundaries = L.esri.featureLayer({
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/SDWIS_Service_Areas_Public_View/FeatureServer/0',
         style: { color: '#3b82f6', weight: 1, fillOpacity: 0.1 }
     }).addTo(map);
+
+    // Watersheds (HUC8)
+    var huc8Layer = L.esri.featureLayer({
+        url: 'https://services.arcgis.com/P3ePLMYs2RVChkJx/arcgis/rest/services/USA_Wetlands/FeatureServer/0',
+        style: { color: '#10b981', weight: 1, fillOpacity: 0.05 }
+    });
+
+    // Rivers and Streams
+    var riversLayer = L.esri.featureLayer({
+        url: 'https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/USA_Rivers_and_Streams/FeatureServer/0',
+        style: { color: '#60a5fa', weight: 1.5 }
+    });
 
     var geocoder = L.Control.geocoder({ defaultMarkGeocode: false })
         .on('markgeocode', function(e) { map.fitBounds(e.geocode.bbox); })
         .addTo(map);
     document.getElementById('search-container').appendChild(geocoder.getContainer());
 
-    // Robust CSV Parser
     function parseCSV(text) {
+        const rows = [];
         const lines = text.trim().split(/\r?\n/);
-        return lines.map(line => {
+        lines.forEach(line => {
             const values = [];
             let current = '';
             let inQuotes = false;
@@ -71,99 +88,126 @@
                 } else current += char;
             }
             values.push(current.trim());
-            return values;
+            rows.push(values);
         });
+        return rows;
     }
 
     async function loadMapData() {
         const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41] });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
         
-        // 1. Load wateruse.csv
+        // 1. LOAD & AGGREGATE WATER USAGE FROM CSV
         try {
             const res = await fetch('wateruse.csv');
             const text = await res.text();
             const rows = parseCSV(text);
             const headers = rows[0];
 
-            // Get indices dynamically
-            const iX = headers.indexOf('X');
-            const iY = headers.indexOf('Y');
-            const iGal = headers.indexOf('Gallons');
-            const iLoc = headers.indexOf('Location');
-            const iDate = headers.indexOf('Date');
-            const iComp = headers.indexOf('Company');
+            const idx = {
+                company: headers.indexOf('Company'),
+                location: headers.indexOf('Location'),
+                date: headers.indexOf('Date'),
+                gallons: headers.indexOf('Gallons'),
+                lat: headers.indexOf('X'),
+                lng: headers.indexOf('Y')
+            };
 
-            const clusters = {};
+            const locations = {};
 
             rows.slice(1).forEach(row => {
-                const lat = parseFloat(row[iX]);
-                const lng = parseFloat(row[iY]);
+                const lat = parseFloat(row[idx.lat]);
+                const lng = parseFloat(row[idx.lng]);
                 if (isNaN(lat) || isNaN(lng)) return;
 
-                const key = `${lat.toFixed(5)}|${lng.toFixed(5)}`;
-                const gallons = parseFloat(row[iGal]) || 0;
-                const year = row[iDate] ? (row[iDate].match(/\d{4}/) || ["Unknown"])[0] : "Unknown";
+                const key = `${lat.toFixed(4)}|${lng.toFixed(4)}`;
+                const gallons = parseFloat(row[idx.gallons]) || 0;
+                
+                // Extract Year
+                const yearMatch = row[idx.date] ? row[idx.date].match(/\d{4}/) : null;
+                const year = yearMatch ? yearMatch[0] : 'Unknown';
 
-                if (!clusters[key]) {
-                    clusters[key] = { lat, lng, loc: row[iLoc], comp: row[iComp], total: 0, years: {} };
+                if (!locations[key]) {
+                    locations[key] = {
+                        lat: lat, lng: lng,
+                        name: row[idx.location],
+                        company: row[idx.company],
+                        total: 0,
+                        yearly: {}
+                    };
                 }
-                clusters[key].total += gallons;
-                clusters[key].years[year] = (clusters[key].years[year] || 0) + gallons;
+                
+                locations[key].total += gallons;
+                locations[key].yearly[year] = (locations[key].yearly[year] || 0) + gallons;
             });
 
-            Object.values(clusters).forEach(c => {
-                let yearlyList = Object.entries(c.years)
-                    .sort((a,b) => b[0] - a[0])
-                    .map(([y, v]) => `<div class="stat-row"><span>${y}</span> <strong>${Math.round(v).toLocaleString()} gal</strong></div>`)
-                    .join('');
+            Object.values(locations).forEach(loc => {
+                let yearlyHtml = Object.entries(loc.yearly)
+                    .sort((a, b) => b[0] - a[0])
+                    .map(([yr, val]) => `<span>${yr}:</span> <strong>${val.toLocaleString()} gal</strong>`)
+                    .join('<br>');
 
-                L.marker([c.lat, c.lng], { icon: dcIcon })
+                L.marker([loc.lat, loc.lng], { icon: dcIcon })
                     .bindPopup(`
-                        <div style="min-width:180px">
-                            <strong style="font-size:13px">${c.loc}</strong><br>
-                            <span style="color:#64748b; font-size:11px">${c.comp}</span><hr style="margin:8px 0; border:0; border-top:1px solid #eee">
-                            ${yearlyList}
-                            <div class="stat-row" style="margin-top:8px; border-top:1px solid #eee; padding-top:4px; font-weight:bold;">
-                                <span>TOTAL</span> ${Math.round(c.total).toLocaleString()} gal
+                        <div style="min-width:200px">
+                            <strong style="font-size:14px;">${loc.name}</strong><br>
+                            <span style="color:#64748b">${loc.company}</span><hr>
+                            <div class="stat-row" style="display:block; font-size:12px;">
+                                ${yearlyHtml}
+                            </div>
+                            <div style="margin-top:8px; border-top:1px solid #eee; padding-top:5px; font-weight:bold;">
+                                Total: ${loc.total.toLocaleString()} gal
                             </div>
                         </div>
-                    `).addTo(dcMarkers);
+                    `)
+                    .addTo(dcMarkers);
             });
-        } catch (e) { console.error("Error loading usage:", e); }
+        } catch (e) { console.error("Water Use Load Error:", e); }
 
-        // 2. Load wateroffsets.csv
+        // 2. LOAD WATER PROJECTS FROM CSV
         try {
             const res = await fetch('wateroffsets.csv');
             const text = await res.text();
             const rows = parseCSV(text);
             const headers = rows[0];
 
-            const iX = headers.indexOf('X');
-            const iY = headers.indexOf('Y');
-            const iProj = headers.indexOf('Project Name');
-            const iComp = headers.indexOf('Company');
-            const iGal = headers.indexOf('Gallons');
+            const idxOff = {
+                company: headers.indexOf('Company'),
+                project: headers.indexOf('Project Name'),
+                lat: headers.indexOf('X'),
+                lng: headers.indexOf('Y'),
+                gallons: headers.indexOf('Gallons'),
+                type: headers.indexOf('Project type'),
+                cat: headers.indexOf('Project Category')
+            };
 
             rows.slice(1).forEach(row => {
-                const lat = parseFloat(row[iX]);
-                const lng = parseFloat(row[iY]);
+                const lat = parseFloat(row[idxOff.lat]);
+                const lng = parseFloat(row[idxOff.lng]);
+                
                 if (!isNaN(lat) && !isNaN(lng)) {
-                    const gal = row[iGal] ? parseInt(row[iGal].replace(/,/g, '')).toLocaleString() : '0';
+                    const gal = row[idxOff.gallons] ? parseInt(row[idxOff.gallons].replace(/,/g, '')).toLocaleString() : '0';
                     L.marker([lat, lng], { icon: offsetIcon })
                         .bindPopup(`
-                            <div class="project-header">Restoration Project</div>
-                            <strong>${row[iProj]}</strong><br>
-                            <span style="color:#64748b">${row[iComp]}</span><hr>
+                            <div class="project-header">Water Restoration Project</div>
+                            <strong>${row[idxOff.project]}</strong><br>
+                            <span style="color:#64748b">by ${row[idxOff.company]}</span><hr>
+                            <div class="stat-row"><span>Type:</span><strong>${row[idxOff.type]}</strong></div>
                             <div class="stat-row" style="color:#10b981;"><span>Benefit:</span><strong>${gal} gal</strong></div>
                         `).addTo(offsetMarkers);
                 }
             });
-        } catch (e) { console.error("Error loading offsets:", e); }
+        } catch (e) { console.error("Offsets Load Error:", e); }
     }
 
     var baseLayers = { "Satellite": satelliteHybrid, "Street": streetMap };
-    var overlays = { "Data Centers (Usage)": dcMarkers, "Water Projects": offsetMarkers, "Service Areas": epaBoundaries };
+    var overlays = {
+        "Data Centers (Usage)": dcMarkers,
+        "Water Projects (Restoration)": offsetMarkers,
+        "Utility Service Areas": epaBoundaries,
+        "Rivers & Streams": riversLayer,
+        "Watersheds": huc8Layer
+    };
 
     L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
     loadMapData();
