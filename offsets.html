@@ -1,54 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXY7BHERXJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-NXY7BHERXJ');
+    </script>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NXY7BHERXJ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NXY7BHERXJ');
-</script>
+    <meta charset="UTF-8">
+    <title>Data Center Water Offsets</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 25px; background: #f5f7fb; line-height: 1.5; position: relative; }
+        
+        header { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 30px; }
+        .logo-container { width: 150px; height: 150px; background: white; border-radius: 50%; border: 2px solid #ddd; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.2s; }
+        .logo-container img { width: 85%; height: auto; display: block; }
 
-<meta charset="UTF-8">
-<title>Data Center Water Offsets</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-    body { font-family: Arial, sans-serif; margin: 25px; background: #f5f7fb; line-height: 1.5; position: relative; }
-    
-    /* Header & Logo Styles */
-    header { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 30px; }
-    .logo-container { width: 150px; height: 150px; background: white; border-radius: 50%; border: 2px solid #ddd; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.2s; }
-    .logo-container:hover { transform: scale(1.02); }
-    .logo-container img { width: 85%; height: auto; display: block; }
+        .counter-container { position: absolute; top: 25px; right: 25px; background: white; padding: 15px 25px; border-radius: 12px; text-align: right; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e0e6ed; z-index: 10; }
+        .counter-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .counter-value { font-size: 32px; font-weight: 800; color: #2e7d32; font-family: 'Courier New', monospace; line-height: 1; margin: 5px 0; }
+        .counter-unit { font-size: 14px; color: #2e7d32; font-weight: 700; }
 
-    /* Top-Right Counter Styles */
-    .counter-container { position: absolute; top: 25px; right: 25px; background: white; padding: 15px 25px; border-radius: 12px; text-align: right; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e0e6ed; z-index: 10; }
-    .counter-label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-    .counter-value { font-size: 32px; font-weight: 800; color: #2e7d32; font-family: 'Courier New', monospace; line-height: 1; margin: 5px 0; }
-    .counter-unit { font-size: 14px; color: #2e7d32; font-weight: 700; }
+        .section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .container { display: flex; gap: 20px; }
+        .sidebar { width: 280px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 320px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; }
+        .projectBtn:hover { background: #1b5e20; }
+        
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; font-weight: 600; }
 
-    /* Dashboard Layout Styles */
-    .section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .container { display: flex; gap: 20px; }
-    .sidebar { width: 280px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 320px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    
-    .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; }
-    .projectBtn:hover { background: #1b5e20; }
-    
-    table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; }
-    th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
-    th { background: #f8f9fa; font-weight: 600; }
+        .filters { margin-bottom: 20px; display: flex; gap: 20px; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
+        .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; }
+        .toolbar { margin-bottom: 20px; }
+        .toolbar button { margin-right: 10px; padding: 10px 16px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; }
+        
+        .chart-container { position: relative; height: 450px; width: 100%; }
 
-    .filters { margin-bottom: 20px; display: flex; gap: 20px; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
-    .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; }
-    .toolbar { margin-bottom: 20px; }
-    .toolbar button { margin-right: 10px; padding: 10px 16px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; }
-    
-    .chart-container { position: relative; height: 450px; width: 100%; }
-
-        /* FOOTER & FIXED SUPPORT BOX */
+        /* RESTORED FOOTER STYLES */
         footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 60px 0; margin-top: auto; }
         .footer-container { max-width: 1100px; width: 90%; margin: 0 auto; }
         .footer-section { width: 100%; text-align: center; }
@@ -69,9 +64,8 @@
         }
         .support-box h3 { color: #1e293b; margin-top: 0; }
         .support-box p { color: #64748b; margin-bottom: 30px; font-size: 1rem; }
-        
         .gfm-embed { margin: 0 auto; display: inline-block; }
-</style>
+    </style>
 </head>
 <body>
 
@@ -106,14 +100,14 @@
 
 <div class="toolbar">
     <button onclick="downloadCSV()">Download Water Offsets (CSV)</button>
-    <button onclick="viewMap()" style="background:#2e7d32; color:white; border:none;">Explore Data Center Locations</button>
+    <button onclick="window.location.href='map.html'" style="background:#2e7d32; color:white; border:none;">Explore Data Center Locations</button>
 </div>
 
 <div class="section">
     <h3>Offset Summary by Category</h3>
     <table id="summaryTable">
         <thead>
-            <tr><th>Watershed</th><th>Category</th><th>Projects</th><th>Volumetric Water Benefit (Gallons)</th></tr>
+            <tr><th>Watershed</th><th>Category</th><th>Entries</th><th>Volumetric Water Benefit (Gallons)</th></tr>
         </thead>
         <tbody></tbody>
     </table>
@@ -125,151 +119,115 @@
         <div id="projectsList"></div>
     </div>
     <div class="main">
-        <h3 id="chartTitle">Select a company to view project impacts</h3>
+        <h3 id="chartTitle">Select a company to view impact over time</h3>
         <div class="chart-container">
             <canvas id="offsetChart"></canvas>
         </div>
     </div>
 </div>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>Data Disclaimer and Support</h3>
-                <p class="disclaimer">The information presented in this application is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is" for transparency purposes.</p>
-                
-                <div class="support-box">
-                    <h3>Support This Project</h3>
-                    <p>Your contribution helps us cover FOIA fees, technology costs, and the research required to keep this data public and accessible.</p>
-                    <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
-                    <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
-                </div>
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Data Disclaimer and Support</h3>
+            <p class="disclaimer">The information presented in this application is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is" for transparency purposes.</p>
+            
+            <div class="support-box">
+                <h3>Support This Project</h3>
+                <p>Your contribution helps us cover FOIA fees, technology costs, and the research required to keep this data public and accessible.</p>
+                <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
+                <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
 <script>
-let allRecords=[];
-let filteredRecords=[];
+let allRecords = [];
+let filteredRecords = [];
 let offsetChart;
 
-// New viewMap function
-function viewMap() {
-    window.location.href = "map.html";
-}
-
-async function loadCSV(){
+async function loadCSV() {
     try {
         const response = await fetch("wateroffsets.csv");
         const text = await response.text();
         const lines = text.trim().split(/\r?\n/);
-        
-        allRecords = lines.slice(1).map(line => {
-            const row = [];
-            let current = '';
-            let inQuotes = false;
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                if (char === '"') inQuotes = !inQuotes;
-                else if (char === ',' && !inQuotes) {
-                    row.push(current.trim());
-                    current = '';
-                } else current += char;
-            }
-            row.push(current.trim());
+        const headers = parseLine(lines[0]);
 
-            if(row.length < 12) return null;
+        allRecords = lines.slice(1).map(line => {
+            const row = parseLine(line);
+            if(row.length < 5) return null;
             
+            // Note: The Partner column header has a trailing space in the CSV
             return {
-                company: row[0].replace(/^\s*/, '').trim(), 
-                projectName: row[1].trim(),
-                watershed: row[2].trim(),
-                benefit: parseFloat(row[6]) || 0,
-                category: row[8].trim(),
-                partner: row[9].trim(),
-                status: row[10].trim()
+                company: row[headers.indexOf('Company')] || "Unknown",
+                project: row[headers.indexOf('Project')] || "N/A",
+                partner: row[headers.indexOf('Partner ')] || "N/A", 
+                watershed: row[headers.indexOf('Watershed')] || "N/A",
+                category: row[headers.indexOf('Category')] || "General",
+                date: row[headers.indexOf('Date')] || "",
+                benefit: parseFloat(row[headers.indexOf('Gallons')].replace(/,/g, '')) || 0
             };
-        }).filter(item => item !== null);
+        }).filter(r => r !== null);
 
         filteredRecords = [...allRecords];
-
-        const totalBenefit = allRecords.reduce((sum, r) => sum + r.benefit, 0);
-        animateCounter('totalCounter', totalBenefit);
-
+        animateCounter('totalCounter', allRecords.reduce((s, r) => s + r.benefit, 0));
+        
         buildFilters();
         loadSidebar();
         buildSummaryTable();
-    } catch (e) {
-        console.error("Error loading CSV:", e);
+    } catch (e) { console.error("CSV Load Error:", e); }
+}
+
+function parseLine(line) {
+    const row = []; let current = '', inQuotes = false;
+    for (let char of line) {
+        if (char === '"') inQuotes = !inQuotes;
+        else if (char === ',' && !inQuotes) { row.push(current.trim()); current = ''; }
+        else current += char;
     }
+    row.push(current.trim()); return row;
 }
 
-function animateCounter(id, target) {
-    const element = document.getElementById(id);
-    const duration = 1500;
-    const startTime = performance.now();
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const current = Math.floor(progress * target);
-        element.innerText = current.toLocaleString();
-        if (progress < 1) requestAnimationFrame(update);
-        else element.innerText = target.toLocaleString();
-    }
-    requestAnimationFrame(update);
+function buildFilters() {
+    const comps = [...new Set(allRecords.map(r => r.company))].sort();
+    const water = [...new Set(allRecords.map(r => r.watershed))].sort();
+    const cSel = document.getElementById("companyFilter");
+    const wSel = document.getElementById("watershedFilter");
+
+    comps.forEach(c => cSel.add(new Option(c, c)));
+    water.forEach(w => wSel.add(new Option(w, w)));
 }
 
-function buildFilters(){
-    const companies = [...new Set(allRecords.map(r=>r.company))].sort();
-    const watersheds = [...new Set(allRecords.map(r=>r.watershed))].sort();
-    const companySel = document.getElementById("companyFilter");
-    const watershedSel = document.getElementById("watershedFilter");
-    
-    companies.forEach(c => {
-        let opt=document.createElement("option"); opt.value=c; opt.text=c;
-        companySel.appendChild(opt);
-    });
-    watersheds.forEach(w => {
-        let opt=document.createElement("option"); opt.value=w; opt.text=w;
-        watershedSel.appendChild(opt);
-    });
-}
-
-function applyFilters(){
+function applyFilters() {
     const cVal = document.getElementById("companyFilter").value;
     const wVal = document.getElementById("watershedFilter").value;
     filteredRecords = allRecords.filter(r => 
-        (cVal === "All" || r.company === cVal) && 
-        (wVal === "All" || r.watershed === wVal)
+        (cVal === "All" || r.company === cVal) && (wVal === "All" || r.watershed === wVal)
     );
     loadSidebar();
     buildSummaryTable();
-    if(offsetChart) offsetChart.destroy();
-    document.getElementById("chartTitle").innerText = "Select a company to view project impacts";
 }
 
-function buildSummaryTable(){
+function buildSummaryTable() {
     const summary = {};
     filteredRecords.forEach(r => {
         const key = `${r.watershed}|${r.category}`;
-        if(!summary[key]) summary[key] = { watershed: r.watershed, category: r.category, count: 0, total: 0 };
+        if (!summary[key]) summary[key] = { w: r.watershed, c: r.category, count: 0, total: 0 };
         summary[key].count++;
         summary[key].total += r.benefit;
     });
-
     const tbody = document.querySelector("#summaryTable tbody");
-    tbody.innerHTML="";
-    Object.values(summary).sort((a,b) => b.total - a.total).forEach(item => {
-        let tr = document.createElement("tr");
-        tr.innerHTML=`<td>${item.watershed}</td><td>${item.category}</td><td>${item.count}</td><td>${item.total.toLocaleString()}</td>`;
-        tbody.appendChild(tr);
+    tbody.innerHTML = "";
+    Object.values(summary).sort((a,b) => b.total - a.total).forEach(s => {
+        tbody.innerHTML += `<tr><td>${s.w}</td><td>${s.c}</td><td>${s.count}</td><td>${Math.round(s.total).toLocaleString()}</td></tr>`;
     });
 }
 
-function loadSidebar(){
+function loadSidebar() {
     const list = document.getElementById("projectsList");
     list.innerHTML = "";
-    const companies = [...new Set(filteredRecords.map(r=>r.company))].sort();
+    const companies = [...new Set(filteredRecords.map(r => r.company))].sort();
     companies.forEach(comp => {
         let btn = document.createElement("button");
         btn.className = "projectBtn";
@@ -279,36 +237,59 @@ function loadSidebar(){
     });
 }
 
-function drawChart(companyName){
-    document.getElementById("chartTitle").innerText = companyName + ": Project Benefits (Gallons)";
-    const data = allRecords.filter(r => r.company === companyName);
-    const labels = data.map(d => d.projectName);
-    const values = data.map(d => d.benefit);
+function drawChart(companyName) {
+    document.getElementById("chartTitle").innerText = companyName + ": Cumulative Benefit Over Time";
+    
+    // Aggregate by date for the line chart
+    const companyData = filteredRecords.filter(r => r.company === companyName);
+    const dateGroups = {};
+    
+    companyData.forEach(r => {
+        if(!dateGroups[r.date]) dateGroups[r.date] = 0;
+        dateGroups[r.date] += r.benefit;
+    });
+
+    // Sort dates YYYY-MM
+    const sortedDates = Object.keys(dateGroups).sort();
+    const chartValues = sortedDates.map(d => dateGroups[d]);
 
     if(offsetChart) offsetChart.destroy();
     const ctx = document.getElementById("offsetChart").getContext('2d');
     offsetChart = new Chart(ctx, {
-        type: "bar",
+        type: "line",
         data: {
-            labels: labels,
+            labels: sortedDates,
             datasets: [{
-                label: "Gallons",
-                data: values,
-                backgroundColor: '#2e7d32',
-                borderRadius: 5
+                label: "Gallons Benefit",
+                data: chartValues,
+                borderColor: '#2e7d32',
+                backgroundColor: 'rgba(46, 125, 50, 0.1)',
+                fill: true,
+                tension: 0.3
             }]
         },
         options: { 
-            indexAxis: 'y',
             responsive: true, 
-            maintainAspectRatio: false, 
-            scales: { x: { beginAtZero: true } } 
+            maintainAspectRatio: false,
+            scales: {
+                y: { beginAtZero: false }
+            }
         }
     });
 }
 
-function downloadCSV(){ window.location="wateroffsets.csv"; }
+function animateCounter(id, target) {
+    const el = document.getElementById(id);
+    const duration = 1500; const start = performance.now();
+    function update(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        el.innerText = Math.floor(progress * target).toLocaleString();
+        if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+}
 
+function downloadCSV() { window.location = "wateroffsets.csv"; }
 loadCSV();
 </script>
 </body>
