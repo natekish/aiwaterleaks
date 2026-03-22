@@ -30,16 +30,15 @@
         .sidebar { width: 320px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 340px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; text-align: left; line-height: 1.3; }
+        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 12px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; line-height: 1.4; transition: background 0.2s; }
         .projectBtn:hover { background: #1b5e20; }
-        .projectBtn span { display: block; font-size: 10px; opacity: 0.8; margin-top: 2px; }
         
         table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; }
         th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
         th { background: #f8f9fa; font-weight: 600; }
 
-        .filters { margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
-        .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; min-width: 150px; }
+        .filters { margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
+        .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; min-width: 140px; }
         .toolbar { margin-bottom: 20px; }
         .toolbar button { margin-right: 10px; padding: 10px 16px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; }
         
@@ -51,18 +50,7 @@
         .footer-section h3 { font-size: 1.4rem; color: #0f172a; margin-bottom: 15px; }
         .footer-section p.disclaimer { font-size: 0.9rem; color: #94a3b8; max-width: 800px; margin: 0 auto 40px; line-height: 1.6; }
         
-        .support-box { 
-            background: #ffffff; 
-            padding: 40px; 
-            border-radius: 20px; 
-            border: 1px solid #e2e8f0;
-            border-top: 4px solid #6366f1; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.04);
-            width: 100%;
-            box-sizing: border-box;
-            max-width: 700px;
-            margin: 20px auto 0;
-        }
+        .support-box { background: #ffffff; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; border-top: 4px solid #6366f1; box-shadow: 0 15px 30px rgba(0,0,0,0.04); width: 100%; box-sizing: border-box; max-width: 700px; margin: 20px auto 0; }
         .support-box h3 { color: #1e293b; margin-top: 0; }
         .support-box p { color: #64748b; margin-bottom: 30px; font-size: 1rem; }
         .gfm-embed { margin: 0 auto; display: inline-block; }
@@ -98,6 +86,12 @@
         </select>
     </div>
     <div>
+        <label><b>Partner:</b></label>
+        <select id="partnerFilter" onchange="applyFilters()">
+            <option value="All">All Partners</option>
+        </select>
+    </div>
+    <div>
         <label><b>Category:</b></label>
         <select id="categoryFilter" onchange="applyFilters()">
             <option value="All">All Categories</option>
@@ -107,7 +101,7 @@
 
 <div class="toolbar">
     <button onclick="downloadCSV()">Download Water Offsets (CSV)</button>
-    <button onclick="window.location.href='map.html'" style="background:#2e7d32; color:white; border:none;">Explore Data Center Locations</button>
+    <button onclick="window.open('map.html', '_blank')" style="background:#2e7d32; color:white; border:none;">Explore Data Center Locations</button>
 </div>
 
 <div class="section">
@@ -207,25 +201,30 @@ function parseLine(line) {
 function buildFilters() {
     const comps = [...new Set(allRecords.map(r => r.company))].sort();
     const water = [...new Set(allRecords.map(r => r.watershed))].sort();
+    const partners = [...new Set(allRecords.map(r => r.partner))].sort();
     const cats = [...new Set(allRecords.map(r => r.category))].sort();
     
     const cSel = document.getElementById("companyFilter");
     const wSel = document.getElementById("watershedFilter");
+    const pSel = document.getElementById("partnerFilter");
     const catSel = document.getElementById("categoryFilter");
 
     comps.forEach(c => cSel.add(new Option(c, c)));
     water.forEach(w => wSel.add(new Option(w, w)));
+    partners.forEach(p => pSel.add(new Option(p, p)));
     cats.forEach(cat => catSel.add(new Option(cat, cat)));
 }
 
 function applyFilters() {
     const cVal = document.getElementById("companyFilter").value;
     const wVal = document.getElementById("watershedFilter").value;
+    const pVal = document.getElementById("partnerFilter").value;
     const catVal = document.getElementById("categoryFilter").value;
 
     filteredRecords = allRecords.filter(r => 
         (cVal === "All" || r.company === cVal) && 
         (wVal === "All" || r.watershed === wVal) &&
+        (pVal === "All" || r.partner === pVal) &&
         (catVal === "All" || r.category === catVal)
     );
     loadSidebar();
@@ -260,10 +259,9 @@ function loadSidebar() {
     const projects = [...new Set(filteredRecords.map(r => r.project))].sort();
     
     projects.forEach(projName => {
-        const entry = allRecords.find(r => r.project === projName);
         let btn = document.createElement("button");
         btn.className = "projectBtn";
-        btn.innerHTML = `${projName} <span>Partner: ${entry.partner}</span>`;
+        btn.innerText = projName; // Simplified: removed partner annotation
         btn.onclick = () => drawChart(projName);
         list.appendChild(btn);
     });
