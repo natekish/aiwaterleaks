@@ -17,6 +17,7 @@
         
         header { display: flex; justify-content: flex-start; align-items: center; margin-bottom: 30px; }
         .logo-container { width: 150px; height: 150px; background: white; border-radius: 50%; border: 2px solid #ddd; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; overflow: hidden; transition: transform 0.2s; }
+        .logo-container:hover { transform: scale(1.02); }
         .logo-container img { width: 85%; height: auto; display: block; }
 
         .counter-container { position: absolute; top: 25px; right: 25px; background: white; padding: 15px 25px; border-radius: 12px; text-align: right; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e0e6ed; z-index: 10; }
@@ -26,24 +27,24 @@
 
         .section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .container { display: flex; gap: 20px; }
-        .sidebar { width: 280px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 320px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .sidebar { width: 320px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 340px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; }
+        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 10px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; text-align: left; line-height: 1.3; }
         .projectBtn:hover { background: #1b5e20; }
+        .projectBtn span { display: block; font-size: 10px; opacity: 0.8; margin-top: 2px; }
         
         table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; }
         th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
         th { background: #f8f9fa; font-weight: 600; }
 
-        .filters { margin-bottom: 20px; display: flex; gap: 20px; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
-        .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; }
+        .filters { margin-bottom: 20px; display: flex; gap: 20px; flex-wrap: wrap; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
+        .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; min-width: 150px; }
         .toolbar { margin-bottom: 20px; }
         .toolbar button { margin-right: 10px; padding: 10px 16px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; }
         
         .chart-container { position: relative; height: 450px; width: 100%; }
 
-        /* RESTORED FOOTER STYLES */
         footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 60px 0; margin-top: auto; }
         .footer-container { max-width: 1100px; width: 90%; margin: 0 auto; }
         .footer-section { width: 100%; text-align: center; }
@@ -96,6 +97,12 @@
             <option value="All">All Watersheds</option>
         </select>
     </div>
+    <div>
+        <label><b>Category:</b></label>
+        <select id="categoryFilter" onchange="applyFilters()">
+            <option value="All">All Categories</option>
+        </select>
+    </div>
 </div>
 
 <div class="toolbar">
@@ -104,10 +111,15 @@
 </div>
 
 <div class="section">
-    <h3>Offset Summary by Category</h3>
+    <h3>Annual Water Offset by Watershed</h3>
     <table id="summaryTable">
         <thead>
-            <tr><th>Watershed</th><th>Category</th><th>Entries</th><th>Volumetric Water Benefit (Gallons)</th></tr>
+            <tr>
+                <th>Watershed</th>
+                <th>Year</th>
+                <th>Project Entries</th>
+                <th>Total Annual Benefit (Gallons)</th>
+            </tr>
         </thead>
         <tbody></tbody>
     </table>
@@ -115,11 +127,11 @@
 
 <div class="container">
     <div class="sidebar">
-        <h4 style="margin-top:0;">Companies & Projects</h4>
+        <h4 style="margin-top:0;">Projects List</h4>
         <div id="projectsList"></div>
     </div>
     <div class="main">
-        <h3 id="chartTitle">Select a company to view impact over time</h3>
+        <h3 id="chartTitle">Select a project to view impact over time</h3>
         <div class="chart-container">
             <canvas id="offsetChart"></canvas>
         </div>
@@ -158,14 +170,17 @@ async function loadCSV() {
             const row = parseLine(line);
             if(row.length < 5) return null;
             
-            // Note: The Partner column header has a trailing space in the CSV
+            const dateStr = row[headers.indexOf('Date')] || "";
+            const year = dateStr.split('-')[0] || "N/A";
+
             return {
                 company: row[headers.indexOf('Company')] || "Unknown",
                 project: row[headers.indexOf('Project')] || "N/A",
                 partner: row[headers.indexOf('Partner ')] || "N/A", 
                 watershed: row[headers.indexOf('Watershed')] || "N/A",
                 category: row[headers.indexOf('Category')] || "General",
-                date: row[headers.indexOf('Date')] || "",
+                date: dateStr,
+                year: year,
                 benefit: parseFloat(row[headers.indexOf('Gallons')].replace(/,/g, '')) || 0
             };
         }).filter(r => r !== null);
@@ -192,18 +207,26 @@ function parseLine(line) {
 function buildFilters() {
     const comps = [...new Set(allRecords.map(r => r.company))].sort();
     const water = [...new Set(allRecords.map(r => r.watershed))].sort();
+    const cats = [...new Set(allRecords.map(r => r.category))].sort();
+    
     const cSel = document.getElementById("companyFilter");
     const wSel = document.getElementById("watershedFilter");
+    const catSel = document.getElementById("categoryFilter");
 
     comps.forEach(c => cSel.add(new Option(c, c)));
     water.forEach(w => wSel.add(new Option(w, w)));
+    cats.forEach(cat => catSel.add(new Option(cat, cat)));
 }
 
 function applyFilters() {
     const cVal = document.getElementById("companyFilter").value;
     const wVal = document.getElementById("watershedFilter").value;
+    const catVal = document.getElementById("categoryFilter").value;
+
     filteredRecords = allRecords.filter(r => 
-        (cVal === "All" || r.company === cVal) && (wVal === "All" || r.watershed === wVal)
+        (cVal === "All" || r.company === cVal) && 
+        (wVal === "All" || r.watershed === wVal) &&
+        (catVal === "All" || r.category === catVal)
     );
     loadSidebar();
     buildSummaryTable();
@@ -212,56 +235,56 @@ function applyFilters() {
 function buildSummaryTable() {
     const summary = {};
     filteredRecords.forEach(r => {
-        const key = `${r.watershed}|${r.category}`;
-        if (!summary[key]) summary[key] = { w: r.watershed, c: r.category, count: 0, total: 0 };
+        const key = `${r.watershed}|${r.year}`;
+        if (!summary[key]) summary[key] = { w: r.watershed, y: r.year, count: 0, total: 0 };
         summary[key].count++;
         summary[key].total += r.benefit;
     });
+    
     const tbody = document.querySelector("#summaryTable tbody");
     tbody.innerHTML = "";
-    Object.values(summary).sort((a,b) => b.total - a.total).forEach(s => {
-        tbody.innerHTML += `<tr><td>${s.w}</td><td>${s.c}</td><td>${s.count}</td><td>${Math.round(s.total).toLocaleString()}</td></tr>`;
+    Object.values(summary).sort((a,b) => b.y - a.y || a.w.localeCompare(b.w)).forEach(s => {
+        tbody.innerHTML += `<tr>
+            <td>${s.w}</td>
+            <td>${s.y}</td>
+            <td>${s.count}</td>
+            <td>${Math.round(s.total).toLocaleString()}</td>
+        </tr>`;
     });
 }
 
 function loadSidebar() {
     const list = document.getElementById("projectsList");
     list.innerHTML = "";
-    const companies = [...new Set(filteredRecords.map(r => r.company))].sort();
-    companies.forEach(comp => {
+    
+    const projects = [...new Set(filteredRecords.map(r => r.project))].sort();
+    
+    projects.forEach(projName => {
+        const entry = allRecords.find(r => r.project === projName);
         let btn = document.createElement("button");
         btn.className = "projectBtn";
-        btn.innerText = comp;
-        btn.onclick = () => drawChart(comp);
+        btn.innerHTML = `${projName} <span>Partner: ${entry.partner}</span>`;
+        btn.onclick = () => drawChart(projName);
         list.appendChild(btn);
     });
 }
 
-function drawChart(companyName) {
-    document.getElementById("chartTitle").innerText = companyName + ": Cumulative Benefit Over Time";
+function drawChart(projectName) {
+    const projectData = allRecords.filter(r => r.project === projectName)
+                                 .sort((a,b) => a.date.localeCompare(b.date));
     
-    // Aggregate by date for the line chart
-    const companyData = filteredRecords.filter(r => r.company === companyName);
-    const dateGroups = {};
-    
-    companyData.forEach(r => {
-        if(!dateGroups[r.date]) dateGroups[r.date] = 0;
-        dateGroups[r.date] += r.benefit;
-    });
-
-    // Sort dates YYYY-MM
-    const sortedDates = Object.keys(dateGroups).sort();
-    const chartValues = sortedDates.map(d => dateGroups[d]);
+    const partner = projectData[0]?.partner || "N/A";
+    document.getElementById("chartTitle").innerText = `${projectName} (${partner})`;
 
     if(offsetChart) offsetChart.destroy();
     const ctx = document.getElementById("offsetChart").getContext('2d');
     offsetChart = new Chart(ctx, {
         type: "line",
         data: {
-            labels: sortedDates,
+            labels: projectData.map(d => d.date),
             datasets: [{
-                label: "Gallons Benefit",
-                data: chartValues,
+                label: "Monthly Gallons Benefit",
+                data: projectData.map(d => d.benefit),
                 borderColor: '#2e7d32',
                 backgroundColor: 'rgba(46, 125, 50, 0.1)',
                 fill: true,
@@ -271,9 +294,7 @@ function drawChart(companyName) {
         options: { 
             responsive: true, 
             maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: false }
-            }
+            scales: { y: { beginAtZero: false } }
         }
     });
 }
