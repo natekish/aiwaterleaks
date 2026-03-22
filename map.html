@@ -146,52 +146,47 @@
                 const rows = parseCSV(text);
                 const headers = rows[0];
                 
-                // Use the EXACT matching logic from your working function
                 const findIdx = (names) => names.map(n => headers.findIndex(h => h.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
 
                 const idx = {
                     company: findIdx(['company']),
-                    location: findIdx(['location', 'project', 'site', 'address']), // Added address as fallback
-                    lat: findIdx(['x', 'lat', 'latitude']),
-                    lng: findIdx(['y', 'long', 'longitude', 'lng']),
-                    gallons: findIdx(['gallons', 'usage', 'water']),
-                    year: findIdx(['year', 'date'])
+                    location: findIdx(['location', 'project', 'site', 'address']),
+                    lat: findIdx(['x', 'lat']),
+                    lng: findIdx(['y', 'long']),
+                    gallons: findIdx(['gallons', 'usage']),
+                    year: findIdx(['year', 'date']) // Now handles "Date" columns too
                 };
 
                 const dcMap = {};
                 rows.slice(1).forEach(row => {
-                    // Ensure we have valid coordinates before trying to map
                     const lat = parseFloat(row[idx.lat]);
                     const lng = parseFloat(row[idx.lng]);
-                    
                     if (isNaN(lat) || isNaN(lng)) return;
 
                     const loc = row[idx.location] || "Unknown Site";
                     const key = `${loc}_${lat}_${lng}`;
-                    const year = (idx.year !== -1 && row[idx.year]) ? row[idx.year] : 'Total';
                     
-                    // Cleaner number parsing
+                    // --- IMPROVED YEAR AGGREGATION ---
+                    let rawDate = (idx.year !== -1 && row[idx.year]) ? row[idx.year].toString().trim() : 'Total';
+                    // If it starts with 4 digits (e.g. 2023-07), just take the "2023" part
+                    let year = rawDate.match(/^\d{4}/) ? rawDate.substring(0, 4) : rawDate;
+
                     const rawGal = row[idx.gallons] ? row[idx.gallons].toString().replace(/,/g, '') : "0";
                     const galVal = parseInt(rawGal) || 0;
 
                     if (!dcMap[key]) {
-                        dcMap[key] = { 
-                            name: loc, 
-                            company: row[idx.company] || 'Data Center', 
-                            lat, 
-                            lng, 
-                            yearly: {} 
-                        };
+                        dcMap[key] = { name: loc, company: row[idx.company] || 'Data Center', lat, lng, yearly: {} };
                     }
-                    // Sum usage if there are multiple entries for the same year/site
+                    
+                    // Sum up all rows belonging to the same YEAR
                     dcMap[key].yearly[year] = (dcMap[key].yearly[year] || 0) + galVal;
                 });
 
                 Object.values(dcMap).forEach(d => {
                     let yearlyHtml = '';
-                    // Sort years so they appear 2022, 2023, 2024...
+                    // Sort years numerically
                     Object.keys(d.yearly).sort().forEach(yr => {
-                        yearlyHtml += `<div class="stat-row"><span>${yr} Use:</span><strong>${d.yearly[yr].toLocaleString()} gal</strong></div>`;
+                        yearlyHtml += `<div class="stat-row"><span>${yr} Annual Total:</span><strong>${d.yearly[yr].toLocaleString()} gal</strong></div>`;
                     });
 
                     L.marker([d.lat, d.lng], { icon: dcIcon })
@@ -204,12 +199,8 @@
                             </div>
                         `).addTo(dcMarkers);
                 });
-            } else {
-                console.warn("wateruse.csv not found on server.");
             }
-        } catch (e) { 
-            console.error("Error processing wateruse.csv:", e); 
-        }
+        } catch (e) { console.error("Data center data failed to load:", e); }
 
         // --- RESTORATION PROJECTS (FROM wateroffsets.csv) ---
         try {
