@@ -138,43 +138,58 @@
         const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker' });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
         
-        // --- DATA CENTERS (FROM wateruse.csv) ---
+// --- DATA CENTERS (FROM wateruse.csv) ---
         try {
             const res = await fetch('wateruse.csv');
             if (res.ok) {
                 const text = await res.text();
                 const rows = parseCSV(text);
                 const headers = rows[0];
-                const findIdx = (names) => names.map(n => headers.findIndex(h => h.toLowerCase().includes(n.toLowerCase()))).find(i => i !== -1);
+                
+                // Use the EXACT matching logic from your working function
+                const findIdx = (names) => names.map(n => headers.findIndex(h => h.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
 
                 const idx = {
                     company: findIdx(['company']),
-                    location: findIdx(['location', 'project', 'site']),
-                    lat: findIdx(['x', 'lat']),
-                    lng: findIdx(['y', 'long']),
-                    gallons: findIdx(['gallons']),
-                    year: findIdx(['year'])
+                    location: findIdx(['location', 'project', 'site', 'address']), // Added address as fallback
+                    lat: findIdx(['x', 'lat', 'latitude']),
+                    lng: findIdx(['y', 'long', 'longitude', 'lng']),
+                    gallons: findIdx(['gallons', 'usage', 'water']),
+                    year: findIdx(['year', 'date'])
                 };
 
                 const dcMap = {};
                 rows.slice(1).forEach(row => {
+                    // Ensure we have valid coordinates before trying to map
                     const lat = parseFloat(row[idx.lat]);
                     const lng = parseFloat(row[idx.lng]);
+                    
                     if (isNaN(lat) || isNaN(lng)) return;
 
                     const loc = row[idx.location] || "Unknown Site";
                     const key = `${loc}_${lat}_${lng}`;
                     const year = (idx.year !== -1 && row[idx.year]) ? row[idx.year] : 'Total';
-                    const galVal = row[idx.gallons] ? parseInt(row[idx.gallons].toString().replace(/,/g, '')) : 0;
+                    
+                    // Cleaner number parsing
+                    const rawGal = row[idx.gallons] ? row[idx.gallons].toString().replace(/,/g, '') : "0";
+                    const galVal = parseInt(rawGal) || 0;
 
                     if (!dcMap[key]) {
-                        dcMap[key] = { name: loc, company: row[idx.company] || 'Data Center', lat, lng, yearly: {} };
+                        dcMap[key] = { 
+                            name: loc, 
+                            company: row[idx.company] || 'Data Center', 
+                            lat, 
+                            lng, 
+                            yearly: {} 
+                        };
                     }
-                    dcMap[key].yearly[year] = (dcMap[key].yearly[year] || 0) + (isNaN(galVal) ? 0 : galVal);
+                    // Sum usage if there are multiple entries for the same year/site
+                    dcMap[key].yearly[year] = (dcMap[key].yearly[year] || 0) + galVal;
                 });
 
                 Object.values(dcMap).forEach(d => {
                     let yearlyHtml = '';
+                    // Sort years so they appear 2022, 2023, 2024...
                     Object.keys(d.yearly).sort().forEach(yr => {
                         yearlyHtml += `<div class="stat-row"><span>${yr} Use:</span><strong>${d.yearly[yr].toLocaleString()} gal</strong></div>`;
                     });
@@ -182,13 +197,19 @@
                     L.marker([d.lat, d.lng], { icon: dcIcon })
                         .bindPopup(`
                             <div class="dc-header">Data Center Site</div>
-                            <strong>${d.name}</strong><br>
-                            <span style="color:#64748b">${d.company}</span><hr>
-                            ${yearlyHtml}
+                            <div style="margin-bottom:5px"><strong>${d.name}</strong></div>
+                            <div style="font-size:11px; color:#64748b; margin-bottom:8px;">Operator: ${d.company}</div>
+                            <div style="border-top: 1px solid #eee; padding-top: 8px;">
+                                ${yearlyHtml}
+                            </div>
                         `).addTo(dcMarkers);
                 });
+            } else {
+                console.warn("wateruse.csv not found on server.");
             }
-        } catch (e) { console.warn("wateruse.csv loading failed."); }
+        } catch (e) { 
+            console.error("Error processing wateruse.csv:", e); 
+        }
 
         // --- RESTORATION PROJECTS (FROM wateroffsets.csv) ---
         try {
