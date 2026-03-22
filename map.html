@@ -32,6 +32,7 @@
         .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; margin-bottom: 8px; border-bottom: 1px solid #ddd; text-transform: uppercase; }
         .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
         .project-header { color: #10b981; font-weight: bold; border-bottom: 2px solid #10b981; margin-bottom: 5px; }
+        .dc-header { color: #b91c1c; font-weight: bold; border-bottom: 2px solid #b91c1c; margin-bottom: 5px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; padding-bottom: 2px; }
         
         .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; background: rgba(255,255,255,0.9) !important; border-radius: 12px !important; }
@@ -150,24 +151,60 @@
         const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker' });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
         
+        // 1. Process Data Center Usage (from waterusage.csv)
         try {
-            const res = await fetch('wateruse_agg.geojson');
-            const data = await res.json();
-            L.geoJSON(data, { 
-                pointToLayer: (f, latlng) => L.marker(latlng, { icon: dcIcon }), 
-                onEachFeature: (f, layer) => { 
-                    layer.bindPopup(`<strong>${f.properties.Location}</strong><br><span style="color:#64748b">${f.properties.Company}</span><hr>${f.properties.YearlyTotals || ''}`); 
-                } 
-            }).addTo(dcMarkers);
-        } catch (e) {}
+            const res = await fetch('waterusage.csv');
+            const text = await res.text();
+            const rows = parseCSV(text);
+            const headers = rows[0];
+            const idx = {
+                company: headers.indexOf('Company'),
+                location: headers.indexOf('Location'),
+                lat: headers.indexOf('X'),
+                lng: headers.indexOf('Y'),
+                gallons: headers.indexOf('Gallons'),
+                year: headers.indexOf('Year')
+            };
 
+            const dcMap = {};
+            rows.slice(1).forEach(row => {
+                const lat = parseFloat(row[idx.lat]);
+                const lng = parseFloat(row[idx.lng]);
+                if (isNaN(lat) || isNaN(lng)) return;
+
+                const loc = row[idx.location];
+                const key = `${loc}_${lat}_${lng}`;
+                const year = row[idx.year] || 'Total';
+                const gal = parseInt(row[idx.gallons].toString().replace(/,/g, '')) || 0;
+
+                if (!dcMap[key]) {
+                    dcMap[key] = { name: loc, company: row[idx.company], lat, lng, yearly: {} };
+                }
+                dcMap[key].yearly[year] = (dcMap[key].yearly[year] || 0) + gal;
+            });
+
+            Object.values(dcMap).forEach(d => {
+                let yearlyHtml = '';
+                Object.keys(d.yearly).sort().forEach(yr => {
+                    yearlyHtml += `<div class="stat-row"><span>${yr} Use:</span><strong>${d.yearly[yr].toLocaleString()} gal</strong></div>`;
+                });
+
+                L.marker([d.lat, d.lng], { icon: dcIcon })
+                    .bindPopup(`
+                        <div class="dc-header">Data Center Site</div>
+                        <strong>${d.name}</strong><br>
+                        <span style="color:#64748b">${d.company}</span><hr>
+                        ${yearlyHtml}
+                    `).addTo(dcMarkers);
+            });
+        } catch (e) { console.warn("waterusage.csv not found or error loading."); }
+
+        // 2. Process Restoration Projects (from wateroffsets.csv)
         try {
             const res = await fetch('wateroffsets.csv');
             const text = await res.text();
             const rows = parseCSV(text);
             const headers = rows[0];
-            
-            // Map headers to indices based on ACTUAL CSV column names
             const idx = {
                 company: headers.indexOf('Company'),
                 project: headers.indexOf('Project'),
@@ -179,7 +216,6 @@
             };
 
             const projectMap = {};
-
             rows.slice(1).forEach(row => {
                 const lat = parseFloat(row[idx.lat]);
                 const lng = parseFloat(row[idx.lng]);
@@ -187,17 +223,8 @@
 
                 const name = row[idx.project];
                 const key = `${name}_${lat}_${lng}`;
-
                 if (!projectMap[key]) {
-                    projectMap[key] = {
-                        name: name,
-                        company: row[idx.company],
-                        category: row[idx.cat],
-                        watershed: row[idx.watershed],
-                        lat: lat,
-                        lng: lng,
-                        totalGallons: 0
-                    };
+                    projectMap[key] = { name, company: row[idx.company], category: row[idx.cat], watershed: row[idx.watershed], lat, lng, totalGallons: 0 };
                 }
                 const galValue = row[idx.gallons] ? parseInt(row[idx.gallons].toString().replace(/,/g, '')) : 0;
                 projectMap[key].totalGallons += (isNaN(galValue) ? 0 : galValue);
@@ -218,11 +245,7 @@
     }
 
     // --- 5. INITIALIZE CONTROLS ---
-    var baseLayers = {
-        "Satellite View": satelliteHybrid,
-        "Street Map": streetMap
-    };
-
+    var baseLayers = { "Satellite View": satelliteHybrid, "Street Map": streetMap };
     var overlays = {
         "Data Centers": dcMarkers,
         "Water Positive Projects": offsetMarkers,
@@ -234,7 +257,6 @@
     };
 
     L.control.layers(baseLayers, overlays, { collapsed: false }).addTo(map);
-    
     loadMapData();
 </script>
 </body>
