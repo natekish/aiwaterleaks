@@ -96,19 +96,6 @@
         style: { color: '#00d4ff', weight: 2.5, fillOpacity: 0.2, fillColor: '#0055ff' }
     }).addTo(map);
 
-    epaBoundaries.bindPopup(function(layer) {
-        const p = layer.feature.properties;
-        const uName = p.PWS_NAME || p.PWS_Name || "Public Utility";
-        const pop = p.Population_Served_Count || p.Population_Served || 0;
-        const dailyEstimate = pop * 100;
-        return `
-            <div style="min-width: 220px;">
-                <div class="utility-header">${uName}</div>
-                <div class="stat-row"><span>Population Served:</span><strong>${pop.toLocaleString()}</strong></div>
-                <div class="stat-row"><span>Est. Water Demand:</span><strong style="color: #1e40af;">${dailyEstimate.toLocaleString()} gal/day</strong></div>
-            </div>`;
-    });
-
     var wetlandsLayer = L.esri.dynamicMapLayer({
         url: 'https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer',
         layers: [0, 1, 2, 3, 4, 5],
@@ -151,97 +138,106 @@
         const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker' });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
         
-        // 1. Process Data Center Usage (from waterusage.csv)
+        // --- DATA CENTERS (FROM wateruse.csv) ---
         try {
-            const res = await fetch('waterusage.csv');
-            const text = await res.text();
-            const rows = parseCSV(text);
-            const headers = rows[0];
-            const idx = {
-                company: headers.indexOf('Company'),
-                location: headers.indexOf('Location'),
-                lat: headers.indexOf('X'),
-                lng: headers.indexOf('Y'),
-                gallons: headers.indexOf('Gallons'),
-                year: headers.indexOf('Year')
-            };
+            const res = await fetch('wateruse.csv');
+            if (res.ok) {
+                const text = await res.text();
+                const rows = parseCSV(text);
+                const headers = rows[0];
+                const findIdx = (names) => names.map(n => headers.findIndex(h => h.toLowerCase().includes(n.toLowerCase()))).find(i => i !== -1);
 
-            const dcMap = {};
-            rows.slice(1).forEach(row => {
-                const lat = parseFloat(row[idx.lat]);
-                const lng = parseFloat(row[idx.lng]);
-                if (isNaN(lat) || isNaN(lng)) return;
+                const idx = {
+                    company: findIdx(['company']),
+                    location: findIdx(['location', 'project', 'site']),
+                    lat: findIdx(['x', 'lat']),
+                    lng: findIdx(['y', 'long']),
+                    gallons: findIdx(['gallons']),
+                    year: findIdx(['year'])
+                };
 
-                const loc = row[idx.location];
-                const key = `${loc}_${lat}_${lng}`;
-                const year = row[idx.year] || 'Total';
-                const gal = parseInt(row[idx.gallons].toString().replace(/,/g, '')) || 0;
+                const dcMap = {};
+                rows.slice(1).forEach(row => {
+                    const lat = parseFloat(row[idx.lat]);
+                    const lng = parseFloat(row[idx.lng]);
+                    if (isNaN(lat) || isNaN(lng)) return;
 
-                if (!dcMap[key]) {
-                    dcMap[key] = { name: loc, company: row[idx.company], lat, lng, yearly: {} };
-                }
-                dcMap[key].yearly[year] = (dcMap[key].yearly[year] || 0) + gal;
-            });
+                    const loc = row[idx.location] || "Unknown Site";
+                    const key = `${loc}_${lat}_${lng}`;
+                    const year = (idx.year !== -1 && row[idx.year]) ? row[idx.year] : 'Total';
+                    const galVal = row[idx.gallons] ? parseInt(row[idx.gallons].toString().replace(/,/g, '')) : 0;
 
-            Object.values(dcMap).forEach(d => {
-                let yearlyHtml = '';
-                Object.keys(d.yearly).sort().forEach(yr => {
-                    yearlyHtml += `<div class="stat-row"><span>${yr} Use:</span><strong>${d.yearly[yr].toLocaleString()} gal</strong></div>`;
+                    if (!dcMap[key]) {
+                        dcMap[key] = { name: loc, company: row[idx.company] || 'Data Center', lat, lng, yearly: {} };
+                    }
+                    dcMap[key].yearly[year] = (dcMap[key].yearly[year] || 0) + (isNaN(galVal) ? 0 : galVal);
                 });
 
-                L.marker([d.lat, d.lng], { icon: dcIcon })
-                    .bindPopup(`
-                        <div class="dc-header">Data Center Site</div>
-                        <strong>${d.name}</strong><br>
-                        <span style="color:#64748b">${d.company}</span><hr>
-                        ${yearlyHtml}
-                    `).addTo(dcMarkers);
-            });
-        } catch (e) { console.warn("waterusage.csv not found or error loading."); }
+                Object.values(dcMap).forEach(d => {
+                    let yearlyHtml = '';
+                    Object.keys(d.yearly).sort().forEach(yr => {
+                        yearlyHtml += `<div class="stat-row"><span>${yr} Use:</span><strong>${d.yearly[yr].toLocaleString()} gal</strong></div>`;
+                    });
 
-        // 2. Process Restoration Projects (from wateroffsets.csv)
+                    L.marker([d.lat, d.lng], { icon: dcIcon })
+                        .bindPopup(`
+                            <div class="dc-header">Data Center Site</div>
+                            <strong>${d.name}</strong><br>
+                            <span style="color:#64748b">${d.company}</span><hr>
+                            ${yearlyHtml}
+                        `).addTo(dcMarkers);
+                });
+            }
+        } catch (e) { console.warn("wateruse.csv loading failed."); }
+
+        // --- RESTORATION PROJECTS (FROM wateroffsets.csv) ---
         try {
             const res = await fetch('wateroffsets.csv');
-            const text = await res.text();
-            const rows = parseCSV(text);
-            const headers = rows[0];
-            const idx = {
-                company: headers.indexOf('Company'),
-                project: headers.indexOf('Project'),
-                lat: headers.indexOf('X'),
-                lng: headers.indexOf('Y'),
-                gallons: headers.indexOf('Gallons'),
-                cat: headers.indexOf('Category'),
-                watershed: headers.indexOf('Watershed')
-            };
+            if (res.ok) {
+                const text = await res.text();
+                const rows = parseCSV(text);
+                const headers = rows[0];
+                const findIdx = (names) => names.map(n => headers.findIndex(h => h.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
 
-            const projectMap = {};
-            rows.slice(1).forEach(row => {
-                const lat = parseFloat(row[idx.lat]);
-                const lng = parseFloat(row[idx.lng]);
-                if (isNaN(lat) || isNaN(lng)) return;
+                const idx = {
+                    company: findIdx(['company']),
+                    project: findIdx(['project']),
+                    lat: findIdx(['x']),
+                    lng: findIdx(['y']),
+                    gallons: findIdx(['gallons']),
+                    cat: findIdx(['category']),
+                    watershed: findIdx(['watershed'])
+                };
 
-                const name = row[idx.project];
-                const key = `${name}_${lat}_${lng}`;
-                if (!projectMap[key]) {
-                    projectMap[key] = { name, company: row[idx.company], category: row[idx.cat], watershed: row[idx.watershed], lat, lng, totalGallons: 0 };
-                }
-                const galValue = row[idx.gallons] ? parseInt(row[idx.gallons].toString().replace(/,/g, '')) : 0;
-                projectMap[key].totalGallons += (isNaN(galValue) ? 0 : galValue);
-            });
+                const projectMap = {};
+                rows.slice(1).forEach(row => {
+                    const lat = parseFloat(row[idx.lat]);
+                    const lng = parseFloat(row[idx.lng]);
+                    if (isNaN(lat) || isNaN(lng)) return;
 
-            Object.values(projectMap).forEach(p => {
-                L.marker([p.lat, p.lng], { icon: offsetIcon })
-                    .bindPopup(`
-                        <div class="project-header">Water Positive Project</div>
-                        <div class="basin-header" style="font-size:11px; border:none; margin:0;">${p.watershed}</div>
-                        <strong>${p.name}</strong><br>
-                        <span style="color:#64748b">by ${p.company}</span><hr>
-                        <div class="stat-row"><span>Type:</span><strong>${p.category}</strong></div>
-                        <div class="stat-row" style="color:#10b981;"><span>Total Benefit:</span><strong>${Math.round(p.totalGallons).toLocaleString()} gal</strong></div>
-                    `).addTo(offsetMarkers);
-            });
-        } catch (e) { console.error("CSV Error:", e); }
+                    const name = row[idx.project] || "Restoration Project";
+                    const key = `${name}_${lat}_${lng}`;
+                    if (!projectMap[key]) {
+                        projectMap[key] = { name, company: row[idx.company], category: row[idx.cat], watershed: row[idx.watershed], lat, lng, totalGallons: 0 };
+                    }
+                    const galRaw = row[idx.gallons] ? row[idx.gallons].toString().replace(/,/g, '') : "0";
+                    const val = parseInt(galRaw);
+                    projectMap[key].totalGallons += (isNaN(val) ? 0 : val);
+                });
+
+                Object.values(projectMap).forEach(p => {
+                    L.marker([p.lat, p.lng], { icon: offsetIcon })
+                        .bindPopup(`
+                            <div class="project-header">Water Positive Project</div>
+                            <div class="basin-header" style="font-size:11px; border:none; margin:0;">${p.watershed || ''}</div>
+                            <strong>${p.name}</strong><br>
+                            <span style="color:#64748b">by ${p.company}</span><hr>
+                            <div class="stat-row"><span>Type:</span><strong>${p.category || 'N/A'}</strong></div>
+                            <div class="stat-row" style="color:#10b981;"><span>Total Benefit:</span><strong>${Math.round(p.totalGallons).toLocaleString()} gal</strong></div>
+                        `).addTo(offsetMarkers);
+                });
+            }
+        } catch (e) { console.error("wateroffsets.csv loading failed."); }
     }
 
     // --- 5. INITIALIZE CONTROLS ---
