@@ -221,13 +221,14 @@ try {
     console.error("Data center data failed to load:", e); 
 }
 
-        // --- RESTORATION PROJECTS (FROM wateroffsets.csv) ---
+// --- RESTORATION PROJECTS (FROM wateroffsets.csv) ---
         try {
             const res = await fetch('wateroffsets.csv');
             if (res.ok) {
                 const text = await res.text();
                 const rows = parseCSV(text);
                 const headers = rows[0];
+                
                 const findIdx = (names) => names.map(n => headers.findIndex(h => h.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
 
                 const idx = {
@@ -237,7 +238,8 @@ try {
                     lng: findIdx(['y']),
                     gallons: findIdx(['gallons']),
                     cat: findIdx(['category']),
-                    watershed: findIdx(['watershed'])
+                    watershed: findIdx(['watershed']),
+                    year: findIdx(['year', 'date']) // Added date/year support
                 };
 
                 const projectMap = {};
@@ -246,17 +248,46 @@ try {
                     const lng = parseFloat(row[idx.lng]);
                     if (isNaN(lat) || isNaN(lng)) return;
 
-                    const name = row[idx.project] || "Restoration Project";
-                    const key = `${name}_${lat}_${lng}`;
-                    if (!projectMap[key]) {
-                        projectMap[key] = { name, company: row[idx.company], category: row[idx.cat], watershed: row[idx.watershed], lat, lng, totalGallons: 0 };
-                    }
+                    const name = (row[idx.project] || "Restoration Project").trim();
+                    // Key matches the Data Center logic for strict grouping
+                    const key = `${name}_${lat.toFixed(4)}_${lng.toFixed(4)}`;
+                    
+                    // Extract 4-digit year
+                    const rawDate = row[idx.year] ? row[idx.year].toString() : '';
+                    const yearMatch = rawDate.match(/\d{4}/);
+                    const year = yearMatch ? yearMatch[0] : 'Total';
+
                     const galRaw = row[idx.gallons] ? row[idx.gallons].toString().replace(/,/g, '') : "0";
-                    const val = parseInt(galRaw);
-                    projectMap[key].totalGallons += (isNaN(val) ? 0 : val);
+                    const val = parseInt(galRaw) || 0;
+
+                    if (!projectMap[key]) {
+                        projectMap[key] = { 
+                            name, 
+                            company: row[idx.company], 
+                            category: row[idx.cat], 
+                            watershed: row[idx.watershed], 
+                            lat, 
+                            lng, 
+                            yearly: {} 
+                        };
+                    }
+                    
+                    // Aggregate by year
+                    projectMap[key].yearly[year] = (projectMap[key].yearly[year] || 0) + val;
                 });
 
                 Object.values(projectMap).forEach(p => {
+                    let yearlyHtml = '';
+                    const sortedYears = Object.keys(p.yearly).sort();
+                    
+                    sortedYears.forEach(yr => {
+                        yearlyHtml += `
+                            <div class="stat-row">
+                                <span>${yr} Benefit:</span>
+                                <strong>${p.yearly[yr].toLocaleString()} gal</strong>
+                            </div>`;
+                    });
+
                     L.marker([p.lat, p.lng], { icon: offsetIcon })
                         .bindPopup(`
                             <div class="project-header">Water Positive Project</div>
@@ -264,12 +295,15 @@ try {
                             <strong>${p.name}</strong><br>
                             <span style="color:#64748b">by ${p.company}</span><hr>
                             <div class="stat-row"><span>Type:</span><strong>${p.category || 'N/A'}</strong></div>
-                            <div class="stat-row" style="color:#10b981;"><span>Total Benefit:</span><strong>${Math.round(p.totalGallons).toLocaleString()} gal</strong></div>
+                            <div style="border-top: 1px solid #eee; margin-top: 8px; padding-top: 8px;">
+                                ${yearlyHtml}
+                            </div>
                         `).addTo(offsetMarkers);
                 });
             }
-        } catch (e) { console.error("wateroffsets.csv loading failed."); }
-    }
+        } catch (e) { 
+            console.error("wateroffsets.csv loading failed:", e); 
+        }
 
     // --- 5. INITIALIZE CONTROLS ---
     var baseLayers = { "Satellite View": satelliteHybrid, "Street Map": streetMap };
