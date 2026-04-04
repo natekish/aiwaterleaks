@@ -26,16 +26,21 @@
         .counter-unit { font-size: 14px; color: #2e7d32; font-weight: 700; }
 
         .section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        
+        /* Portfolio Card Styles */
+        .portfolio-selector-area { display: flex; flex-direction: column; align-items: center; padding: 40px; background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 25px; }
+        .portfolio-card { width: 100%; max-width: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 30px; margin-top: 20px; text-align: center; border-top: 5px solid #2e7d32; display: none; }
+        .portfolio-card h2 { margin: 0 0 10px 0; color: #1e293b; }
+        .portfolio-card .stat { font-size: 24px; font-weight: bold; color: #2e7d32; margin: 15px 0; }
+        .portfolio-card .btn-link { display: inline-block; padding: 12px 24px; background: #2e7d32; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: background 0.2s; }
+        .portfolio-card .btn-link:hover { background: #1b5e20; }
+        
+        select.large-select { padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #2e7d32; width: 300px; outline: none; }
+
         .container { display: flex; gap: 20px; }
         .sidebar { width: 320px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 340px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        /* New Portfolio Styles */
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-        .portfolio-card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center; transition: all 0.2s; }
-        .portfolio-card:hover { border-color: #2e7d32; background: #f0fdf4; }
-        .portfolio-card a { color: #2e7d32; text-decoration: none; font-weight: bold; font-size: 14px; }
-
         .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 12px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; line-height: 1.4; transition: background 0.2s; }
         .projectBtn:hover { background: #1b5e20; }
         
@@ -45,6 +50,7 @@
 
         .filters { margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; align-items: center; background: #fff; padding: 15px; border-radius: 8px; }
         .filters select { padding: 8px; border-radius: 4px; border: 1px solid #ddd; min-width: 140px; }
+        
         .toolbar { margin-bottom: 20px; }
         .toolbar button { margin-right: 10px; padding: 10px 16px; cursor: pointer; background: #fff; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; }
         
@@ -57,9 +63,6 @@
         .footer-section p.disclaimer { font-size: 0.9rem; color: #94a3b8; max-width: 800px; margin: 0 auto 40px; line-height: 1.6; }
         
         .support-box { background: #ffffff; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; border-top: 4px solid #6366f1; box-shadow: 0 15px 30px rgba(0,0,0,0.04); width: 100%; box-sizing: border-box; max-width: 700px; margin: 20px auto 0; }
-        .support-box h3 { color: #1e293b; margin-top: 0; }
-        .support-box p { color: #64748b; margin-bottom: 30px; font-size: 1rem; }
-        .gfm-embed { margin: 0 auto; display: inline-block; }
     </style>
 </head>
 <body>
@@ -78,11 +81,21 @@
     </a>
 </header>
 
-<div class="section" id="portfolioSection">
-    <h3 style="margin-top:0;">Corporate Water Replenishment Portfolios</h3>
-    <p style="font-size: 14px; color: #64748b;">Direct links to the latest verified project portfolios and sustainability reports by company.</p>
-    <div id="portfolioGrid" class="portfolio-grid">
-        </div>
+<div class="portfolio-selector-area">
+    <h3 style="margin-top:0;">Company Replenishment Portfolios</h3>
+    <p style="margin-bottom: 20px; color: #64748b;">Select a company to view their verified water project portfolio and total recorded offset impact.</p>
+    
+    <select id="portfolioSelector" class="large-select" onchange="updatePortfolioCard()">
+        <option value="">-- Select a Company --</option>
+    </select>
+
+    <div id="companyCard" class="portfolio-card">
+        <h2 id="cardCompanyName">Company Name</h2>
+        <p style="color: #64748b; font-size: 14px;">Total Water Benefit Contribution</p>
+        <div class="stat" id="cardStat">0 Gallons</div>
+        <p id="cardDescription" style="font-size: 14px; margin-bottom: 20px;"></p>
+        <a id="cardLink" href="#" target="_blank" class="btn-link">View Full Portfolio (PDF) ↗</a>
+    </div>
 </div>
 
 <div class="filters">
@@ -150,13 +163,6 @@
         <div class="footer-section">
             <h3>Data Disclaimer and Support</h3>
             <p class="disclaimer">The information presented in this application is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is" for transparency purposes.</p>
-            
-            <div class="support-box">
-                <h3>Support This Project</h3>
-                <p>Your contribution helps us cover FOIA fees, technology costs, and the research required to keep this data public and accessible.</p>
-                <div class="gfm-embed" data-url="https://www.gofundme.com/f/transparency-for-data-center-water-use/widget/small"></div>
-                <script defer src="https://www.gofundme.com/static/js/embed.js"></script>
-            </div>
         </div>
     </div>
 </footer>
@@ -167,34 +173,28 @@ let filteredRecords = [];
 let portfolioLinks = {}; 
 let offsetChart;
 
-async function loadAllData() {
+async function loadData() {
     try {
-        // 1. Fetch Company Replenishment Portfolio Links
+        // 1. Load waterreports.csv (links)
         const reportResp = await fetch("waterreports.csv");
         const reportText = await reportResp.text();
         const reportLines = reportText.trim().split(/\r?\n/);
         
-        const grid = document.getElementById("portfolioGrid");
+        const pSel = document.getElementById("portfolioSelector");
         
         reportLines.slice(1).forEach(line => {
             const row = parseLine(line);
             if (row.length >= 2 && row[1] && row[1].trim() !== "") {
                 const company = row[0].trim();
-                const url = row[1].trim();
-                portfolioLinks[company] = url;
-
-                // Create a card for the new section
-                const card = document.createElement("div");
-                card.className = "portfolio-card";
-                card.innerHTML = `
-                    <div style="font-weight:bold; margin-bottom:10px;">${company}</div>
-                    <a href="${url}" target="_blank">View Portfolio ↗</a>
-                `;
-                grid.appendChild(card);
+                portfolioLinks[company] = row[1].trim();
+                
+                // Populate the specific Portfolio Selector dropdown
+                let opt = new Option(company, company);
+                pSel.add(opt);
             }
         });
 
-        // 2. Fetch Water Offsets Data
+        // 2. Load wateroffsets.csv (main data)
         const response = await fetch("wateroffsets.csv");
         const text = await response.text();
         const lines = text.trim().split(/\r?\n/);
@@ -203,7 +203,6 @@ async function loadAllData() {
         allRecords = lines.slice(1).map(line => {
             const row = parseLine(line);
             if(row.length < 5) return null;
-            
             const dateStr = row[headers.indexOf('Date')] || "";
             return {
                 company: row[headers.indexOf('Company')] || "Unknown",
@@ -223,7 +222,7 @@ async function loadAllData() {
         buildFilters();
         loadSidebar();
         buildSummaryTable();
-    } catch (e) { console.error("Data Load Error:", e); }
+    } catch (e) { console.error("Error loading data:", e); }
 }
 
 function parseLine(line) {
@@ -236,34 +235,52 @@ function parseLine(line) {
     row.push(current.trim()); return row;
 }
 
+function updatePortfolioCard() {
+    const company = document.getElementById("portfolioSelector").value;
+    const card = document.getElementById("companyCard");
+    
+    if (!company) {
+        card.style.display = "none";
+        return;
+    }
+
+    // Calculate total benefit for this company from the offset data
+    const companyTotal = allRecords
+        .filter(r => r.company === company)
+        .reduce((sum, r) => sum + r.benefit, 0);
+
+    // Update Card Content
+    document.getElementById("cardCompanyName").innerText = company;
+    document.getElementById("cardStat").innerText = Math.round(companyTotal).toLocaleString() + " Gallons";
+    document.getElementById("cardLink").href = portfolioLinks[company];
+    document.getElementById("cardDescription").innerText = `This represents the total verified volumetric water benefit recorded in our database for ${company} across all watersheds.`;
+    
+    card.style.display = "block";
+}
+
 function buildFilters() {
     const comps = [...new Set(allRecords.map(r => r.company))].sort();
     const water = [...new Set(allRecords.map(r => r.watershed))].sort();
     const partners = [...new Set(allRecords.map(r => r.partner))].sort();
-    const cats = [...new Set(allRecords.map(r => r.category))].sort();
     
     const cSel = document.getElementById("companyFilter");
     const wSel = document.getElementById("watershedFilter");
     const pSel = document.getElementById("partnerFilter");
-    const catSel = document.getElementById("categoryFilter");
 
     comps.forEach(c => cSel.add(new Option(c, c)));
     water.forEach(w => wSel.add(new Option(w, w)));
     partners.forEach(p => pSel.add(new Option(p, p)));
-    cats.forEach(cat => catSel.add(new Option(cat, cat)));
 }
 
 function applyFilters() {
     const cVal = document.getElementById("companyFilter").value;
     const wVal = document.getElementById("watershedFilter").value;
     const pVal = document.getElementById("partnerFilter").value;
-    const catVal = document.getElementById("categoryFilter").value;
 
     filteredRecords = allRecords.filter(r => 
         (cVal === "All" || r.company === cVal) && 
         (wVal === "All" || r.watershed === wVal) &&
-        (pVal === "All" || r.partner === pVal) &&
-        (catVal === "All" || r.category === catVal)
+        (pVal === "All" || r.partner === pVal)
     );
 
     loadSidebar();
@@ -282,12 +299,7 @@ function buildSummaryTable() {
     const tbody = document.querySelector("#summaryTable tbody");
     tbody.innerHTML = "";
     Object.values(summary).sort((a,b) => b.y - a.y || a.w.localeCompare(b.w)).forEach(s => {
-        tbody.innerHTML += `<tr>
-            <td>${s.w}</td>
-            <td>${s.y}</td>
-            <td>${s.count}</td>
-            <td>${Math.round(s.total).toLocaleString()}</td>
-        </tr>`;
+        tbody.innerHTML += `<tr><td>${s.w}</td><td>${s.y}</td><td>${s.count}</td><td>${Math.round(s.total).toLocaleString()}</td></tr>`;
     });
 }
 
@@ -305,12 +317,8 @@ function loadSidebar() {
 }
 
 function drawChart(projectName) {
-    const projectData = allRecords.filter(r => r.project === projectName)
-                                 .sort((a,b) => a.date.localeCompare(b.date));
-    
-    const partner = projectData[0]?.partner || "N/A";
-    document.getElementById("chartTitle").innerText = `${projectName} (${partner})`;
-
+    const projectData = allRecords.filter(r => r.project === projectName).sort((a,b) => a.date.localeCompare(b.date));
+    document.getElementById("chartTitle").innerText = `${projectName} (${projectData[0]?.partner || "N/A"})`;
     if(offsetChart) offsetChart.destroy();
     const ctx = document.getElementById("offsetChart").getContext('2d');
     offsetChart = new Chart(ctx, {
@@ -326,11 +334,7 @@ function drawChart(projectName) {
                 tension: 0.3
             }]
         },
-        options: { 
-            responsive: true, 
-            maintainAspectRatio: false,
-            scales: { y: { beginAtZero: false } }
-        }
+        options: { responsive: true, maintainAspectRatio: false }
     });
 }
 
@@ -347,7 +351,7 @@ function animateCounter(id, target) {
 
 function downloadCSV() { window.location = "wateroffsets.csv"; }
 
-loadAllData();
+loadData();
 </script>
 </body>
 </html>
