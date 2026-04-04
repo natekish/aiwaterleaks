@@ -27,21 +27,22 @@
 
         .section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        /* Portfolio Card Styles */
-        .portfolio-selector-area { display: flex; flex-direction: column; align-items: center; padding: 40px; background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 25px; }
-        .portfolio-card { width: 100%; max-width: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 30px; margin-top: 20px; text-align: center; border-top: 5px solid #2e7d32; display: none; }
+        /* Portfolio Spotlight Styles */
+        .portfolio-selector-area { display: flex; flex-direction: column; align-items: center; padding: 40px; background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 25px; text-align: center;}
+        .large-select { padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #2e7d32; width: 100%; max-width: 400px; outline: none; margin-bottom: 10px; cursor: pointer; }
+        
+        .portfolio-card { width: 100%; max-width: 500px; background: white; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); padding: 30px; margin-top: 20px; text-align: center; border-top: 5px solid #2e7d32; display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .portfolio-card h2 { margin: 0 0 10px 0; color: #1e293b; }
         .portfolio-card .stat { font-size: 24px; font-weight: bold; color: #2e7d32; margin: 15px 0; }
-        .portfolio-card .btn-link { display: inline-block; padding: 12px 24px; background: #2e7d32; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: background 0.2s; }
-        .portfolio-card .btn-link:hover { background: #1b5e20; }
+        .portfolio-card .btn-link { display: inline-block; padding: 12px 24px; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; margin-top: 10px; }
         
-        select.large-select { padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #2e7d32; width: 300px; outline: none; }
-
         .container { display: flex; gap: 20px; }
         .sidebar { width: 320px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 340px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
-        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 12px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; line-height: 1.4; transition: background 0.2s; }
+        .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 12px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; transition: background 0.2s; }
         .projectBtn:hover { background: #1b5e20; }
         
         table { border-collapse: collapse; width: 100%; margin-top: 10px; font-size: 13px; }
@@ -56,13 +57,7 @@
         
         .chart-container { position: relative; height: 450px; width: 100%; }
 
-        footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 60px 0; margin-top: auto; }
-        .footer-container { max-width: 1100px; width: 90%; margin: 0 auto; }
-        .footer-section { width: 100%; text-align: center; }
-        .footer-section h3 { font-size: 1.4rem; color: #0f172a; margin-bottom: 15px; }
-        .footer-section p.disclaimer { font-size: 0.9rem; color: #94a3b8; max-width: 800px; margin: 0 auto 40px; line-height: 1.6; }
-        
-        .support-box { background: #ffffff; padding: 40px; border-radius: 20px; border: 1px solid #e2e8f0; border-top: 4px solid #6366f1; box-shadow: 0 15px 30px rgba(0,0,0,0.04); width: 100%; box-sizing: border-box; max-width: 700px; margin: 20px auto 0; }
+        footer { background: #fff; width: 100%; border-top: 1px solid #e2e8f0; padding: 40px 0; margin-top: 40px; text-align: center; }
     </style>
 </head>
 <body>
@@ -82,25 +77,25 @@
 </header>
 
 <div class="portfolio-selector-area">
-    <h3 style="margin-top:0;">Company Replenishment Portfolios</h3>
-    <p style="margin-bottom: 20px; color: #64748b;">Select a company to view their verified water project portfolio and total recorded offset impact.</p>
+    <h3 style="margin-top:0;">Corporate Water Replenishment Portfolios</h3>
+    <p style="margin-bottom: 20px; color: #64748b; max-width: 600px;">Explore verified replenishment documents and recorded impacts for companies in our database.</p>
     
     <select id="portfolioSelector" class="large-select" onchange="updatePortfolioCard()">
-        <option value="">-- Select a Company --</option>
+        <option value="">-- Search / Select a Company --</option>
     </select>
 
     <div id="companyCard" class="portfolio-card">
         <h2 id="cardCompanyName">Company Name</h2>
-        <p style="color: #64748b; font-size: 14px;">Total Water Benefit Contribution</p>
+        <p style="color: #64748b; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin-bottom: 5px;">Recorded Offset Impact</p>
         <div class="stat" id="cardStat">0 Gallons</div>
-        <p id="cardDescription" style="font-size: 14px; margin-bottom: 20px;"></p>
-        <a id="cardLink" href="#" target="_blank" class="btn-link">View Full Portfolio (PDF) ↗</a>
+        <p id="cardDescription" style="font-size: 14px; color: #475569; line-height: 1.6; margin: 0 0 20px 0;"></p>
+        <a id="cardLink" href="#" target="_blank" class="btn-link">View Portfolio</a>
     </div>
 </div>
 
 <div class="filters">
     <div>
-        <label><b>Company:</b></label>
+        <label><b>Company Filter:</b></label>
         <select id="companyFilter" onchange="applyFilters()">
             <option value="All">All Companies</option>
         </select>
@@ -117,28 +112,22 @@
             <option value="All">All Partners</option>
         </select>
     </div>
-    <div>
-        <label><b>Category:</b></label>
-        <select id="categoryFilter" onchange="applyFilters()">
-            <option value="All">All Categories</option>
-        </select>
-    </div>
 </div>
 
 <div class="toolbar">
     <button onclick="downloadCSV()">Download Water Offsets (CSV)</button>
-    <button onclick="window.open('map.html', '_blank')" style="background:#2e7d32; color:white; border:none;">Explore Data Center Locations</button>
+    <button onclick="window.open('map.html', '_blank')" style="background:#2e7d32; color:white; border:none;">Explore Map View</button>
 </div>
 
 <div class="section">
-    <h3>Annual Water Offset by Watershed</h3>
+    <h3>Data Summary by Watershed</h3>
     <table id="summaryTable">
         <thead>
             <tr>
                 <th>Watershed</th>
                 <th>Year</th>
-                <th>Project Entries</th>
-                <th>Total Annual Benefit (Gallons)</th>
+                <th>Projects</th>
+                <th>Total Benefit (Gallons)</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -147,11 +136,11 @@
 
 <div class="container">
     <div class="sidebar">
-        <h4 style="margin-top:0;">Projects List</h4>
+        <h4 style="margin-top:0;">Project List</h4>
         <div id="projectsList"></div>
     </div>
     <div class="main">
-        <h3 id="chartTitle">Select a project to view impact over time</h3>
+        <h3 id="chartTitle">Select a project to view details</h3>
         <div class="chart-container">
             <canvas id="offsetChart"></canvas>
         </div>
@@ -159,12 +148,7 @@
 </div>
 
 <footer>
-    <div class="footer-container">
-        <div class="footer-section">
-            <h3>Data Disclaimer and Support</h3>
-            <p class="disclaimer">The information presented in this application is compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is" for transparency purposes.</p>
-        </div>
-    </div>
+    <p style="color: #94a3b8; font-size: 0.9rem;">Data compiled from verified FOIA requests and corporate sustainability reports. All information is provided "as is".</p>
 </footer>
 
 <script>
@@ -175,7 +159,7 @@ let offsetChart;
 
 async function loadData() {
     try {
-        // 1. Load waterreports.csv (links)
+        // 1. Load Portfolio Links from waterreports.csv
         const reportResp = await fetch("waterreports.csv");
         const reportText = await reportResp.text();
         const reportLines = reportText.trim().split(/\r?\n/);
@@ -184,17 +168,17 @@ async function loadData() {
         
         reportLines.slice(1).forEach(line => {
             const row = parseLine(line);
-            if (row.length >= 2 && row[1] && row[1].trim() !== "") {
+            if (row.length >= 1 && row[0]) {
                 const company = row[0].trim();
-                portfolioLinks[company] = row[1].trim();
+                // Store URL if it exists, otherwise null
+                portfolioLinks[company] = (row[1] && row[1].trim() !== "") ? row[1].trim() : null;
                 
-                // Populate the specific Portfolio Selector dropdown
-                let opt = new Option(company, company);
-                pSel.add(opt);
+                // Add to the Spotlight Dropdown
+                pSel.add(new Option(company, company));
             }
         });
 
-        // 2. Load wateroffsets.csv (main data)
+        // 2. Load Offset Data from wateroffsets.csv
         const response = await fetch("wateroffsets.csv");
         const text = await response.text();
         const lines = text.trim().split(/\r?\n/);
@@ -222,7 +206,7 @@ async function loadData() {
         buildFilters();
         loadSidebar();
         buildSummaryTable();
-    } catch (e) { console.error("Error loading data:", e); }
+    } catch (e) { console.error("Error initializing data:", e); }
 }
 
 function parseLine(line) {
@@ -238,22 +222,41 @@ function parseLine(line) {
 function updatePortfolioCard() {
     const company = document.getElementById("portfolioSelector").value;
     const card = document.getElementById("companyCard");
+    const linkBtn = document.getElementById("cardLink");
+    const desc = document.getElementById("cardDescription");
+    const stat = document.getElementById("cardStat");
     
     if (!company) {
         card.style.display = "none";
         return;
     }
 
-    // Calculate total benefit for this company from the offset data
+    // Calculate total benefit for the company from the second dataset
     const companyTotal = allRecords
         .filter(r => r.company === company)
         .reduce((sum, r) => sum + r.benefit, 0);
 
-    // Update Card Content
     document.getElementById("cardCompanyName").innerText = company;
-    document.getElementById("cardStat").innerText = Math.round(companyTotal).toLocaleString() + " Gallons";
-    document.getElementById("cardLink").href = portfolioLinks[company];
-    document.getElementById("cardDescription").innerText = `This represents the total verified volumetric water benefit recorded in our database for ${company} across all watersheds.`;
+    stat.innerText = companyTotal > 0 
+        ? Math.round(companyTotal).toLocaleString() + " Gallons" 
+        : "No Offset Data Recorded";
+
+    // Configure the card based on link availability
+    if (portfolioLinks[company]) {
+        linkBtn.href = portfolioLinks[company];
+        linkBtn.innerText = "View Verified Portfolio (PDF) ↗";
+        linkBtn.style.background = "#2e7d32";
+        linkBtn.style.pointerEvents = "auto";
+        linkBtn.style.opacity = "1";
+        desc.innerText = `Detailed documentation is available for ${company}. Click the button below to view their official replenishment project portfolio.`;
+    } else {
+        linkBtn.href = "#";
+        linkBtn.innerText = "Portfolio Data Requested";
+        linkBtn.style.background = "#94a3b8";
+        linkBtn.style.pointerEvents = "none";
+        linkBtn.style.opacity = "0.7";
+        desc.innerText = `We are currently tracking ${company}, but they have not yet released a public water replenishment portfolio for our records.`;
+    }
     
     card.style.display = "block";
 }
@@ -326,7 +329,7 @@ function drawChart(projectName) {
         data: {
             labels: projectData.map(d => d.date),
             datasets: [{
-                label: "Monthly Gallons Benefit",
+                label: "Monthly Gallons",
                 data: projectData.map(d => d.benefit),
                 borderColor: '#2e7d32',
                 backgroundColor: 'rgba(46, 125, 50, 0.1)',
