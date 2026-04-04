@@ -126,7 +126,6 @@
             <tr>
                 <th>Watershed</th>
                 <th>Year</th>
-                <th>Projects</th>
                 <th>Total Benefit (Gallons)</th>
             </tr>
         </thead>
@@ -159,26 +158,20 @@ let offsetChart;
 
 async function loadData() {
     try {
-        // 1. Load Portfolio Links from waterreports.csv
         const reportResp = await fetch("waterreports.csv");
         const reportText = await reportResp.text();
         const reportLines = reportText.trim().split(/\r?\n/);
-        
         const pSel = document.getElementById("portfolioSelector");
         
         reportLines.slice(1).forEach(line => {
             const row = parseLine(line);
             if (row.length >= 1 && row[0]) {
                 const company = row[0].trim();
-                // Store URL if it exists, otherwise null
                 portfolioLinks[company] = (row[1] && row[1].trim() !== "") ? row[1].trim() : null;
-                
-                // Add to the Spotlight Dropdown
                 pSel.add(new Option(company, company));
             }
         });
 
-        // 2. Load Offset Data from wateroffsets.csv
         const response = await fetch("wateroffsets.csv");
         const text = await response.text();
         const lines = text.trim().split(/\r?\n/);
@@ -231,7 +224,6 @@ function updatePortfolioCard() {
         return;
     }
 
-    // Calculate total benefit for the company from the second dataset
     const companyTotal = allRecords
         .filter(r => r.company === company)
         .reduce((sum, r) => sum + r.benefit, 0);
@@ -241,7 +233,6 @@ function updatePortfolioCard() {
         ? Math.round(companyTotal).toLocaleString() + " Gallons" 
         : "No Offset Data Recorded";
 
-    // Configure the card based on link availability
     if (portfolioLinks[company]) {
         linkBtn.href = portfolioLinks[company];
         linkBtn.innerText = "View Verified Portfolio (PDF) ↗";
@@ -294,15 +285,14 @@ function buildSummaryTable() {
     const summary = {};
     filteredRecords.forEach(r => {
         const key = `${r.watershed}|${r.year}`;
-        if (!summary[key]) summary[key] = { w: r.watershed, y: r.year, count: 0, total: 0 };
-        summary[key].count++;
+        if (!summary[key]) summary[key] = { w: r.watershed, y: r.year, total: 0 };
         summary[key].total += r.benefit;
     });
     
     const tbody = document.querySelector("#summaryTable tbody");
     tbody.innerHTML = "";
     Object.values(summary).sort((a,b) => b.y - a.y || a.w.localeCompare(b.w)).forEach(s => {
-        tbody.innerHTML += `<tr><td>${s.w}</td><td>${s.y}</td><td>${s.count}</td><td>${Math.round(s.total).toLocaleString()}</td></tr>`;
+        tbody.innerHTML += `<tr><td>${s.w}</td><td>${s.y}</td><td>${Math.round(s.total).toLocaleString()}</td></tr>`;
     });
 }
 
