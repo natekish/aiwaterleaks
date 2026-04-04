@@ -30,6 +30,12 @@
         .sidebar { width: 320px; background: white; padding: 15px; border-radius: 8px; height: 650px; overflow: auto; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .main { flex: 1; background: white; padding: 20px; border-radius: 8px; max-width: calc(100% - 340px); overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         
+        /* New Portfolio Styles */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .portfolio-card { border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; text-align: center; transition: all 0.2s; }
+        .portfolio-card:hover { border-color: #2e7d32; background: #f0fdf4; }
+        .portfolio-card a { color: #2e7d32; text-decoration: none; font-weight: bold; font-size: 14px; }
+
         .projectBtn { display: block; width: 100%; margin-bottom: 8px; padding: 12px; background: #2e7d32; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; text-align: left; line-height: 1.4; transition: background 0.2s; }
         .projectBtn:hover { background: #1b5e20; }
         
@@ -71,6 +77,13 @@
         </div>
     </a>
 </header>
+
+<div class="section" id="portfolioSection">
+    <h3 style="margin-top:0;">Corporate Water Replenishment Portfolios</h3>
+    <p style="font-size: 14px; color: #64748b;">Direct links to the latest verified project portfolios and sustainability reports by company.</p>
+    <div id="portfolioGrid" class="portfolio-grid">
+        </div>
+</div>
 
 <div class="filters">
     <div>
@@ -151,10 +164,37 @@
 <script>
 let allRecords = [];
 let filteredRecords = [];
+let portfolioLinks = {}; 
 let offsetChart;
 
-async function loadCSV() {
+async function loadAllData() {
     try {
+        // 1. Fetch Company Replenishment Portfolio Links
+        const reportResp = await fetch("waterreports.csv");
+        const reportText = await reportResp.text();
+        const reportLines = reportText.trim().split(/\r?\n/);
+        
+        const grid = document.getElementById("portfolioGrid");
+        
+        reportLines.slice(1).forEach(line => {
+            const row = parseLine(line);
+            if (row.length >= 2 && row[1] && row[1].trim() !== "") {
+                const company = row[0].trim();
+                const url = row[1].trim();
+                portfolioLinks[company] = url;
+
+                // Create a card for the new section
+                const card = document.createElement("div");
+                card.className = "portfolio-card";
+                card.innerHTML = `
+                    <div style="font-weight:bold; margin-bottom:10px;">${company}</div>
+                    <a href="${url}" target="_blank">View Portfolio ↗</a>
+                `;
+                grid.appendChild(card);
+            }
+        });
+
+        // 2. Fetch Water Offsets Data
         const response = await fetch("wateroffsets.csv");
         const text = await response.text();
         const lines = text.trim().split(/\r?\n/);
@@ -165,8 +205,6 @@ async function loadCSV() {
             if(row.length < 5) return null;
             
             const dateStr = row[headers.indexOf('Date')] || "";
-            const year = dateStr.split('-')[0] || "N/A";
-
             return {
                 company: row[headers.indexOf('Company')] || "Unknown",
                 project: row[headers.indexOf('Project')] || "N/A",
@@ -174,7 +212,7 @@ async function loadCSV() {
                 watershed: row[headers.indexOf('Watershed')] || "N/A",
                 category: row[headers.indexOf('Category')] || "General",
                 date: dateStr,
-                year: year,
+                year: dateStr.split('-')[0] || "N/A",
                 benefit: parseFloat(row[headers.indexOf('Gallons')].replace(/,/g, '')) || 0
             };
         }).filter(r => r !== null);
@@ -185,7 +223,7 @@ async function loadCSV() {
         buildFilters();
         loadSidebar();
         buildSummaryTable();
-    } catch (e) { console.error("CSV Load Error:", e); }
+    } catch (e) { console.error("Data Load Error:", e); }
 }
 
 function parseLine(line) {
@@ -227,6 +265,7 @@ function applyFilters() {
         (pVal === "All" || r.partner === pVal) &&
         (catVal === "All" || r.category === catVal)
     );
+
     loadSidebar();
     buildSummaryTable();
 }
@@ -255,9 +294,7 @@ function buildSummaryTable() {
 function loadSidebar() {
     const list = document.getElementById("projectsList");
     list.innerHTML = "";
-    
     const projects = [...new Set(filteredRecords.map(r => r.project))].sort();
-    
     projects.forEach(projName => {
         let btn = document.createElement("button");
         btn.className = "projectBtn";
@@ -309,7 +346,8 @@ function animateCounter(id, target) {
 }
 
 function downloadCSV() { window.location = "wateroffsets.csv"; }
-loadCSV();
+
+loadAllData();
 </script>
 </body>
 </html>
