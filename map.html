@@ -17,26 +17,33 @@
     <script src="https://unpkg.com/esri-leaflet@3.0.10/dist/esri-leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
     <style>
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
         #map { height: 100vh; width: 100%; background: #0b1622; }
         #search-container { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 400px; max-width: 90%; }
         .leaflet-control-geocoder { width: 100% !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important; border-radius: 8px !important; background: white; border: 2px solid #1e40af !important; }
+        
+        /* Layer effects */
         .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); pointer-events: none; }
         .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
-        .utility-header { color: #1e40af; font-weight: bold; font-size: 13px; margin-bottom: 8px; border-bottom: 1px solid #ddd; text-transform: uppercase; margin-top: 10px; }
-        .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
-        .project-header { color: #10b981; font-weight: bold; border-bottom: 2px solid #10b981; margin-bottom: 5px; }
+        
+        /* Popup Styling */
         .dc-header { color: #b91c1c; font-weight: bold; border-bottom: 2px solid #b91c1c; margin-bottom: 5px; }
+        .project-header { color: #10b981; font-weight: bold; border-bottom: 2px solid #10b981; margin-bottom: 5px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; padding-bottom: 2px; }
-        .balance-row { border-top: 2px solid #334155; margin-top: 10px; padding-top: 8px; font-weight: bold; font-size: 13px; }
-        .status-deficit { color: #ef4444; } 
-        .status-surplus { color: #10b981; }
-        .impact-box { background: #f8fafc; padding: 8px; border-radius: 4px; border-left: 4px solid #1e40af; margin-top: 5px; }
-        .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; background: rgba(255,255,255,0.9) !important; border-radius: 12px !important; }
+        
+        .analysis-btn { 
+            width: 100%; background: #1e40af; color: white; border: none; 
+            padding: 10px; border-radius: 6px; cursor: pointer; 
+            font-weight: bold; margin-top: 12px; text-align: center; 
+            display: block; text-decoration: none; font-size: 13px;
+            transition: background 0.2s;
+        }
+        .analysis-btn:hover { background: #1d4ed8; }
+
         .back-btn { position: absolute; top: 20px; left: 20px; z-index: 1001; background: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; color: #333; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2); border: 1px solid #ddd; font-size: 14px; }
+        .leaflet-control-layers { width: 280px !important; font-size: 14px !important; padding: 12px !important; background: rgba(255,255,255,0.9) !important; border-radius: 12px !important; }
     </style>
 </head>
 <body>
@@ -46,14 +53,17 @@
 <div id="map"></div>
 
 <script>
+    // Initialize Map
     var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { attribution: '© Google', maxZoom: 20 });
     var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid], zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
+    // Search Bar
     var geocoder = L.Control.geocoder({ defaultMarkGeocode: false, placeholder: "Search location...", collapsed: false })
         .on('markgeocode', function(e) { map.fitBounds(e.geocode.bbox); }).addTo(map);
     document.getElementById('search-container').appendChild(geocoder.getContainer());
 
+    // Panes for layer ordering
     map.createPane('backPane').style.zIndex = 400;
     map.createPane('frontPane').style.zIndex = 500;
 
@@ -68,7 +78,7 @@
         url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0',
         pane: 'frontPane',
         style: { color: '#00d4ff', weight: 1.5, fillOpacity: 0.1, fillColor: '#0055ff' }
-    }).addTo(map);
+    });
 
     var riversLayer = L.esri.dynamicMapLayer({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer', layers: [0,1,2,3,4,5,6,9], className: 'luminous-rivers' });
     var wetlandsLayer = L.esri.dynamicMapLayer({ url: 'https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer', layers: [0,1,2,3,4,5], opacity: 0.85 });
@@ -76,29 +86,6 @@
 
     const dcMarkers = L.layerGroup().addTo(map);
     const offsetMarkers = L.layerGroup().addTo(map);
-
-    // --- SPATIAL ANALYSIS FUNCTION ---
-    async function getImpactDetails(lat, lng) {
-        const point = turf.point([lng, lat]);
-        const buffer = turf.buffer(point, 5, {units: 'miles'});
-        
-        return new Promise((resolve) => {
-            let results = { utility: "Private/Unknown", rivers: 0 };
-            
-            // Query Utility Boundary
-            epaBoundaries.query().intersects(buffer).run((err, fc) => {
-                if (fc && fc.features.length > 0) {
-                    const p = fc.features[0].properties;
-                    results.utility = p.NAME || p.PWS_NAME || "Municipal System";
-                }
-                
-                // Query Rivers (Simplified count of intersecting features)
-                // Note: Since riversLayer is dynamic, we query the HUC layer or similar for count if needed, 
-                // but for this UI we will label the primary utility.
-                resolve(results);
-            });
-        });
-    }
 
     function parseCSV(text) {
         const rows = [];
@@ -119,88 +106,76 @@
         const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker' });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
 
-        window.globalDCMap = {};
-        window.globalProjMap = {};
-
         // Load Data Centers
         try {
             const res = await fetch('wateruse.csv');
-            if (res.ok) {
-                const rows = parseCSV(await res.text());
-                const h = rows[0];
-                const find = (ns) => ns.map(n => h.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
-                const idx = { co: find(['company']), loc: find(['location', 'site']), x: find(['x', 'lat']), y: find(['y', 'long']), gal: find(['gallons']), yr: find(['year', 'date']) };
-                
-                rows.slice(1).forEach(r => {
-                    const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
-                    if (isNaN(lat) || isNaN(lng)) return;
-                    const key = `${(r[idx.loc]||'').trim()}_${lat.toFixed(4)}_${lng.toFixed(4)}`;
-                    const year = (r[idx.yr]?.toString().match(/\d{4}/) || ['Total'])[0];
-                    const val = parseInt(r[idx.gal]?.replace(/,/g, '')) || 0;
-                    if (!window.globalDCMap[key]) window.globalDCMap[key] = { name: r[idx.loc], co: r[idx.co], lat, lng, yearly: {} };
-                    window.globalDCMap[key].yearly[year] = (window.globalDCMap[key].yearly[year] || 0) + val;
-                });
+            const rows = parseCSV(await res.text());
+            const h = rows[0];
+            const find = (ns) => ns.map(n => h.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
+            const idx = { co: find(['company']), loc: find(['location', 'site']), x: find(['x', 'lat']), y: find(['y', 'long']), gal: find(['gallons']), yr: find(['year']) };
+            
+            const dcData = {};
+            rows.slice(1).forEach(r => {
+                const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
+                if (isNaN(lat)) return;
+                const key = `${r[idx.loc]}_${lat}`;
+                if (!dcData[key]) dcData[key] = { name: r[idx.loc], co: r[idx.co], lat, lng, yearly: {} };
+                const year = r[idx.yr] || "Total";
+                dcData[key].yearly[year] = (dcData[key].yearly[year] || 0) + (parseInt(r[idx.gal]?.replace(/,/g, '')) || 0);
+            });
 
-                Object.values(window.globalDCMap).forEach(d => {
-                    const marker = L.marker([d.lat, d.lng], { icon: dcIcon }).addTo(dcMarkers);
-                    
-                    marker.on('click', async function() {
-                        marker.bindPopup("Analyzing local watershed impacts...").openPopup();
-                        const impacts = await getImpactDetails(d.lat, d.lng);
-                        
-                        let yrHtml = ''; 
-                        Object.keys(d.yearly).sort().forEach(y => {
-                            yrHtml += `<div class="stat-row"><span>${y} Use:</span><strong>${d.yearly[y].toLocaleString()} gal</strong></div>`;
-                        });
+            Object.values(dcData).forEach(d => {
+                const urlParams = new URLSearchParams({
+                    name: d.name, co: d.co, lat: d.lat, lng: d.lng, 
+                    yearly: JSON.stringify(d.yearly)
+                }).toString();
 
-                        const content = `
-                            <div class="dc-header">Data Center Site</div>
-                            <strong>${d.name}</strong><br>
-                            <span style="color:#64748b">${d.co}</span>
-                            <div class="utility-header">Infrastructure & Impact</div>
-                            <div class="impact-box">
-                                <div class="stat-row"><span>Water Utility:</span><strong>${impacts.utility}</strong></div>
-                                <div class="stat-row"><span>Impact Radius:</span><strong>5 Miles</strong></div>
-                                <div style="font-size:10px; color:#64748b; margin-top:5px;">Analysis includes USGS streams & NWI wetlands.</div>
-                            </div>
-                            <hr>
-                            ${yrHtml}
-                        `;
-                        marker.setPopupContent(content);
-                    });
-                });
-            }
-        } catch (e) { console.error(e); }
+                const content = `
+                    <div class="dc-header">Data Center Site</div>
+                    <strong>${d.name}</strong><br>
+                    <span style="color:#64748b">${d.co}</span>
+                    <hr>
+                    <div class="stat-row"><span>Address:</span><strong>${d.lat.toFixed(4)}, ${d.lng.toFixed(4)}</strong></div>
+                    <a href="analysis.html?${urlParams}" target="_blank" class="analysis-btn">Open Site Water Analysis →</a>
+                `;
+                L.marker([d.lat, d.lng], { icon: dcIcon }).bindPopup(content).addTo(dcMarkers);
+            });
+        } catch (e) { console.error("Error loading DC data:", e); }
 
-        // Load Restoration Projects (standard popups)
+        // Load Restoration Projects
         try {
             const res = await fetch('wateroffsets.csv');
-            if (res.ok) {
-                const rows = parseCSV(await res.text());
-                const h = rows[0];
-                const find = (ns) => ns.map(n => h.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
-                const idx = { co: find(['company']), prj: find(['project']), x: find(['x', 'lat']), y: find(['y', 'long']), gal: find(['gallons']), cat: find(['category']), ws: find(['watershed']), yr: find(['year', 'date']) };
-                
-                rows.slice(1).forEach(r => {
-                    const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
-                    if (isNaN(lat) || isNaN(lng)) return;
-                    const key = `${(r[idx.prj]||'').trim()}_${lat.toFixed(4)}_${lng.toFixed(4)}`;
-                    const year = (r[idx.yr]?.toString().match(/\d{4}/) || ['Total'])[0];
-                    const val = parseInt(r[idx.gal]?.replace(/,/g, '')) || 0;
-                    if (!window.globalProjMap[key]) window.globalProjMap[key] = { name: r[idx.prj], co: r[idx.co], cat: r[idx.cat], ws: r[idx.ws], lat, lng, yearly: {} };
-                    window.globalProjMap[key].yearly[year] = (window.globalProjMap[key].yearly[year] || 0) + val;
-                });
+            const rows = parseCSV(await res.text());
+            const h = rows[0];
+            const find = (ns) => ns.map(n => h.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
+            const idx = { co: find(['company']), prj: find(['project']), x: find(['x', 'lat']), y: find(['y', 'long']), gal: find(['gallons']), yr: find(['year']) };
 
-                Object.values(window.globalProjMap).forEach(p => {
-                    let yrHtml = ''; 
-                    Object.keys(p.yearly).sort().forEach(y => yrHtml += `<div class="stat-row"><span>${y} Benefit:</span><strong>${p.yearly[y].toLocaleString()} gal</strong></div>`);
-                    L.marker([p.lat, p.lng], { icon: offsetIcon }).bindPopup(`<div class="project-header">Water Positive Project</div><div style="font-size:11px">${p.ws || ''}</div><strong>${p.name}</strong><br><span style="color:#64748b">by ${p.co}</span><hr>${yrHtml}`).addTo(offsetMarkers);
-                });
-            }
-        } catch (e) { console.error(e); }
+            rows.slice(1).forEach(r => {
+                const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
+                if (isNaN(lat)) return;
+                L.marker([lat, lng], { icon: offsetIcon }).bindPopup(`
+                    <div class="project-header">Restoration Project</div>
+                    <strong>${r[idx.prj]}</strong><br>
+                    <span style="color:#64748b">Lead: ${r[idx.co]}</span>
+                    <div class="stat-row" style="margin-top:8px;"><span>Annual Benefit:</span><strong>${parseInt(r[idx.gal]).toLocaleString()} gal</strong></div>
+                `).addTo(offsetMarkers);
+            });
+        } catch (e) {}
     }
 
-    L.control.layers({ "Satellite View": satelliteHybrid }, { "Data Centers": dcMarkers, "Water Positive Projects": offsetMarkers, "Recycled Water Lines": recycledWaterLayer, "Water Utility Service Areas (EPA)": epaBoundaries, "Wetlands (NWI)": wetlandsLayer, "Rivers & Streams (USGS)": riversLayer, "Watersheds (HUC-8)": huc8Layer }, { collapsed: false }).addTo(map);
+    // Layer Control
+    L.control.layers({ 
+        "Satellite View": satelliteHybrid 
+    }, { 
+        "Data Centers": dcMarkers, 
+        "Water Projects": offsetMarkers,
+        "Recycled Water Lines": recycledWaterLayer,
+        "Water Utility Areas (EPA)": epaBoundaries, 
+        "Wetlands (NWI)": wetlandsLayer, 
+        "Rivers & Streams (USGS)": riversLayer,
+        "Watershed (HUC-8)": huc8Layer
+    }, { collapsed: false }).addTo(map);
+
     loadMapData();
 </script>
 </body>
