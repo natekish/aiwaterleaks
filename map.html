@@ -40,7 +40,7 @@
         .risk-list { font-size: 11px; color: #b91c1c; margin-top: 4px; padding-left: 0; list-style: none; }
         .risk-item { padding: 2px 0; border-bottom: 1px solid #f1f5f9; }
         
-        .balance-row { border-top: 2px solid #334155; margin-top: 10px; padding-top: 8px; font-weight: bold; font-size: 13px; }
+        .balance-row { border-top: 2px solid #334155; margin-top: 10px; padding-top: 8px; font-weight: bold; font-size: 13px; display: flex; justify-content: space-between; }
         .status-deficit { color: #ef4444; } 
         .status-surplus { color: #10b981; }
         
@@ -91,7 +91,7 @@
     const dcMarkers = L.layerGroup().addTo(map);
     const offsetMarkers = L.layerGroup().addTo(map);
 
-    // --- POPUP: WATER UTILITY ---
+    // --- POPUP: WATER UTILITY (EPA Map Click) ---
     epaBoundaries.bindPopup(function (layer) {
         const p = layer.feature.properties;
         const name = p.NAME || p.PWS_Name || "Unknown System";
@@ -107,7 +107,7 @@
             </div>`;
     });
 
-    // --- POPUP: WATERSHED BALANCE ---
+    // --- POPUP: WATERSHED BALANCE (HUC-8 Click) ---
     huc8Layer.bindPopup(function (layer) {
         let useSum = 0, benSum = 0;
         const polygon = layer.feature;
@@ -167,40 +167,70 @@
                 const rows = parseCSV(await res.text());
                 const h = rows[0];
                 const find = (ns) => ns.map(n => h.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
-                const idx = { co: find(['company']), loc: find(['location', 'site']), x: find(['x', 'lat']), y: find(['y', 'long']), gal: find(['gallons']), yr: find(['year', 'date']) };
+                
+                // CRITICAL FIX: Ensure 'utility' column is indexed
+                const idx = { 
+                    co: find(['company']), 
+                    loc: find(['location', 'site']), 
+                    x: find(['x', 'lat']), 
+                    y: find(['y', 'long']), 
+                    gal: find(['gallons']), 
+                    yr: find(['year', 'date']),
+                    util: find(['utility']) 
+                };
                 
                 rows.slice(1).forEach(r => {
                     const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
                     if (isNaN(lat)) return;
                     const key = `${r[idx.loc]}_${lat}`;
-                    if (!window.globalDCMap[key]) window.globalDCMap[key] = { name: r[idx.loc], co: r[idx.co], lat, lng, yearly: {} };
+                    
+                    if (!window.globalDCMap[key]) {
+                        window.globalDCMap[key] = { 
+                            name: r[idx.loc], 
+                            co: r[idx.co], 
+                            lat, 
+                            lng, 
+                            utility: r[idx.util] || "Not Specified",
+                            yearly: {},
+                            total: 0 
+                        };
+                    }
                     const year = (r[idx.yr]?.toString().match(/\d{4}/) || ['Total'])[0];
-                    window.globalDCMap[key].yearly[year] = (window.globalDCMap[key].yearly[year] || 0) + (parseInt(r[idx.gal]?.replace(/,/g, '')) || 0);
+                    const val = (parseInt(r[idx.gal]?.replace(/,/g, '')) || 0);
+                    window.globalDCMap[key].yearly[year] = (window.globalDCMap[key].yearly[year] || 0) + val;
+                    window.globalDCMap[key].total += val;
                 });
 
                 Object.values(window.globalDCMap).forEach(d => {
                     const markerID = d.lat.toString().replace(/\D/g, '');
                     let yrHtml = '';
-                    Object.keys(d.yearly).sort().reverse().forEach(y => yrHtml += `<div class="stat-row"><span>${y} Use:</span><strong>${d.yearly[y].toLocaleString()} gal</strong></div>`);
+                    // Sorting years to keep them in order
+                    Object.keys(d.yearly).sort().reverse().forEach(y => {
+                        yrHtml += `<div class="stat-row"><span>${y} Use:</span><strong>${d.yearly[y].toLocaleString()} gal</strong></div>`;
+                    });
 
                     const content = `
                         <div class="owner-header">${d.co}</div>
                         <div class="site-name">${d.name}</div>
                         <div class="analysis-box">
-                            <div class="analysis-title">Live Watershed Scan</div>
-                            <div class="stat-row"><span>Utility:</span><strong id="ut-${markerID}" class="loading-pulse">Querying...</strong></div>
-                            <div class="stat-row"><span>HUC-8:</span><strong id="ws-${markerID}" class="loading-pulse">Scanning...</strong></div>
+                            <div class="analysis-title">Watershed Analysis</div>
+                            <div class="stat-row"><span>Utility:</span><strong>${d.utility}</strong></div>
+                            <div class="stat-row"><span>Basin:</span><strong id="ws-${markerID}" class="loading-pulse">Scanning...</strong></div>
                             <div class="analysis-title" style="margin-top:8px">Local Risks (2mi)</div>
-                            <ul class="risk-list" id="ri-${markerID}"><li class="loading-pulse">Analyzing proximity...</li></ul>
+                            <ul class="risk-list" id="ri-${markerID}"><li class="loading-pulse">Analyzing...</li></ul>
                         </div>
                         <div class="analysis-title" style="margin-top:10px">Consumption Profile</div>
-                        ${yrHtml}`;
+                        ${yrHtml}
+                        <div class="balance-row">
+                            <span>Lifetime Total:</span>
+                            <span>${d.total.toLocaleString()} gal</span>
+                        </div>`;
 
                     L.marker([d.lat, d.lng], { icon: dcIcon }).bindPopup(content).addTo(dcMarkers)
                         .on('popupopen', () => performAnalysis(d, markerID));
                 });
             }
-        } catch (e) {}
+        } catch (e) { console.error("DC Load Error:", e); }
 
         // Load Restoration Projects
         try {
@@ -220,7 +250,7 @@
                     L.marker([lat, lng], { icon: offsetIcon }).bindPopup(`<div class="project-header">Water Restoration</div><strong>${r[idx.prj]}</strong><br>By ${r[idx.co]}`).addTo(offsetMarkers);
                 });
             }
-        } catch (e) {}
+        } catch (e) { console.error("Project Load Error:", e); }
     }
 
     // --- SPATIAL RISK ANALYSIS ENGINE ---
@@ -228,21 +258,14 @@
         const pt = turf.point([d.lng, d.lat]);
         const buf = turf.buffer(pt, 2, { units: 'miles' });
 
-        // Utility Lookup
-        L.esri.query({ url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0' })
-            .intersects(pt).run((err, fc) => {
-                const el = document.getElementById(`ut-${id}`);
-                if (el) { el.innerText = fc?.features[0]?.properties?.NAME || "Private/Unknown"; el.classList.remove('loading-pulse'); }
-            });
-
-        // HUC-8 Lookup
+        // HUC-8 Basin Lookup
         L.esri.query({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4' })
             .intersects(pt).run((err, fc) => {
                 const el = document.getElementById(`ws-${id}`);
                 if (el) { el.innerText = fc?.features[0]?.properties?.name || "Unknown Basin"; el.classList.remove('loading-pulse'); }
             });
 
-        // Surface Water Proximity (USGS Rivers)
+        // Surface Water Risk (Rivers)
         L.esri.query({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6' })
             .intersects(buf).run((err, fc) => {
                 const ri = document.getElementById(`ri-${id}`);
@@ -255,6 +278,7 @@
             });
     }
 
+    // --- LAYER CONTROLS ---
     L.control.layers({ "Satellite View": satelliteHybrid }, { 
         "Data Centers": dcMarkers, 
         "Restoration Projects": offsetMarkers, 
