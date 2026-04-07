@@ -24,11 +24,9 @@
         #search-container { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; width: 400px; max-width: 90%; }
         .leaflet-control-geocoder { width: 100% !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important; border-radius: 8px !important; background: white; border: 2px solid #1e40af !important; }
         
-        /* Layer effects */
         .luminous-rivers { filter: hue-rotate(155deg) brightness(1.8) saturate(3); pointer-events: none; }
         .dark-red-marker { filter: hue-rotate(0deg) brightness(0.4) saturate(2.5); }
         
-        /* Popup Styling */
         .dc-header { color: #b91c1c; font-weight: bold; border-bottom: 2px solid #b91c1c; margin-bottom: 5px; }
         .project-header { color: #10b981; font-weight: bold; border-bottom: 2px solid #10b981; margin-bottom: 5px; }
         .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; padding-bottom: 2px; }
@@ -52,12 +50,12 @@
 <div id="map"></div>
 
 <script>
-    // 1. Initialize Map Layers
+    // 1. Initialize Map
     var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { attribution: '© Google', maxZoom: 20 });
     var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid], zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    // 2. Search Integration
+    // 2. Search integration
     var geocoder = L.Control.geocoder({ defaultMarkGeocode: false, placeholder: "Search location...", collapsed: false })
         .on('markgeocode', function(e) { map.fitBounds(e.geocode.bbox); }).addTo(map);
     document.getElementById('search-container').appendChild(geocoder.getContainer());
@@ -65,7 +63,7 @@
     map.createPane('backPane').style.zIndex = 400;
     map.createPane('frontPane').style.zIndex = 500;
 
-    // 3. Federal & Infrastructure Layers
+    // 3. Infrastructure Layers
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
         pane: 'backPane',
@@ -85,7 +83,6 @@
     const dcMarkers = L.layerGroup().addTo(map);
     const offsetMarkers = L.layerGroup().addTo(map);
 
-    // 4. Data Processing
     function parseCSV(text) {
         const rows = [];
         const lines = text.trim().split(/\r?\n/);
@@ -105,7 +102,7 @@
         const dcIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png', iconSize: [25, 41], iconAnchor: [12, 41], className: 'dark-red-marker' });
         const offsetIcon = new L.Icon({ iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png', iconSize: [25, 41], iconAnchor: [12, 41] });
 
-        // A. Load Data Center Points
+        // A. Process Data Center CSV (Multiple years per site)
         try {
             const res = await fetch('wateruse.csv');
             const rows = parseCSV(await res.text());
@@ -124,24 +121,18 @@
             });
 
             Object.values(dcData).forEach(d => {
-                // IMPORTANT: Package the data for the analysis page
                 const dataPayload = encodeURIComponent(JSON.stringify(d));
-
                 const content = `
                     <div class="dc-header">Data Center Site</div>
-                    <strong>${d.name}</strong><br>
-                    <span style="color:#64748b">${d.co}</span>
-                    <hr>
-                    <div class="stat-row"><span>Address:</span><strong>${d.lat.toFixed(4)}, ${d.lng.toFixed(4)}</strong></div>
-                    <button onclick="window.open('analysis.html?data=${dataPayload}', '_blank')" class="analysis-btn">
-                        View Watershed Risk Analysis →
-                    </button>
+                    <strong>${d.name}</strong><br><span style="color:#64748b">${d.co}</span><hr>
+                    <div class="stat-row"><span>Coordinates:</span><strong>${d.lat.toFixed(4)}, ${d.lng.toFixed(4)}</strong></div>
+                    <button onclick="window.open('analysis.html?data=${dataPayload}', '_blank')" class="analysis-btn">Run Site Water Analysis →</button>
                 `;
                 L.marker([d.lat, d.lng], { icon: dcIcon }).bindPopup(content).addTo(dcMarkers);
             });
         } catch (e) { console.error("DC Load Error:", e); }
 
-        // B. Load Restoration Projects
+        // B. Process Restoration Projects
         try {
             const res = await fetch('wateroffsets.csv');
             const rows = parseCSV(await res.text());
@@ -154,25 +145,22 @@
                 if (isNaN(lat)) return;
                 L.marker([lat, lng], { icon: offsetIcon }).bindPopup(`
                     <div class="project-header">Restoration Project</div>
-                    <strong>${r[idx.prj]}</strong><br>
-                    <span style="color:#64748b">Lead: ${r[idx.co]}</span>
+                    <strong>${r[idx.prj]}</strong><br><span style="color:#64748b">Lead: ${r[idx.co]}</span>
                     <div class="stat-row" style="margin-top:8px;"><span>Annual Benefit:</span><strong>${parseInt(r[idx.gal]).toLocaleString()} gal</strong></div>
                 `).addTo(offsetMarkers);
             });
         } catch (e) {}
     }
 
-    // 5. Layers Control
-    L.control.layers({ 
-        "Satellite View": satelliteHybrid 
-    }, { 
-        "Data Center Analysis": dcMarkers, 
+    // 5. Layer Management
+    L.control.layers({ "Satellite": satelliteHybrid }, { 
+        "Data Center Sites": dcMarkers, 
         "Restoration Projects": offsetMarkers,
         "Recycled Water": recycledWaterLayer,
-        "Utilities (EPA)": epaBoundaries, 
-        "Wetlands (NWI)": wetlandsLayer, 
-        "Rivers (USGS)": riversLayer,
-        "Watersheds (HUC-8)": huc8Layer
+        "EPA Utility Areas": epaBoundaries, 
+        "FWS Wetlands": wetlandsLayer, 
+        "USGS Rivers": riversLayer,
+        "HUC-8 Watersheds": huc8Layer
     }, { collapsed: false }).addTo(map);
 
     loadMapData();
