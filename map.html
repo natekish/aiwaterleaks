@@ -61,6 +61,7 @@
 <div id="map"></div>
 
 <script>
+    // --- MAP INITIALIZATION ---
     var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { attribution: '© Google', maxZoom: 20 });
     var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid], zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -96,43 +97,33 @@
 
     const dcMarkers = L.layerGroup().addTo(map);
     const offsetMarkers = L.layerGroup().addTo(map);
-epaBoundaries.bindPopup(function (layer) {
-    const p = layer.feature.properties;
-    
-    // Fallback logic for name and ID
-    const name = p.NAME || p.PWS_Name || "Unknown Utility";
-    const pwsid = p.PWSID || p.pwsid || 'N/A';
-    
-    // Ensure population is a valid number
-    const rawPop = p.Population_Served_Count || p.POP_SERVED || 0;
-    const pop = isNaN(parseInt(rawPop)) ? 0 : parseInt(rawPop);
-    
-    // Common industry estimate (80-100 gal/day)
-    const dailyDemand = pop * 100;
 
-    return `
-        <div class="utility-header" style="font-weight:bold; color:#1e40af; border-bottom:1px solid #ccc; margin-bottom:5px;">
-            Water Utility Service Area
-        </div>
-        <div style="margin-bottom:8px"><strong>${name}</strong></div>
-        <div class="stat-row" style="display:flex; justify-content:space-between;">
-            <span>EPA ID:</span> <strong>${pwsid}</strong>
-        </div>
-        <div class="stat-row" style="display:flex; justify-content:space-between;">
-            <span>Population Served:</span> <strong>${pop.toLocaleString()}</strong>
-        </div>
-        <div class="stat-row" style="color:#1e40af; border-top:1px solid #eee; margin-top:5px; padding-top:5px; display:flex; justify-content:space-between;">
-            <span>Est. Daily Demand:</span> <strong>${dailyDemand.toLocaleString()} gal</strong>
-        </div>`;
-});
+    // --- POPUP: EPA UTILITY SERVICE AREA ---
+    epaBoundaries.bindPopup(function (layer) {
+        const p = layer.feature.properties;
+        const name = p.NAME || p.PWS_Name || "Unknown Utility";
+        const pwsid = p.PWSID || p.pwsid || 'N/A';
+        const rawPop = p.Population_Served_Count || p.POP_SERVED || 0;
+        const pop = isNaN(parseInt(rawPop)) ? 0 : parseInt(rawPop);
+        const dailyDemand = pop * 100;
 
-    // --- POPUP LOGIC: WATERSHEDS ---
+        return `
+            <div class="utility-header">Water Utility Service Area</div>
+            <div style="margin-bottom:8px"><strong>${name}</strong></div>
+            <div class="stat-row"><span>EPA ID:</span><strong>${pwsid}</strong></div>
+            <div class="stat-row"><span>Population Served:</span><strong>${pop.toLocaleString()}</strong></div>
+            <div class="stat-row" style="color:#1e40af; border-top:1px solid #eee; margin-top:5px; padding-top:5px;">
+                <span>Est. Daily Demand:</span><strong>${dailyDemand.toLocaleString()} gal</strong>
+            </div>`;
+    });
+
+    // --- POPUP: HUC-8 WATERSHED ---
     huc8Layer.bindPopup(function (layer) {
         let useSum = 0, benSum = 0;
         const polygon = layer.feature;
         Object.values(window.globalDCMap || {}).forEach(dc => {
             if (turf.booleanPointInPolygon(turf.point([dc.lng, dc.lat]), polygon)) {
-                Object.values(dc.yearly).forEach(v => useSum += v);
+                useSum += dc.total; 
             }
         });
         Object.values(window.globalProjMap || {}).forEach(prj => {
@@ -154,7 +145,7 @@ epaBoundaries.bindPopup(function (layer) {
             </div>`;
     });
 
-    // --- DATA LOADING & DC POPUPS ---
+    // --- DATA HANDLING ---
     function parseCSV(text) {
         const rows = [];
         const lines = text.trim().split(/\r?\n/);
@@ -187,38 +178,54 @@ epaBoundaries.bindPopup(function (layer) {
                 const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
                 if (isNaN(lat)) return;
                 const key = `${r[idx.loc]}_${lat}`;
-                if (!window.globalDCMap[key]) window.globalDCMap[key] = { name: r[idx.loc], co: r[idx.co], lat, lng, yearly: {} };
+                
+                if (!window.globalDCMap[key]) {
+                    window.globalDCMap[key] = { name: r[idx.loc], co: r[idx.co], lat, lng, yearly: {}, total: 0 };
+                }
+                
                 const year = (r[idx.yr]?.toString().match(/\d{4}/) || ['Total'])[0];
-                window.globalDCMap[key].yearly[year] = (window.globalDCMap[key].yearly[year] || 0) + (parseInt(r[idx.gal]?.replace(/,/g, '')) || 0);
+                const volume = (parseInt(r[idx.gal]?.replace(/,/g, '')) || 0);
+                
+                window.globalDCMap[key].yearly[year] = (window.globalDCMap[key].yearly[year] || 0) + volume;
+                window.globalDCMap[key].total += volume;
             });
 
             Object.values(window.globalDCMap).forEach(d => {
-                const markerID = d.lat.toString().replace('.', '');
+                const markerID = d.lat.toString().replace(/[.-]/g, '');
+                
                 let consumptionRows = '';
                 Object.keys(d.yearly).sort().reverse().forEach(y => {
-                    consumptionRows += `<div class="stat-row"><span>${y} Volume:</span><strong>${d.yearly[y].toLocaleString()} gal</strong></div>`;
+                    consumptionRows += `<div class="stat-row"><span>${y} Consumption:</span><strong>${d.yearly[y].toLocaleString()} gal</strong></div>`;
                 });
+
+                consumptionRows += `
+                    <div class="stat-row" style="border-top:1px solid #334155; margin-top:8px; padding-top:6px; font-weight:bold; color:#b91c1c;">
+                        <span>Total Lifetime Use:</span><strong>${d.total.toLocaleString()} gal</strong>
+                    </div>`;
 
                 const content = `
                     <div class="popup-wrap">
                         <div class="owner-header">${d.co}</div>
                         <div class="site-name">${d.name}</div>
-                        <div class="stat-row"><span>Coordinates:</span><strong>${d.lat.toFixed(5)}, ${d.lng.toFixed(5)}</strong></div>
+                        
                         <div class="analysis-box">
                             <div class="analysis-title">Watershed Analysis</div>
-                            <div class="stat-row"><span>Utility:</span><strong id="util-${markerID}" class="loading-pulse">Querying...</strong></div>
+                            <div class="stat-row"><span>Local Utility:</span><strong id="util-${markerID}" class="loading-pulse">Querying...</strong></div>
                             <div class="stat-row"><span>HUC-8 Basin:</span><strong id="ws-${markerID}" class="loading-pulse">Querying...</strong></div>
                             <div class="analysis-title" style="margin-top:10px">Local Water Risks (2mi)</div>
                             <ul class="risk-list" id="risks-${markerID}"><li class="loading-pulse">Scanning...</li></ul>
                         </div>
+                        
                         <div class="analysis-title" style="margin-top:10px">Consumption Profile</div>
-                        ${consumptionRows}
+                        <div style="max-height:120px; overflow-y:auto; padding-right:5px;">
+                            ${consumptionRows}
+                        </div>
                     </div>`;
 
                 const m = L.marker([d.lat, d.lng], { icon: dcIcon }).bindPopup(content).addTo(dcMarkers);
                 m.on('popupopen', () => performSpatialRiskAnalysis(d, markerID));
             });
-        } catch (e) {}
+        } catch (e) { console.error("DC Load Error:", e); }
 
         // Projects
         try {
@@ -243,18 +250,25 @@ epaBoundaries.bindPopup(function (layer) {
         const point = turf.point([d.lng, d.lat]);
         const buffer = turf.buffer(point, 2, {units: 'miles'});
 
+        // EPA Utility Name Query
         L.esri.query({ url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0' })
             .intersects(point).fields(['NAME']).run((err, fc) => {
                 const el = document.getElementById(`util-${id}`);
-                if (el) { el.innerText = fc?.features[0]?.properties?.NAME || "Private/Direct Supply"; el.classList.remove('loading-pulse'); }
+                if (el) { 
+                    el.innerText = fc?.features[0]?.properties?.NAME || "Private/Direct Supply"; 
+                    el.classList.remove('loading-pulse'); 
+                    el.style.color = "#1e40af";
+                }
             });
 
+        // Watershed Query
         L.esri.query({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4' })
             .intersects(point).fields(['name']).run((err, fc) => {
                 const el = document.getElementById(`ws-${id}`);
                 if (el) { el.innerText = fc?.features[0]?.properties?.name || "Unknown Basin"; el.classList.remove('loading-pulse'); }
             });
 
+        // Environmental Hazards
         const riskList = document.getElementById(`risks-${id}`);
         let names = new Set();
         L.esri.query({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6' }).intersects(buffer).fields(['gnis_name']).run((err, fc) => {
@@ -269,6 +283,7 @@ epaBoundaries.bindPopup(function (layer) {
         });
     }
 
+    // --- LAYER CONTROL ---
     L.control.layers({ "Satellite View": satelliteHybrid }, { 
         "Data Centers": dcMarkers, "Water Positive Projects": offsetMarkers,
         "Recycled Water Lines": recycledWaterLayer, "Water Utility Areas (EPA)": epaBoundaries, 
