@@ -27,7 +27,7 @@
         .owner-header { color: #b91c1c; font-size: 16px; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; }
         .site-name { font-size: 14px; font-weight: 600; color: #334155; margin-bottom: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; }
         .utility-header { color: #1e40af; font-weight: bold; font-size: 15px; margin-bottom: 8px; border-bottom: 1px solid #ddd; text-transform: uppercase; }
-        .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; }
+        .basin-header { color: #4c1d95; font-weight: bold; border-bottom: 2px solid #8b5cf6; margin-bottom: 5px; font-size: 14px; }
         .project-header { color: #10b981; font-weight: bold; border-bottom: 2px solid #10b981; margin-bottom: 5px; }
         
         .stat-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; padding-bottom: 2px; }
@@ -38,6 +38,10 @@
         .analysis-title { font-size: 10px; text-transform: uppercase; color: #1e40af; font-weight: bold; letter-spacing: 0.5px; margin-bottom: 5px; }
         .risk-list { font-size: 11px; color: #475569; margin-top: 4px; padding-left: 0; list-style: none; }
         .risk-item { padding: 2px 0; border-bottom: 1px solid #f1f5f9; }
+        
+        .balance-row { border-top: 2px solid #334155; margin-top: 10px; padding-top: 8px; font-weight: bold; font-size: 13px; }
+        .status-deficit { color: #ef4444; } 
+        .status-surplus { color: #10b981; }
         
         .loading-pulse { color: #2563eb; animation: pulse 1.5s infinite; font-style: italic; font-size: 11px; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
@@ -55,6 +59,7 @@
 <div id="map"></div>
 
 <script>
+    // --- MAP CORE ---
     var satelliteHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { attribution: '© Google', maxZoom: 20 });
     var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid], zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -66,6 +71,7 @@
     map.createPane('backPane').style.zIndex = 400;
     map.createPane('frontPane').style.zIndex = 500;
 
+    // --- GIS LAYERS ---
     var huc8Layer = L.esri.featureLayer({
         url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4',
         pane: 'backPane',
@@ -78,11 +84,60 @@
         style: { color: '#00d4ff', weight: 2.5, fillOpacity: 0.2, fillColor: '#0055ff' }
     });
 
+    var recycledWaterLayer = L.esri.featureLayer({ 
+        url: 'https://services1.arcgis.com/MxjRokvPm7bjslyR/arcgis/rest/services/Reclaimed_Water_Pipe_Line/FeatureServer/0', 
+        pane: 'frontPane', 
+        style: { color: '#9333ea', weight: 4, dashArray: '10, 5', opacity: 0.8 } 
+    });
+
     var riversLayer = L.esri.dynamicMapLayer({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer', layers: [0,1,2,3,4,5,6,9], className: 'luminous-rivers' });
     var wetlandsLayer = L.esri.dynamicMapLayer({ url: 'https://fwspublicservices.wim.usgs.gov/wetlandsmapservice/rest/services/Wetlands/MapServer', layers: [0,1,2,3,4,5], opacity: 0.6 });
 
     const dcMarkers = L.layerGroup().addTo(map);
     const offsetMarkers = L.layerGroup().addTo(map);
+
+    // --- POPUP LOGIC FOR GIS LAYERS ---
+
+    epaBoundaries.bindPopup(function (layer) {
+        const p = layer.feature.properties;
+        return `
+            <div class="utility-header">Water Utility Service Area</div>
+            <div style="margin-bottom:8px"><strong>${p.NAME || p.PWS_Name || "Unknown Utility"}</strong></div>
+            <div class="stat-row"><span>EPA ID:</span><strong>${p.PWSID || 'N/A'}</strong></div>
+            <div class="stat-row"><span>Pop. Served:</span><strong>${(p.Population_Served_Count || p.POP_SERVED || 0).toLocaleString()}</strong></div>`;
+    });
+
+    huc8Layer.bindPopup(function (layer) {
+        let useSum = 0, benSum = 0;
+        const polygon = layer.feature;
+        
+        // Sum from Global Data Maps
+        Object.values(window.globalDCMap || {}).forEach(dc => {
+            if (turf.booleanPointInPolygon(turf.point([dc.lng, dc.lat]), polygon)) useSum += dc.total; 
+        });
+        Object.values(window.globalProjMap || {}).forEach(prj => {
+            if (turf.booleanPointInPolygon(turf.point([prj.lng, prj.lat]), polygon)) {
+                Object.values(prj.yearly).forEach(v => benSum += v);
+            }
+        });
+        
+        const balance = benSum - useSum;
+        const statusClass = balance >= 0 ? 'status-surplus' : 'status-deficit';
+        return `
+            <div class="basin-header">${layer.feature.properties.name} Basin</div>
+            <div class="stat-row"><span>HUC-8 ID:</span><strong>${layer.feature.properties.huc8}</strong></div>
+            <hr>
+            <div class="stat-row"><span>Data Center Use:</span><strong>${useSum.toLocaleString()} gal</strong></div>
+            <div class="stat-row"><span>Project Benefit:</span><strong>${benSum.toLocaleString()} gal</strong></div>
+            <div class="balance-row ${statusClass}">
+                <span>NET ${balance >= 0 ? 'SURPLUS' : 'DEFICIT'}:</span>
+                <span>${Math.abs(balance).toLocaleString()} gal</span>
+            </div>`;
+    });
+
+    recycledWaterLayer.bindPopup("<strong>Reclaimed/Recycled Water Main</strong>");
+
+    // --- CSV PARSING & DATA LOADING ---
 
     function parseCSV(text) {
         const rows = [];
@@ -110,52 +165,25 @@
             const dcRows = parseCSV(await dcRes.text());
             const dch = dcRows[0];
             const find = (ns) => ns.map(n => dch.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
-            
-            const idx = { 
-                co: find(['company', 'owner']), 
-                loc: find(['location', 'site', 'name']), 
-                x: find(['x', 'lat', 'latitude']), 
-                y: find(['y', 'long', 'longitude']), 
-                gal: find(['gallons', 'usage', 'volume']), 
-                yr: find(['year', 'date', 'yr']),
-                util: find(['utility', 'water utility', 'provider'])
-            };
+            const idx = { co: find(['company']), loc: find(['location', 'site']), x: find(['x', 'lat']), y: find(['y', 'long']), gal: find(['gallons']), yr: find(['year']), util: find(['utility', 'provider']) };
             
             dcRows.slice(1).forEach(r => {
                 const lat = parseFloat(r[idx.x]), lng = parseFloat(r[idx.y]);
                 if (isNaN(lat)) return;
                 const key = `${r[idx.loc]}_${lat}`;
-                
                 if (!window.globalDCMap[key]) {
-                    window.globalDCMap[key] = { 
-                        name: r[idx.loc], 
-                        co: r[idx.co], 
-                        lat, lng, 
-                        csvUtility: r[idx.util] || null, 
-                        yearly: {}, 
-                        total: 0 
-                    };
+                    window.globalDCMap[key] = { name: r[idx.loc], co: r[idx.co], lat, lng, csvUtility: r[idx.util] || null, yearly: {}, total: 0 };
                 }
-                
-                // Clean the year: Match 4 digits, otherwise keep original text
-                let yearRaw = r[idx.yr] || "Record";
-                let yearMatch = yearRaw.toString().match(/\d{4}/);
-                let yearLabel = yearMatch ? yearMatch[0] : yearRaw;
-
+                const year = (r[idx.yr]?.toString().match(/\d{4}/) || [r[idx.yr] || 'Record'])[0];
                 const volume = parseInt(r[idx.gal]?.replace(/,/g, '')) || 0;
-                
-                window.globalDCMap[key].yearly[yearLabel] = (window.globalDCMap[key].yearly[yearLabel] || 0) + volume;
+                window.globalDCMap[key].yearly[year] = (window.globalDCMap[key].yearly[year] || 0) + volume;
                 window.globalDCMap[key].total += volume;
             });
 
             Object.values(window.globalDCMap).forEach(d => {
                 const markerID = d.lat.toString().replace(/[.-]/g, '');
-                
                 let consumptionRows = '';
-                // Sort years numerically descending
-                const sortedYears = Object.keys(d.yearly).sort((a,b) => b - a);
-                
-                sortedYears.forEach(y => {
+                Object.keys(d.yearly).sort((a,b) => b-a).forEach(y => {
                     consumptionRows += `<div class="stat-row"><span>${y} Consumption:</span><strong>${d.yearly[y].toLocaleString()} gal</strong></div>`;
                 });
 
@@ -178,11 +206,10 @@
                             <span>Total Lifetime Use:</span><strong>${d.total.toLocaleString()} gal</strong>
                         </div>
                     </div>`;
-
                 const m = L.marker([d.lat, d.lng], { icon: dcIcon }).bindPopup(content).addTo(dcMarkers);
                 m.on('popupopen', () => performSpatialRiskAnalysis(d, markerID));
             });
-        } catch (e) { console.error("DC Load Error:", e); }
+        } catch (e) { console.error(e); }
 
         try {
             const offRes = await fetch('wateroffsets.csv');
@@ -190,7 +217,6 @@
             const offh = offRows[0];
             const findOff = (ns) => ns.map(n => offh.findIndex(c => c.trim().toLowerCase() === n.toLowerCase())).find(i => i !== -1);
             const oIdx = { co: findOff(['company']), prj: findOff(['project']), x: findOff(['x', 'lat']), y: findOff(['y', 'long']), gal: findOff(['gallons']), yr: findOff(['year']) };
-            
             offRows.slice(1).forEach(r => {
                 const lat = parseFloat(r[oIdx.x]), lng = parseFloat(r[oIdx.y]);
                 if (isNaN(lat)) return;
@@ -200,27 +226,24 @@
                 window.globalProjMap[key].yearly[year] = (window.globalProjMap[key].yearly[year] || 0) + (parseInt(r[oIdx.gal]?.replace(/,/g, '')) || 0);
                 L.marker([lat, lng], { icon: offsetIcon }).bindPopup(`<div class="project-header">Restoration Project</div><strong>${r[oIdx.prj]}</strong><br>Lead: ${r[oIdx.co]}`).addTo(offsetMarkers);
             });
-        } catch (e) { console.error("Offset Load Error:", e); }
+        } catch (e) { console.error(e); }
     }
 
     function performSpatialRiskAnalysis(d, id) {
         const point = turf.point([d.lng, d.lat]);
         const buffer = turf.buffer(point, 2, {units: 'miles'});
-
         if (!d.csvUtility) {
             L.esri.query({ url: 'https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Water_System_Boundaries/FeatureServer/0' })
                 .intersects(point).fields(['NAME']).run((err, fc) => {
                     const el = document.getElementById(`util-${id}`);
-                    if (el) { el.innerText = fc?.features[0]?.properties?.NAME || "Private/Direct Supply"; el.classList.remove('loading-pulse'); }
+                    if (el) { el.innerText = fc?.features[0]?.properties?.NAME || "Private Supply"; el.classList.remove('loading-pulse'); }
                 });
         }
-
         L.esri.query({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/wbd/MapServer/4' })
             .intersects(point).fields(['name']).run((err, fc) => {
                 const el = document.getElementById(`ws-${id}`);
                 if (el) { el.innerText = fc?.features[0]?.properties?.name || "Unknown Basin"; el.classList.remove('loading-pulse'); }
             });
-
         const riskList = document.getElementById(`risks-${id}`);
         let names = new Set();
         L.esri.query({ url: 'https://hydro.nationalmap.gov/arcgis/rest/services/nhd/MapServer/6' }).intersects(buffer).fields(['gnis_name']).run((err, fc) => {
@@ -236,12 +259,9 @@
     }
 
     L.control.layers({ "Satellite View": satelliteHybrid }, { 
-        "Data Centers": dcMarkers, 
-        "Water Positive Projects": offsetMarkers,
-        "Water Utility Areas (EPA)": epaBoundaries, 
-        "Wetlands (NWI)": wetlandsLayer, 
-        "Rivers & Streams (USGS)": riversLayer, 
-        "Watersheds (HUC-8)": huc8Layer 
+        "Data Centers": dcMarkers, "Water Positive Projects": offsetMarkers,
+        "Recycled Water Lines": recycledWaterLayer, "Water Utility Areas (EPA)": epaBoundaries, 
+        "Wetlands (NWI)": wetlandsLayer, "Rivers & Streams (USGS)": riversLayer, "Watersheds (HUC-8)": huc8Layer 
     }, { collapsed: false }).addTo(map);
 
     loadMapData();
