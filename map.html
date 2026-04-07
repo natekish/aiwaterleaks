@@ -94,8 +94,8 @@
     // --- POPUP: WATER UTILITY ---
     epaBoundaries.bindPopup(function (layer) {
         const p = layer.feature.properties;
-        const name = p.NAME || p.PWS_NAME || "Unknown System";
-        const pop = parseInt(p.POPULATION_SERVED_COUNT || p.POP_SERVED || 0);
+        const name = p.NAME || p.PWS_Name || "Unknown System";
+        const pop = parseInt(p.Population_Served_Count || p.POP_SERVED || 0);
         const demand = pop * 100;
         return `
             <div class="utility-header">Water Utility Service Area</div>
