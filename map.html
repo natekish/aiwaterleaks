@@ -96,21 +96,35 @@
 
     const dcMarkers = L.layerGroup().addTo(map);
     const offsetMarkers = L.layerGroup().addTo(map);
+epaBoundaries.bindPopup(function (layer) {
+    const p = layer.feature.properties;
+    
+    // Fallback logic for name and ID
+    const name = p.NAME || p.PWS_Name || "Unknown Utility";
+    const pwsid = p.PWSID || p.pwsid || 'N/A';
+    
+    // Ensure population is a valid number
+    const rawPop = p.Population_Served_Count || p.POP_SERVED || 0;
+    const pop = isNaN(parseInt(rawPop)) ? 0 : parseInt(rawPop);
+    
+    // Common industry estimate (80-100 gal/day)
+    const dailyDemand = pop * 100;
 
-    // --- POPUP LOGIC: UTILITIES ---
-    epaBoundaries.bindPopup(function (layer) {
-        const p = layer.feature.properties;
-        const name = p.NAME || p.PWS_NAME || "Unknown Utility";
-        const pop = parseInt(p.POPULATION_SERVED_COUNT || p.POP_SERVED || 0);
-        return `
-            <div class="utility-header">Water Utility Service Area</div>
-            <div style="margin-bottom:8px"><strong>${name}</strong></div>
-            <div class="stat-row"><span>EPA ID:</span><strong>${p.PWSID || 'N/A'}</strong></div>
-            <div class="stat-row"><span>Population Served:</span><strong>${pop.toLocaleString()}</strong></div>
-            <div class="stat-row" style="color:#1e40af; border-top:1px solid #eee; margin-top:5px; padding-top:5px;">
-                <span>Est. Daily Demand:</span><strong>${(pop * 100).toLocaleString()} gal</strong>
-            </div>`;
-    });
+    return `
+        <div class="utility-header" style="font-weight:bold; color:#1e40af; border-bottom:1px solid #ccc; margin-bottom:5px;">
+            Water Utility Service Area
+        </div>
+        <div style="margin-bottom:8px"><strong>${name}</strong></div>
+        <div class="stat-row" style="display:flex; justify-content:space-between;">
+            <span>EPA ID:</span> <strong>${pwsid}</strong>
+        </div>
+        <div class="stat-row" style="display:flex; justify-content:space-between;">
+            <span>Population Served:</span> <strong>${pop.toLocaleString()}</strong>
+        </div>
+        <div class="stat-row" style="color:#1e40af; border-top:1px solid #eee; margin-top:5px; padding-top:5px; display:flex; justify-content:space-between;">
+            <span>Est. Daily Demand:</span> <strong>${dailyDemand.toLocaleString()} gal</strong>
+        </div>`;
+});
 
     // --- POPUP LOGIC: WATERSHEDS ---
     huc8Layer.bindPopup(function (layer) {
