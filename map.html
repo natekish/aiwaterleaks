@@ -65,8 +65,39 @@
     var map = L.map('map', { center: [38.85, -77.45], zoom: 11, layers: [satelliteHybrid], zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
+    // Placeholder for the search marker to allow clearing previous searches
+    var searchMarker;
+
     var geocoder = L.Control.geocoder({ defaultMarkGeocode: false, placeholder: "Search address or coordinates...", collapsed: false })
-        .on('markgeocode', function(e) { map.fitBounds(e.geocode.bbox); }).addTo(map);
+        .on('markgeocode', function(e) {
+            var bbox = e.geocode.bbox;
+            var center = e.geocode.center;
+            
+            // Adjust map view
+            map.fitBounds(bbox);
+
+            // If a previous search marker exists, remove it
+            if (searchMarker) {
+                map.removeLayer(searchMarker);
+            }
+
+            // Create a marker with a popup at the searched location
+            searchMarker = L.marker(center).addTo(map)
+                .bindPopup(`
+                    <div class="utility-header">Search Result</div>
+                    <div class="site-name">${e.geocode.name}</div>
+                    <div class="stat-row"><span>Latitude:</span><strong>${center.lat.toFixed(5)}</strong></div>
+                    <div class="stat-row"><span>Longitude:</span><strong>${center.lng.toFixed(5)}</strong></div>
+                    <div class="analysis-box">
+                        <div class="analysis-title">Site Context</div>
+                        <div style="font-size: 11px; color: #64748b; margin-top: 5px;">
+                            This location has been identified for spatial water risk analysis. Check nearby Watershed or Utility layers for local impact data.
+                        </div>
+                    </div>
+                `)
+                .openPopup();
+
+        }).addTo(map);
     document.getElementById('search-container').appendChild(geocoder.getContainer());
 
     map.createPane('backPane').style.zIndex = 400;
