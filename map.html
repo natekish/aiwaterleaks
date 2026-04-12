@@ -68,36 +68,65 @@
     // Placeholder for the search marker to allow clearing previous searches
     var searchMarker;
 
-    var geocoder = L.Control.geocoder({ defaultMarkGeocode: false, placeholder: "Search address or coordinates...", collapsed: false })
-        .on('markgeocode', function(e) {
-            var bbox = e.geocode.bbox;
-            var center = e.geocode.center;
+var geocoder = L.Control.geocoder({ defaultMarkGeocode: false, placeholder: "Search address or coordinates...", collapsed: false })
+    .on('markgeocode', function(e) {
+        var bbox = e.geocode.bbox;
+        var center = e.geocode.center;
+        map.fitBounds(bbox);
+
+        if (searchMarker) { map.removeLayer(searchMarker); }
+
+        // --- PROXIMITY CALCULATION ---
+        const radiusMiles = 2; // Set your desired radius here
+        let nearbyDCs = [];
+        const searchPt = turf.point([center.lng, center.lat]);
+
+        // Loop through loaded Data Centers
+        Object.values(window.globalDCMap || {}).forEach(dc => {
+            const dcPt = turf.point([dc.lng, dc.lat]);
+            const distance = turf.distance(searchPt, dcPt, {units: 'miles'});
             
-            // Adjust map view
-            map.fitBounds(bbox);
-
-            // If a previous search marker exists, remove it
-            if (searchMarker) {
-                map.removeLayer(searchMarker);
+            if (distance <= radiusMiles) {
+                nearbyDCs.push({
+                    name: dc.name,
+                    co: dc.co,
+                    dist: distance.toFixed(2)
+                });
             }
+        });
 
-            // Create a marker with a popup at the searched location
-            searchMarker = L.marker(center).addTo(map)
-                .bindPopup(`
-                    <div class="utility-header">Search Result</div>
-                    <div class="site-name">${e.geocode.name}</div>
-                    <div class="stat-row"><span>Latitude:</span><strong>${center.lat.toFixed(5)}</strong></div>
-                    <div class="stat-row"><span>Longitude:</span><strong>${center.lng.toFixed(5)}</strong></div>
-                    <div class="analysis-box">
-                        <div class="analysis-title">Site Context</div>
-                        <div style="font-size: 11px; color: #64748b; margin-top: 5px;">
-                            This location has been identified for spatial water risk analysis. Check nearby Watershed or Utility layers for local impact data.
-                        </div>
+        // Sort by closest first
+        nearbyDCs.sort((a, b) => a.dist - b.dist);
+
+        // Generate the List HTML
+        let dcListHtml = nearbyDCs.length > 0 
+            ? nearbyDCs.map(dc => `<li class="risk-item" style="color:#1e293b"><strong>${dc.dist} mi:</strong> ${dc.co} - ${dc.name}</li>`).join('')
+            : '<li class="risk-item" style="color:#64748b italic">No data centers found within ' + radiusMiles + ' miles.</li>';
+
+        // Create the popup
+        searchMarker = L.marker(center).addTo(map)
+            .bindPopup(`
+                <div class="utility-header">Search Result</div>
+                <div class="site-name">${e.geocode.name}</div>
+                <div class="stat-row"><span>Lat/Lng:</span><strong>${center.lat.toFixed(4)}, ${center.lng.toFixed(4)}</strong></div>
+                
+                <div class="analysis-box">
+                    <div class="analysis-title" style="color:#b91c1c">Data Centers within ${radiusMiles} Miles</div>
+                    <ul class="risk-list" style="max-height: 150px; overflow-y: auto; margin-top:8px;">
+                        ${dcListHtml}
+                    </ul>
+                </div>
+
+                <div class="analysis-box" style="background:#eff6ff">
+                    <div class="analysis-title">Environmental Context</div>
+                    <div style="font-size: 11px; color: #64748b;">
+                        Check the <b>Watershed</b> or <b>Utility</b> layers in the menu to see localized water stress data for this coordinate.
                     </div>
-                `)
-                .openPopup();
+                </div>
+            `)
+            .openPopup();
 
-        }).addTo(map);
+    }).addTo(map);
     document.getElementById('search-container').appendChild(geocoder.getContainer());
 
     map.createPane('backPane').style.zIndex = 400;
